@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap17.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:20 GMT -->
+<head>
+  <meta charset="utf-8">
+  <title>Notes</title>
+  <link href="stylesheet.css" rel="stylesheet" />
+</head>
+<body dir="ltr" class="kramdown">
+<div id="leanpub-toc">
+<h2></h2>
+<ol class="toc">
+<ul class='toc no-parts'>
+  <li>
+    <a href='chap00.html#intro-advert'>About me</a>
+  </li>
+  <li>
+    <a href='chap01.html#credits'>Credits</a>
+  </li>
+  <li>
+    <a href='chap02.html#introduction'>Introduction</a>
+    <ul>
+      <li>
+        <a href='chap02.html#leanpub-auto-formatting-conventions'>Formatting conventions</a>
+      </li>
+      <li>
+        <a href='chap02.html#leanpub-auto-learn-more'>Learn more</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap03.html#leanpub-auto-release-notes'>Release notes</a>
+  </li>
+  <li>
+    <a href='chap04.html#intro-mt'><span class="section-number">1. </span>Introduction to multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap04.html#leanpub-auto-multi-threading-as-a-source-of-problems'><span class="section-number">1.1 </span>Multi-threading as a source of problems</a>
+        <ul>
+          <li>
+            <a href='chap04.html#leanpub-auto-reading-and-writing-shared-data'><span class="section-number">1.1.1 </span>Reading and writing shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-modifying-shared-data'><span class="section-number">1.1.2 </span>Modifying shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-writes-masquerading-as-reads'><span class="section-number">1.1.3 </span>Writes masquerading as reads</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap05.html#intro-otl'><span class="section-number">2. </span>Introduction to OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap05.html#leanpub-auto-requirements'><span class="section-number">2.1 </span>Requirements</a>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-license'><span class="section-number">2.2 </span>License</a>
+      </li>
+      <li>
+        <a href='chap05.html#installation'><span class="section-number">2.3 </span>Installation</a>
+        <ul>
+          <li>
+            <a href='chap05.html#appendix-installing-getit'><span class="section-number">2.3.1 </span>Installing with GetIt</a>
+          </li>
+          <li>
+            <a href='chap05.html#appendix-installing-delphinus'><span class="section-number">2.3.2 </span>Installing with Delphinus</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-installing-design-package'><span class="section-number">2.3.3 </span>Installing design package</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-why-use-omnithreadlibrary'><span class="section-number">2.4 </span>Why use OmniThreadLibrary?</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tasksvsthreads'><span class="section-number">2.5 </span>Tasks vs. threads</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-lockingvsmessaging'><span class="section-number">2.6 </span>Locking vs. messaging</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-messagelooprequired'><span class="section-number">2.7 </span>Message loop required</a>
+        <ul>
+          <li>
+            <a href='chap05.html#introotl-messagelooprequired-console'><span class="section-number">2.7.1 </span>OmniThreadLibrary and console</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-another-task'><span class="section-number">2.7.2 </span>OmniThreadLibrary task started from another task</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-a-tthread'><span class="section-number">2.7.3 </span>OmniThreadLibrary task started from a TThread</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tomnivalue'><span class="section-number">2.8 </span>TOmniValue</a>
+        <ul>
+          <li>
+            <a href='chap05.html#leanpub-auto-data-access'><span class="section-number">2.8.1 </span>Data access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-typetesting'><span class="section-number">2.8.2 </span>Type testing</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-clearing'><span class="section-number">2.8.3 </span>Clearing the content</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-operators'><span class="section-number">2.8.4 </span>Operators</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-generictypes'><span class="section-number">2.8.5 </span>Using with generic types</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-array'><span class="section-number">2.8.6 </span>Array access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-records'><span class="section-number">2.8.7 </span>Handling records</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-object-ownership'><span class="section-number">2.8.8 </span>Object ownership</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-working-with-tvalue'><span class="section-number">2.8.9 </span>Working with TValue</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-low-level-methods'><span class="section-number">2.8.10 </span>Low-level methods</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-tomnivalueobj'><span class="section-number">2.9 </span>TOmniValueObj</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-fluentinterfaces'><span class="section-number">2.10 </span>Fluent interfaces</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap06.html#highlevel'><span class="section-number">3. </span>High-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap06.html#highlevel-introduction'><span class="section-number">3.1 </span>Introduction</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-a-life-cycle-of-an-abstraction'><span class="section-number">3.1.1 </span>A life cycle of an abstraction</a>
+          </li>
+          <li>
+            <a href='chap06.html#highLevel-intro-AnonymousEtAl'><span class="section-number">3.1.2 </span>Anonymous methods, procedures, and methods</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-introduction-pooling'><span class="section-number">3.1.3 </span>Pooling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-blocking-collection'><span class="section-number">3.2 </span>Blocking collection</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-iomniblockingcollection'><span class="section-number">3.2.1 </span>IOmniBlockingCollection</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-bulk-impexp'><span class="section-number">3.2.2 </span>Bulk import and export</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-throttling'><span class="section-number">3.2.3 </span>Throttling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-taskconfig'><span class="section-number">3.3 </span>Task configuration</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-async'><span class="section-number">3.4 </span>Async</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions'><span class="section-number">3.4.1 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-asyncawait'><span class="section-number">3.5 </span>Async/Await</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-future'><span class="section-number">3.6 </span>Future</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnifuturet-interface'><span class="section-number">3.6.1 </span>IOmniFuture&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-completion-detection'><span class="section-number">3.6.2 </span>Completion detection</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation'><span class="section-number">3.6.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-1'><span class="section-number">3.6.4 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples'><span class="section-number">3.6.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-join'><span class="section-number">3.7 </span>Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleljoin-interface'><span class="section-number">3.7.1 </span>IOmniParallelJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnijoinstate-interface'><span class="section-number">3.7.2 </span>IOmniJoinState interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation-1'><span class="section-number">3.7.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-join-exceptions'><span class="section-number">3.7.4 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-paralleltask'><span class="section-number">3.8 </span>Parallel task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleltask-interface'><span class="section-number">3.8.1 </span>IOmniParallelTask interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-example'><span class="section-number">3.8.2 </span>Example</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-2'><span class="section-number">3.8.3 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-1'><span class="section-number">3.8.4 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-backgroundworker'><span class="section-number">3.9 </span>Background worker</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics'><span class="section-number">3.9.1 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnibackgroundworker-interface'><span class="section-number">3.9.2 </span>IOmniBackgroundWorker interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-initialization'><span class="section-number">3.9.3 </span>Task initialization</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-work-item-configuration'><span class="section-number">3.9.4 </span>Work item configuration</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-iomniworkitem'><span class="section-number">3.9.5 </span>Work item interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-2'><span class="section-number">3.9.6 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-pipeline'><span class="section-number">3.10 </span>Pipeline</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-background'><span class="section-number">3.10.1 </span>Background</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics-1'><span class="section-number">3.10.2 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnipipeline-interface'><span class="section-number">3.10.3 </span>IOmniPipeline interface</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-example-1'><span class="section-number">3.10.3.1 </span>Example</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-generators-mutators-and-aggregators'><span class="section-number">3.10.4 </span>Generators, mutators, and aggregators</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-throttling'><span class="section-number">3.10.5 </span>Throttling</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-parallel'><span class="section-number">3.10.6 </span>Parallel stages</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-exceptions'><span class="section-number">3.10.7 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-3'><span class="section-number">3.10.8 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-for'><span class="section-number">3.11 </span>Parallel for</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-for-iomniparallelsimpleloop'><span class="section-number">3.11.1 </span>IOmniParallelSimpleLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-an-array'><span class="section-number">3.11.2 </span>Iterating over an array</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-4'><span class="section-number">3.11.3 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-foreach'><span class="section-number">3.12 </span>ForEach</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-cooperation'><span class="section-number">3.12.1 </span>Cooperation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-'><span class="section-number">3.12.2 </span>Iterating over …</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-number-ranges'><span class="section-number">3.12.2.1 </span>… Number ranges</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-enumerable-collections'><span class="section-number">3.12.2.2 </span>… Enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-thread-safe-enumerable-collections'><span class="section-number">3.12.2.3 </span>… Thread-safe enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-blocking-collections'><span class="section-number">3.12.2.4 </span>… Blocking collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-anything'><span class="section-number">3.12.2.5 </span>… Anything</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-providing-external-input'><span class="section-number">3.12.3 </span>Providing external input</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelloop-interface'><span class="section-number">3.12.4 </span>IOmniParallelLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-preserveorder'><span class="section-number">3.12.5 </span>Preserving output order</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-aggregation'><span class="section-number">3.12.6 </span>Aggregation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-cancellation'><span class="section-number">3.12.7 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-taskinit'><span class="section-number">3.12.8 </span>Task initialization and finalization</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-exceptions'><span class="section-number">3.12.9 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-5'><span class="section-number">3.12.10 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-forkjoin'><span class="section-number">3.13 </span>Fork/Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniforkjoin-interface'><span class="section-number">3.13.1 </span>IOmniForkJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicompute-interface'><span class="section-number">3.13.2 </span>IOmniCompute interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicomputet-interface'><span class="section-number">3.13.3 </span>IOmniCompute&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-exceptions'><span class="section-number">3.13.4 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-6'><span class="section-number">3.13.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-map'><span class="section-number">3.14 </span>Map</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelmappert1t2-interface'><span class="section-number">3.14.1 </span>IOmniParallelMapper&lt;T1,T2&gt; interface</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-timedtask'><span class="section-number">3.15 </span>Timed task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-timedtask-iomnitimedtask'><span class="section-number">3.15.1 </span>IOmniTimedTask interface</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap07.html#lowlevel'><span class="section-number">4. </span>Low-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap07.html#leanpub-auto-low-level-for-the-impatient'><span class="section-number">4.1 </span>Low-level for the impatient</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-fourways'><span class="section-number">4.2 </span>Four ways to create a task</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitaskcontrol'><span class="section-number">4.3 </span>IOmniTaskControl and IOmniTask interfaces</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskControllerOwner'><span class="section-number">4.4 </span>Task controller needs an owner</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-communication'><span class="section-number">4.5 </span>Communication subsystem</a>
+      </li>
+      <li>
+        <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes'><span class="section-number">4.6 </span>Processor groups and NUMA nodes</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-threadpool'><span class="section-number">4.7 </span>Thread pooling</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-execution-flow'><span class="section-number">4.7.1 </span>Execution flow</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-interface'><span class="section-number">4.7.2 </span>IOmniThreadPool interface</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-exitcode'><span class="section-number">4.7.3 </span>Task exit code</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-monitoring'><span class="section-number">4.7.4 </span>Monitoring thread pool operations</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-1'><span class="section-number">4.7.5 </span>Processor groups and NUMA nodes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-lockfree'><span class="section-number">4.8 </span>Lock-free collections</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedstack'><span class="section-number">4.8.1 </span>Bounded Stack</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedqueue'><span class="section-number">4.8.2 </span>Bounded queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-messagequeue'><span class="section-number">4.8.3 </span>Message queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-dynamicqueue'><span class="section-number">4.8.4 </span>Dynamic queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-observing'><span class="section-number">4.8.5 </span>Observing lock-free collections</a>
+            <ul>
+              <li>
+                <a href='chap07.html#leanpub-auto-examples-7'><span class="section-number">4.8.5.1 </span>Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-benchmarks'><span class="section-number">4.8.6 </span>Benchmarks</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-eventmonitor'><span class="section-number">4.9 </span>Event monitor</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-simpletasks'><span class="section-number">4.10 </span>Simple tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-name'><span class="section-number">4.10.1 </span>Name</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-uniqueid'><span class="section-number">4.10.2 </span>UniqueID</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-parameters'><span class="section-number">4.10.3 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-termination'><span class="section-number">4.10.4 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-exitcode'><span class="section-number">4.10.5 </span>ExitCode</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-taskexceptions'><span class="section-number">4.10.6 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-communication'><span class="section-number">4.10.7 </span>Sending messages to a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-receiving'><span class="section-number">4.10.8 </span>Receiving messages from a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-chainto'><span class="section-number">4.10.9 </span>ChainTo</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-joinleave'><span class="section-number">4.10.10 </span>Join / Leave</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-monitorwith'><span class="section-number">4.10.11 </span>MonitorWith / RemoveMonitor</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-enforced'><span class="section-number">4.10.12 </span>Enforced</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-unobserved'><span class="section-number">4.10.13 </span>Unobserved</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-cancellationtoken'><span class="section-number">4.10.14 </span>Cancellation token / CancelWith</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-tasklock'><span class="section-number">4.10.15 </span>Lock / WithLock</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-counter'><span class="section-number">4.10.16 </span>WithCounter</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-setpriority'><span class="section-number">4.10.17 </span>SetPriority</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-setqueuesize'><span class="section-number">4.10.18 </span>SetQueueSize</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-tomniworker'><span class="section-number">4.11 </span>TOmniWorker tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-waitforinit'><span class="section-number">4.11.1 </span>WaitForInit</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-task'><span class="section-number">4.11.2 </span>Task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-communication'><span class="section-number">4.11.3 </span>Receiving messages</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-registercomm'><span class="section-number">4.11.4 </span>RegisterComm</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-tomniworkerinvoke'><span class="section-number">4.11.5 </span>Invoke</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-msgwait'><span class="section-number">4.11.6 </span>Windows message &amp; APC processing</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-timers'><span class="section-number">4.11.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-terminateWhen'><span class="section-number">4.11.8 </span>TerminateWhen</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-userdata'><span class="section-number">4.11.9 </span>UserData</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskgroup'><span class="section-number">4.12 </span>Task groups</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitask'><span class="section-number">4.13 </span>IOmniTask interface</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-name-and-id'><span class="section-number">4.13.1 </span>Name and ID</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-parameters'><span class="section-number">4.13.2 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-termination'><span class="section-number">4.13.3 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-exitstatus'><span class="section-number">4.13.4 </span>Exit status</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-exceptions-1'><span class="section-number">4.13.5 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-communication'><span class="section-number">4.13.6 </span>Communication</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-timers'><span class="section-number">4.13.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-registerwaitobject'><span class="section-number">4.13.8 </span>RegisterWaitObject</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-cancellationtoken'><span class="section-number">4.13.9 </span>CancellationToken</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-lock'><span class="section-number">4.13.10 </span>Lock</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-counter'><span class="section-number">4.13.11 </span>Counter</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-2'><span class="section-number">4.13.12 </span>Processor groups and NUMA nodes</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-internal-and-obsolete-functions'><span class="section-number">4.13.13 </span>Internal and obsolete functions</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap08.html#synch'><span class="section-number">5. </span>Synchronization</a>
+    <ul>
+      <li>
+        <a href='chap08.html#synch-criticalsections'><span class="section-number">5.1 </span>Critical sections</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-criticalsections-iomnicriticalsection'><span class="section-number">5.1.1 </span>IOmniCriticalSection</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-tomnics'><span class="section-number">5.1.2 </span>TOmniCS</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-lockedt'><span class="section-number">5.1.3 </span>Locked&lt;T&gt;</a>
+            <ul>
+              <li>
+                <a href='chap08.html#leanpub-auto-why-not-use-tmonitor'><span class="section-number">5.1.3.1 </span>Why not use TMonitor?</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnimrew'><span class="section-number">5.2 </span>TOmniMREW</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-cancellationtoken'><span class="section-number">5.3 </span>Cancellation token</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-waitablevalue'><span class="section-number">5.4 </span>Waitable value</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-inversesemaphore'><span class="section-number">5.5 </span>Inverse semaphore</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-initialization'><span class="section-number">5.6 </span>Initialization</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-initialization-pessimistic'><span class="section-number">5.6.1 </span>Pessimistic initialization</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-initialization-optimistic'><span class="section-number">5.6.2 </span>Optimistic initialization</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-twaitfor'><span class="section-number">5.7 </span>TWaitFor</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnilockmanager'><span class="section-number">5.8 </span>TOmniLockManager&lt;K&gt;</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnisinglethreadusechecker'><span class="section-number">5.9 </span>TOmniSingleThreadUseChecker</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap09.html#misc'><span class="section-number">6. </span>Miscellaneous</a>
+    <ul>
+      <li>
+        <a href='chap09.html#misc-tOmniTwoWayChannel'><span class="section-number">6.1 </span>TOmniTwoWayChannel</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnivaluecontainer'><span class="section-number">6.2 </span>TOmniValueContainer</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnicounter'><span class="section-number">6.3 </span>TOmniCounter</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-TOmniAlignedInt32'><span class="section-number">6.4 </span>TOmniAlignedInt32 and TOmniAlignedInt64</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecordwrapper'><span class="section-number">6.5 </span>TOmniRecordWrapper</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecord'><span class="section-number">6.6 </span>TOmniRecord</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniautodestroyobject'><span class="section-number">6.7 </span>IOmniAutoDestroyObject</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniintegerset'><span class="section-number">6.8 </span>IOmniIntegerSet</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-environment'><span class="section-number">6.9 </span>Environment</a>
+        <ul>
+          <li>
+            <a href='chap09.html#leanpub-auto-iomniaffinity'><span class="section-number">6.9.1 </span>IOmniAffinity</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap10.html#howto'><span class="section-number">7. </span>How-to</a>
+    <ul>
+      <li>
+        <a href='chap10.html#howto-backgroundFileScanning'><span class="section-number">7.1 </span>Background file scanning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-webDownload'><span class="section-number">7.2 </span>Web download and database storage</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForSyncOut'><span class="section-number">7.3 </span>Parallel for with synchronized output</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForTaskInit'><span class="section-number">7.4 </span>Using taskIndex and task initializer in parallel for</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-listPartitioning'><span class="section-number">7.5 </span>Background worker and list partitioning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelDataProduction'><span class="section-number">7.6 </span>Parallel data production</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-connectionPool'><span class="section-number">7.7 </span>Building a connection pool</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-from-theory-to-practice'><span class="section-number">7.7.1 </span>From theory to practice</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-running-the-demo'><span class="section-number">7.7.2 </span>Running the demo</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-quickSortParallelMax'><span class="section-number">7.8 </span>QuickSort and parallel max</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-quicksort'><span class="section-number">7.8.1 </span>QuickSort</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-parallel-max'><span class="section-number">7.8.2 </span>Parallel max</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelSearch'><span class="section-number">7.9 </span>Parallel search in a tree</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-multiFrame'><span class="section-number">7.10 </span>Multiple workers with multiple frames</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-worker'><span class="section-number">7.10.1 </span>The worker</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-frame'><span class="section-number">7.10.2 </span>The frame</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-form'><span class="section-number">7.10.3 </span>The form</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-databases'><span class="section-number">7.11 </span>OmniThreadLibrary and databases</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-database-model'><span class="section-number">7.11.1 </span>Database model</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-frame-and-worker'><span class="section-number">7.11.2 </span>Frame and worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-connecting-to-the-database'><span class="section-number">7.11.2.1 </span>Connecting to the database</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-retrieving-the-data'><span class="section-number">7.11.2.2 </span>Retrieving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-main-program'><span class="section-number">7.11.3 </span>Main program</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-com'><span class="section-number">7.12 </span>OmniThreadLibrary and COM/OLE</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-mqtthread'><span class="section-number">7.13 </span>Using a message queue with a TThread worker</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-multiple-producers-to-a-single-worker'><span class="section-number">7.13.1 </span>Sending data from multiple producers to a single worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup'><span class="section-number">7.13.1.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-worker'><span class="section-number">7.13.1.2 </span>Sending data to the worker</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data'><span class="section-number">7.13.1.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-a-worker-to-a-form'><span class="section-number">7.13.2 </span>Sending data from a worker to a form</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup-1'><span class="section-number">7.13.2.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-form'><span class="section-number">7.13.2.2 </span>Sending data to the form</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data-1'><span class="section-number">7.13.2.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap11.html#appendix-units'>A. Units</a>
+  </li>
+  <li>
+    <a href='chap12.html#demos'>B. Demo applications</a>
+  </li>
+  <li>
+    <a href='chap13.html#examples'>C. Examples</a>
+  </li>
+  <li>
+    <a href='chap14.html#appendix-hooking'>D. Hooking into OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap14.html#leanpub-auto-exception-notifications'>Exception notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-thread-notifications'>Thread notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-pool-notifications'>Pool notifications</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap15.html#highlevel-foreach-internals'>E. ForEach internals</a>
+    <ul>
+      <li>
+        <a href='chap15.html#leanpub-auto-source-provider'>Source provider</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-data-manager'>Data manager</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-local-queue'>Local queue</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-output-ordering'>Output ordering</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap16.html#leanpub-auto-f-hyperlinks'>F. Hyperlinks</a>
+  </li>
+  <li>
+    <a href='chap17.html#leanpub-endnotes'>Notes</a>
+  </li>
+</ul>
+
+</ol>
+</div>
+<div id="leanpub-main" class="kramdown">
+<h2 id="leanpub-endnotes">Notes</h2>
+<div class="footnotes">
+        <h2></h2>  <p id="fn-docwiki-packagever">    </p>
+<p><span class="endnote-number">1</span>http://docwiki.embarcadero.com/RADStudio/en/Compiler_Versions<a href="chap05.html#fnref-docwiki-packagever" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-msdn-mwfmo">    </p>
+<p><span class="endnote-number">2</span>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684242(v=vs.85).aspx<a href="chap05.html#fnref-msdn-mwfmo" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-tomnivalue-speed-1">    </p>
+<p><span class="endnote-number">3</span><a href="http://www.thedelphigeek.com/2010/03/speed-comparison-variant-tvalue-and.html">http://www.thedelphigeek.com/2010/03/speed-comparison-variant-tvalue-and.html</a><a href="chap05.html#fnref-tomnivalue-speed-1" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-async-await-more">    </p>
+<p><span class="endnote-number">4</span>Read more at <a href="http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html">http://www.thedelphigeek.com/2012/07/asyncawait-in-delphi.html</a>.<a href="chap06.html#fnref-async-await-more" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-st-msdn-wfmo">    </p>
+<p><span class="endnote-number">5</span>https://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx<a href="chap07.html#fnref-st-msdn-wfmo" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-crit-sec-links">    </p>
+<p><span class="endnote-number">6</span>https://en.wikipedia.org/wiki/Critical_section<a href="chap08.html#fnref-crit-sec-links" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-crit-sec-links-2">    </p>
+<p><span class="endnote-number">7</span>http://docwiki.embarcadero.com/Libraries/en/System.SyncObjs.TCriticalSection<a href="chap08.html#fnref-crit-sec-links-2" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-crit-sec-eric-hack">    </p>
+<p><span class="endnote-number">8</span><code>IOmniCriticalSection</code> doesn’t use <code>TCriticalSection</code> directly, but wraps it into a larger object as suggested by <a href="https://delphitools.info/2011/11/30/fixing-tcriticalsection/">Eric Grange</a>.<a href="chap08.html#fnref-crit-sec-eric-hack" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-tmonitor-bug-links">    </p>
+<p><span class="endnote-number">9</span>http://stackoverflow.com/questions/4856306/tthreadedqueue-not-capable-of-multiple-consumers<a href="chap08.html#fnref-tmonitor-bug-links" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-tmonitor-bug-links-2">    </p>
+<p><span class="endnote-number">10</span>http://www.thedelphigeek.com/2011/05/tmonitor-bug.html<a href="chap08.html#fnref-tmonitor-bug-links-2" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-mrew-links">    </p>
+<p><span class="endnote-number">11</span>http://docwiki.embarcadero.com/Libraries/en/System.SysUtils.TMultiReadExclusiveWriteSynchronizer<a href="chap08.html#fnref-mrew-links" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-mrew-links-2">    </p>
+<p><span class="endnote-number">12</span>http://edn.embarcadero.com/article/28258<a href="chap08.html#fnref-mrew-links-2" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-mrew-collision">    </p>
+<p><span class="endnote-number">13</span>A collision occurs when a writer wants to access an object with active readers or a reader wants to access an object with an active writer.<a href="chap08.html#fnref-mrew-collision" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-sync-init-single-task">    </p>
+<p><span class="endnote-number">14</span>Initializing an object is, of course, not a problem at all if the object is used only in a single task.<a href="chap08.html#fnref-sync-init-single-task" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-footnote-processor-groups">    </p>
+<p><span class="endnote-number">15</span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd405503(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/windows/desktop/dd405503(v=vs.85).aspx</a>  <a href="chap09.html#fnref-footnote-processor-groups" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-footnote-numa-nodes">    </p>
+<p><span class="endnote-number">16</span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363804(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/windows/desktop/aa363804(v=vs.85).aspx</a>  <a href="chap09.html#fnref-footnote-numa-nodes" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-footnode-numa-relative-distance">    </p>
+<p><span class="endnote-number">17</span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd405495(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/windows/desktop/dd405495(v=vs.85).aspx</a><a href="chap09.html#fnref-footnode-numa-relative-distance" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-delphi-samples-fishfact">    </p>
+<p><span class="endnote-number">18</span>SamplesDelphiDatabaseIBXFishFact<a href="chap10.html#fnref-delphi-samples-fishfact" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-how-db-gds">    </p>
+<p><span class="endnote-number">19</span>While this was true at the time of the writing (2012), this bug was later fixed and nowadays such synchronization technique is not necessary anymore.<a href="chap10.html#fnref-how-db-gds" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-embd-copy-db">    </p>
+<p><span class="endnote-number">20</span>http://docs.embarcadero.com/products/rad_studio/delphiAndcpp2009/HelpUpdate2/EN/html/devwin32/fhxr18643_xml.html<a href="chap10.html#fnref-embd-copy-db" rel="rev-footnote">↩</a></p>
+
+  <p id="fn-db-copy-exception">    </p>
+<p><span class="endnote-number">21</span>“IBTable1: Field ‘SPECIES_NO’ not found” <a href="chap10.html#fnref-db-copy-exception" rel="rev-footnote">↩</a></p>
+
+
+</div>
+
+</div>
+</body>
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap17.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:20 GMT -->
+</html>

@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap08.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:00 GMT -->
+<head>
+  <meta charset="utf-8">
+  <title>5. Synchronization</title>
+  <link href="stylesheet.css" rel="stylesheet" />
+</head>
+<body dir="ltr" class="kramdown">
+<div id="leanpub-toc">
+<h2></h2>
+<ol class="toc">
+<ul class='toc no-parts'>
+  <li>
+    <a href='chap00.html#intro-advert'>About me</a>
+  </li>
+  <li>
+    <a href='chap01.html#credits'>Credits</a>
+  </li>
+  <li>
+    <a href='chap02.html#introduction'>Introduction</a>
+    <ul>
+      <li>
+        <a href='chap02.html#leanpub-auto-formatting-conventions'>Formatting conventions</a>
+      </li>
+      <li>
+        <a href='chap02.html#leanpub-auto-learn-more'>Learn more</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap03.html#leanpub-auto-release-notes'>Release notes</a>
+  </li>
+  <li>
+    <a href='chap04.html#intro-mt'><span class="section-number">1. </span>Introduction to multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap04.html#leanpub-auto-multi-threading-as-a-source-of-problems'><span class="section-number">1.1 </span>Multi-threading as a source of problems</a>
+        <ul>
+          <li>
+            <a href='chap04.html#leanpub-auto-reading-and-writing-shared-data'><span class="section-number">1.1.1 </span>Reading and writing shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-modifying-shared-data'><span class="section-number">1.1.2 </span>Modifying shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-writes-masquerading-as-reads'><span class="section-number">1.1.3 </span>Writes masquerading as reads</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap05.html#intro-otl'><span class="section-number">2. </span>Introduction to OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap05.html#leanpub-auto-requirements'><span class="section-number">2.1 </span>Requirements</a>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-license'><span class="section-number">2.2 </span>License</a>
+      </li>
+      <li>
+        <a href='chap05.html#installation'><span class="section-number">2.3 </span>Installation</a>
+        <ul>
+          <li>
+            <a href='chap05.html#appendix-installing-getit'><span class="section-number">2.3.1 </span>Installing with GetIt</a>
+          </li>
+          <li>
+            <a href='chap05.html#appendix-installing-delphinus'><span class="section-number">2.3.2 </span>Installing with Delphinus</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-installing-design-package'><span class="section-number">2.3.3 </span>Installing design package</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-why-use-omnithreadlibrary'><span class="section-number">2.4 </span>Why use OmniThreadLibrary?</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tasksvsthreads'><span class="section-number">2.5 </span>Tasks vs. threads</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-lockingvsmessaging'><span class="section-number">2.6 </span>Locking vs. messaging</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-messagelooprequired'><span class="section-number">2.7 </span>Message loop required</a>
+        <ul>
+          <li>
+            <a href='chap05.html#introotl-messagelooprequired-console'><span class="section-number">2.7.1 </span>OmniThreadLibrary and console</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-another-task'><span class="section-number">2.7.2 </span>OmniThreadLibrary task started from another task</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-a-tthread'><span class="section-number">2.7.3 </span>OmniThreadLibrary task started from a TThread</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tomnivalue'><span class="section-number">2.8 </span>TOmniValue</a>
+        <ul>
+          <li>
+            <a href='chap05.html#leanpub-auto-data-access'><span class="section-number">2.8.1 </span>Data access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-typetesting'><span class="section-number">2.8.2 </span>Type testing</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-clearing'><span class="section-number">2.8.3 </span>Clearing the content</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-operators'><span class="section-number">2.8.4 </span>Operators</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-generictypes'><span class="section-number">2.8.5 </span>Using with generic types</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-array'><span class="section-number">2.8.6 </span>Array access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-records'><span class="section-number">2.8.7 </span>Handling records</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-object-ownership'><span class="section-number">2.8.8 </span>Object ownership</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-working-with-tvalue'><span class="section-number">2.8.9 </span>Working with TValue</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-low-level-methods'><span class="section-number">2.8.10 </span>Low-level methods</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-tomnivalueobj'><span class="section-number">2.9 </span>TOmniValueObj</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-fluentinterfaces'><span class="section-number">2.10 </span>Fluent interfaces</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap06.html#highlevel'><span class="section-number">3. </span>High-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap06.html#highlevel-introduction'><span class="section-number">3.1 </span>Introduction</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-a-life-cycle-of-an-abstraction'><span class="section-number">3.1.1 </span>A life cycle of an abstraction</a>
+          </li>
+          <li>
+            <a href='chap06.html#highLevel-intro-AnonymousEtAl'><span class="section-number">3.1.2 </span>Anonymous methods, procedures, and methods</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-introduction-pooling'><span class="section-number">3.1.3 </span>Pooling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-blocking-collection'><span class="section-number">3.2 </span>Blocking collection</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-iomniblockingcollection'><span class="section-number">3.2.1 </span>IOmniBlockingCollection</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-bulk-impexp'><span class="section-number">3.2.2 </span>Bulk import and export</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-throttling'><span class="section-number">3.2.3 </span>Throttling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-taskconfig'><span class="section-number">3.3 </span>Task configuration</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-async'><span class="section-number">3.4 </span>Async</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions'><span class="section-number">3.4.1 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-asyncawait'><span class="section-number">3.5 </span>Async/Await</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-future'><span class="section-number">3.6 </span>Future</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnifuturet-interface'><span class="section-number">3.6.1 </span>IOmniFuture&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-completion-detection'><span class="section-number">3.6.2 </span>Completion detection</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation'><span class="section-number">3.6.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-1'><span class="section-number">3.6.4 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples'><span class="section-number">3.6.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-join'><span class="section-number">3.7 </span>Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleljoin-interface'><span class="section-number">3.7.1 </span>IOmniParallelJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnijoinstate-interface'><span class="section-number">3.7.2 </span>IOmniJoinState interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation-1'><span class="section-number">3.7.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-join-exceptions'><span class="section-number">3.7.4 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-paralleltask'><span class="section-number">3.8 </span>Parallel task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleltask-interface'><span class="section-number">3.8.1 </span>IOmniParallelTask interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-example'><span class="section-number">3.8.2 </span>Example</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-2'><span class="section-number">3.8.3 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-1'><span class="section-number">3.8.4 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-backgroundworker'><span class="section-number">3.9 </span>Background worker</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics'><span class="section-number">3.9.1 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnibackgroundworker-interface'><span class="section-number">3.9.2 </span>IOmniBackgroundWorker interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-initialization'><span class="section-number">3.9.3 </span>Task initialization</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-work-item-configuration'><span class="section-number">3.9.4 </span>Work item configuration</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-iomniworkitem'><span class="section-number">3.9.5 </span>Work item interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-2'><span class="section-number">3.9.6 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-pipeline'><span class="section-number">3.10 </span>Pipeline</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-background'><span class="section-number">3.10.1 </span>Background</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics-1'><span class="section-number">3.10.2 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnipipeline-interface'><span class="section-number">3.10.3 </span>IOmniPipeline interface</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-example-1'><span class="section-number">3.10.3.1 </span>Example</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-generators-mutators-and-aggregators'><span class="section-number">3.10.4 </span>Generators, mutators, and aggregators</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-throttling'><span class="section-number">3.10.5 </span>Throttling</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-parallel'><span class="section-number">3.10.6 </span>Parallel stages</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-exceptions'><span class="section-number">3.10.7 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-3'><span class="section-number">3.10.8 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-for'><span class="section-number">3.11 </span>Parallel for</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-for-iomniparallelsimpleloop'><span class="section-number">3.11.1 </span>IOmniParallelSimpleLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-an-array'><span class="section-number">3.11.2 </span>Iterating over an array</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-4'><span class="section-number">3.11.3 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-foreach'><span class="section-number">3.12 </span>ForEach</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-cooperation'><span class="section-number">3.12.1 </span>Cooperation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-'><span class="section-number">3.12.2 </span>Iterating over …</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-number-ranges'><span class="section-number">3.12.2.1 </span>… Number ranges</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-enumerable-collections'><span class="section-number">3.12.2.2 </span>… Enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-thread-safe-enumerable-collections'><span class="section-number">3.12.2.3 </span>… Thread-safe enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-blocking-collections'><span class="section-number">3.12.2.4 </span>… Blocking collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-anything'><span class="section-number">3.12.2.5 </span>… Anything</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-providing-external-input'><span class="section-number">3.12.3 </span>Providing external input</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelloop-interface'><span class="section-number">3.12.4 </span>IOmniParallelLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-preserveorder'><span class="section-number">3.12.5 </span>Preserving output order</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-aggregation'><span class="section-number">3.12.6 </span>Aggregation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-cancellation'><span class="section-number">3.12.7 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-taskinit'><span class="section-number">3.12.8 </span>Task initialization and finalization</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-exceptions'><span class="section-number">3.12.9 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-5'><span class="section-number">3.12.10 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-forkjoin'><span class="section-number">3.13 </span>Fork/Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniforkjoin-interface'><span class="section-number">3.13.1 </span>IOmniForkJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicompute-interface'><span class="section-number">3.13.2 </span>IOmniCompute interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicomputet-interface'><span class="section-number">3.13.3 </span>IOmniCompute&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-exceptions'><span class="section-number">3.13.4 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-6'><span class="section-number">3.13.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-map'><span class="section-number">3.14 </span>Map</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelmappert1t2-interface'><span class="section-number">3.14.1 </span>IOmniParallelMapper&lt;T1,T2&gt; interface</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-timedtask'><span class="section-number">3.15 </span>Timed task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-timedtask-iomnitimedtask'><span class="section-number">3.15.1 </span>IOmniTimedTask interface</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap07.html#lowlevel'><span class="section-number">4. </span>Low-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap07.html#leanpub-auto-low-level-for-the-impatient'><span class="section-number">4.1 </span>Low-level for the impatient</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-fourways'><span class="section-number">4.2 </span>Four ways to create a task</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitaskcontrol'><span class="section-number">4.3 </span>IOmniTaskControl and IOmniTask interfaces</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskControllerOwner'><span class="section-number">4.4 </span>Task controller needs an owner</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-communication'><span class="section-number">4.5 </span>Communication subsystem</a>
+      </li>
+      <li>
+        <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes'><span class="section-number">4.6 </span>Processor groups and NUMA nodes</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-threadpool'><span class="section-number">4.7 </span>Thread pooling</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-execution-flow'><span class="section-number">4.7.1 </span>Execution flow</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-interface'><span class="section-number">4.7.2 </span>IOmniThreadPool interface</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-exitcode'><span class="section-number">4.7.3 </span>Task exit code</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-monitoring'><span class="section-number">4.7.4 </span>Monitoring thread pool operations</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-1'><span class="section-number">4.7.5 </span>Processor groups and NUMA nodes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-lockfree'><span class="section-number">4.8 </span>Lock-free collections</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedstack'><span class="section-number">4.8.1 </span>Bounded Stack</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedqueue'><span class="section-number">4.8.2 </span>Bounded queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-messagequeue'><span class="section-number">4.8.3 </span>Message queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-dynamicqueue'><span class="section-number">4.8.4 </span>Dynamic queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-observing'><span class="section-number">4.8.5 </span>Observing lock-free collections</a>
+            <ul>
+              <li>
+                <a href='chap07.html#leanpub-auto-examples-7'><span class="section-number">4.8.5.1 </span>Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-benchmarks'><span class="section-number">4.8.6 </span>Benchmarks</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-eventmonitor'><span class="section-number">4.9 </span>Event monitor</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-simpletasks'><span class="section-number">4.10 </span>Simple tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-name'><span class="section-number">4.10.1 </span>Name</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-uniqueid'><span class="section-number">4.10.2 </span>UniqueID</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-parameters'><span class="section-number">4.10.3 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-termination'><span class="section-number">4.10.4 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-exitcode'><span class="section-number">4.10.5 </span>ExitCode</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-taskexceptions'><span class="section-number">4.10.6 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-communication'><span class="section-number">4.10.7 </span>Sending messages to a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-receiving'><span class="section-number">4.10.8 </span>Receiving messages from a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-chainto'><span class="section-number">4.10.9 </span>ChainTo</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-joinleave'><span class="section-number">4.10.10 </span>Join / Leave</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-monitorwith'><span class="section-number">4.10.11 </span>MonitorWith / RemoveMonitor</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-enforced'><span class="section-number">4.10.12 </span>Enforced</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-unobserved'><span class="section-number">4.10.13 </span>Unobserved</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-cancellationtoken'><span class="section-number">4.10.14 </span>Cancellation token / CancelWith</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-tasklock'><span class="section-number">4.10.15 </span>Lock / WithLock</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-counter'><span class="section-number">4.10.16 </span>WithCounter</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-setpriority'><span class="section-number">4.10.17 </span>SetPriority</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-setqueuesize'><span class="section-number">4.10.18 </span>SetQueueSize</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-tomniworker'><span class="section-number">4.11 </span>TOmniWorker tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-waitforinit'><span class="section-number">4.11.1 </span>WaitForInit</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-task'><span class="section-number">4.11.2 </span>Task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-communication'><span class="section-number">4.11.3 </span>Receiving messages</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-registercomm'><span class="section-number">4.11.4 </span>RegisterComm</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-tomniworkerinvoke'><span class="section-number">4.11.5 </span>Invoke</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-msgwait'><span class="section-number">4.11.6 </span>Windows message &amp; APC processing</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-timers'><span class="section-number">4.11.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-terminateWhen'><span class="section-number">4.11.8 </span>TerminateWhen</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-userdata'><span class="section-number">4.11.9 </span>UserData</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskgroup'><span class="section-number">4.12 </span>Task groups</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitask'><span class="section-number">4.13 </span>IOmniTask interface</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-name-and-id'><span class="section-number">4.13.1 </span>Name and ID</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-parameters'><span class="section-number">4.13.2 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-termination'><span class="section-number">4.13.3 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-exitstatus'><span class="section-number">4.13.4 </span>Exit status</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-exceptions-1'><span class="section-number">4.13.5 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-communication'><span class="section-number">4.13.6 </span>Communication</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-timers'><span class="section-number">4.13.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-registerwaitobject'><span class="section-number">4.13.8 </span>RegisterWaitObject</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-cancellationtoken'><span class="section-number">4.13.9 </span>CancellationToken</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-lock'><span class="section-number">4.13.10 </span>Lock</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-counter'><span class="section-number">4.13.11 </span>Counter</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-2'><span class="section-number">4.13.12 </span>Processor groups and NUMA nodes</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-internal-and-obsolete-functions'><span class="section-number">4.13.13 </span>Internal and obsolete functions</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap08.html#synch'><span class="section-number">5. </span>Synchronization</a>
+    <ul>
+      <li>
+        <a href='chap08.html#synch-criticalsections'><span class="section-number">5.1 </span>Critical sections</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-criticalsections-iomnicriticalsection'><span class="section-number">5.1.1 </span>IOmniCriticalSection</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-tomnics'><span class="section-number">5.1.2 </span>TOmniCS</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-lockedt'><span class="section-number">5.1.3 </span>Locked&lt;T&gt;</a>
+            <ul>
+              <li>
+                <a href='chap08.html#leanpub-auto-why-not-use-tmonitor'><span class="section-number">5.1.3.1 </span>Why not use TMonitor?</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnimrew'><span class="section-number">5.2 </span>TOmniMREW</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-cancellationtoken'><span class="section-number">5.3 </span>Cancellation token</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-waitablevalue'><span class="section-number">5.4 </span>Waitable value</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-inversesemaphore'><span class="section-number">5.5 </span>Inverse semaphore</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-initialization'><span class="section-number">5.6 </span>Initialization</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-initialization-pessimistic'><span class="section-number">5.6.1 </span>Pessimistic initialization</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-initialization-optimistic'><span class="section-number">5.6.2 </span>Optimistic initialization</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-twaitfor'><span class="section-number">5.7 </span>TWaitFor</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnilockmanager'><span class="section-number">5.8 </span>TOmniLockManager&lt;K&gt;</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnisinglethreadusechecker'><span class="section-number">5.9 </span>TOmniSingleThreadUseChecker</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap09.html#misc'><span class="section-number">6. </span>Miscellaneous</a>
+    <ul>
+      <li>
+        <a href='chap09.html#misc-tOmniTwoWayChannel'><span class="section-number">6.1 </span>TOmniTwoWayChannel</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnivaluecontainer'><span class="section-number">6.2 </span>TOmniValueContainer</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnicounter'><span class="section-number">6.3 </span>TOmniCounter</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-TOmniAlignedInt32'><span class="section-number">6.4 </span>TOmniAlignedInt32 and TOmniAlignedInt64</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecordwrapper'><span class="section-number">6.5 </span>TOmniRecordWrapper</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecord'><span class="section-number">6.6 </span>TOmniRecord</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniautodestroyobject'><span class="section-number">6.7 </span>IOmniAutoDestroyObject</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniintegerset'><span class="section-number">6.8 </span>IOmniIntegerSet</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-environment'><span class="section-number">6.9 </span>Environment</a>
+        <ul>
+          <li>
+            <a href='chap09.html#leanpub-auto-iomniaffinity'><span class="section-number">6.9.1 </span>IOmniAffinity</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap10.html#howto'><span class="section-number">7. </span>How-to</a>
+    <ul>
+      <li>
+        <a href='chap10.html#howto-backgroundFileScanning'><span class="section-number">7.1 </span>Background file scanning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-webDownload'><span class="section-number">7.2 </span>Web download and database storage</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForSyncOut'><span class="section-number">7.3 </span>Parallel for with synchronized output</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForTaskInit'><span class="section-number">7.4 </span>Using taskIndex and task initializer in parallel for</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-listPartitioning'><span class="section-number">7.5 </span>Background worker and list partitioning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelDataProduction'><span class="section-number">7.6 </span>Parallel data production</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-connectionPool'><span class="section-number">7.7 </span>Building a connection pool</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-from-theory-to-practice'><span class="section-number">7.7.1 </span>From theory to practice</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-running-the-demo'><span class="section-number">7.7.2 </span>Running the demo</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-quickSortParallelMax'><span class="section-number">7.8 </span>QuickSort and parallel max</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-quicksort'><span class="section-number">7.8.1 </span>QuickSort</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-parallel-max'><span class="section-number">7.8.2 </span>Parallel max</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelSearch'><span class="section-number">7.9 </span>Parallel search in a tree</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-multiFrame'><span class="section-number">7.10 </span>Multiple workers with multiple frames</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-worker'><span class="section-number">7.10.1 </span>The worker</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-frame'><span class="section-number">7.10.2 </span>The frame</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-form'><span class="section-number">7.10.3 </span>The form</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-databases'><span class="section-number">7.11 </span>OmniThreadLibrary and databases</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-database-model'><span class="section-number">7.11.1 </span>Database model</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-frame-and-worker'><span class="section-number">7.11.2 </span>Frame and worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-connecting-to-the-database'><span class="section-number">7.11.2.1 </span>Connecting to the database</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-retrieving-the-data'><span class="section-number">7.11.2.2 </span>Retrieving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-main-program'><span class="section-number">7.11.3 </span>Main program</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-com'><span class="section-number">7.12 </span>OmniThreadLibrary and COM/OLE</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-mqtthread'><span class="section-number">7.13 </span>Using a message queue with a TThread worker</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-multiple-producers-to-a-single-worker'><span class="section-number">7.13.1 </span>Sending data from multiple producers to a single worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup'><span class="section-number">7.13.1.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-worker'><span class="section-number">7.13.1.2 </span>Sending data to the worker</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data'><span class="section-number">7.13.1.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-a-worker-to-a-form'><span class="section-number">7.13.2 </span>Sending data from a worker to a form</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup-1'><span class="section-number">7.13.2.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-form'><span class="section-number">7.13.2.2 </span>Sending data to the form</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data-1'><span class="section-number">7.13.2.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap11.html#appendix-units'>A. Units</a>
+  </li>
+  <li>
+    <a href='chap12.html#demos'>B. Demo applications</a>
+  </li>
+  <li>
+    <a href='chap13.html#examples'>C. Examples</a>
+  </li>
+  <li>
+    <a href='chap14.html#appendix-hooking'>D. Hooking into OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap14.html#leanpub-auto-exception-notifications'>Exception notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-thread-notifications'>Thread notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-pool-notifications'>Pool notifications</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap15.html#highlevel-foreach-internals'>E. ForEach internals</a>
+    <ul>
+      <li>
+        <a href='chap15.html#leanpub-auto-source-provider'>Source provider</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-data-manager'>Data manager</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-local-queue'>Local queue</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-output-ordering'>Output ordering</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap16.html#leanpub-auto-f-hyperlinks'>F. Hyperlinks</a>
+  </li>
+  <li>
+    <a href='chap17.html#leanpub-endnotes'>Notes</a>
+  </li>
+</ul>
+
+</ol>
+</div>
+<div id="leanpub-main" class="kramdown">
+<h2 id="synch">
+<span class="section-number">5. </span>Synchronization</h2>
+
+<p>Although the OmniThreadLibrary treats communication as a superior approach to locking, there are still times when using “standard” synchronization primitives such as a critical section are unavoidable. As the standard Delphi/Windows approach to locking is low-level, OmniThreadLibrary builds on it and improves it in some significant ways. All these improvements are collected in the <em>OtlSync</em> unit and are described in the following sections. The only exception is the <a href="chap08.html#synch-waitablevalue">waitable value</a> class/interface, which is declared in the <em>OtlCommon</em> unit. </p>
+
+<p>This part of the book assumes that you have a basic understanding of locking. If you are new to the topic, you should first read the appropriate chapters from one of the books mentioned in the <a href="chap02.html#introduction">introduction</a>.</p>
+
+
+<h3 id="synch-criticalsections">
+<span class="section-number">5.1 </span>Critical sections</h3>
+
+<p>The most useful synchronisation primitive for multi-threaded programming is indubitably the <em>critical section</em><sup id="fnref-crit-sec-links"><a href="chap17.html#fn-crit-sec-links" rel="footnote">6</a></sup><sup id="fnref-crit-sec-links-2"><a href="chap17.html#fn-crit-sec-links-2" rel="footnote">7</a></sup></p>
+
+<p>OmniThreadLibrary simplifies sharing critical sections between a task owner and a task with the use of the <a href="chap07.html#lowlevel-simpletasks-tasklock"><code>WithLock</code></a> method. <a href="chap06.html#highlevel">High-level</a> tasks can access this method through the <a href="chap06.html#highlevel-taskconfig">task configuration block</a>.</p>
+
+<p>I was always holding the opinion that locks should be as granular as possible. Putting many small locks around many unrelated pieces of code is better than using one giant lock for everything. However, programmers frequently use one or few locks because managing many critical sections can be a bother.</p>
+
+<p>To help you with writing a better code, OmniThreadLibrary implements three extensions to the Delphi’s <code>TCriticalSection</code> class - <a href="chap08.html#synch-criticalsections-iomnicriticalsection"><code>IOmniCriticalSection</code></a>, <a href="chap08.html#synch-criticalsections-tomnics"><code>TOmniCS</code></a> and <a href="chap08.html#synch-criticalsections-lockedt"><code>Locked&lt;T&gt;</code></a>.</p>
+
+<h4 id="synch-criticalsections-iomnicriticalsection">
+<span class="section-number">5.1.1 </span>IOmniCriticalSection</h4>
+
+<p>Delphi implements critical section support with a <code>TCriticalSection</code> class which must be created and destroyed in the code. (There is also a <code>TRTLCriticalSection</code> record, but it is only supported on Windows.) OmniThreadLibrary extends this implementation with an <code>IOmniCriticalSection</code> interface, which you only have to create. The compiler will make sure that it is destroyed automatically at the appropriate place.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">type</code>
+<code class="lineno">2 </code>  <code class="n">IOmniCriticalSection</code> <code class="o">=</code> <code class="k">interface</code>
+<code class="lineno">3 </code>    <code class="k">procedure</code> <code class="nf">Acquire</code><code class="o">;</code>
+<code class="lineno">4 </code>    <code class="k">procedure</code> <code class="nf">Release</code><code class="o">;</code>
+<code class="lineno">5 </code>    <code class="k">function</code>  <code class="nf">GetSyncObj</code><code class="o">:</code> <code class="n">TSynchroObject</code><code class="o">;</code>
+<code class="lineno">6 </code>    <code class="k">property</code> <code class="py">LockCount</code><code class="o">:</code> <code class="kt">integer</code> <code class="kp">read</code> <code class="nf">GetLockCount</code><code class="o">;</code>
+<code class="lineno">7 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">8 </code>  
+<code class="lineno">9 </code><code class="k">function</code> <code class="nf">CreateOmniCriticalSection</code><code class="o">:</code> <code class="n">IOmniCriticalSection</code><code class="o">;</code>  
+</pre></div>
+
+</figure>
+
+<p><code>IOmniCriticalSection</code> uses <code>TCriticalSection</code> internally<sup id="fnref-crit-sec-eric-hack"><a href="chap17.html#fn-crit-sec-eric-hack" rel="footnote">8</a></sup>. It acts just as a proxy that calls <code>TCriticalSection</code> functions. Besides that, it provides an additional functionality by counting the number of times a critical section has been acquired, which can help a lot while debugging. This counter can be read through the <code>LockCount</code> property.</p>
+
+<aside class="information blurb">
+    <p>A critical section can be <em>acquired</em> multiple times from one thread. For example,
+the following code is perfectly valid:</p>
+
+  <figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code>cSec := CreateOmniCriticalSection; //LockCount = 0
+<code class="lineno">2 </code>cSec.Acquire; //LockCount = 1
+<code class="lineno">3 </code>cSec.Acquire; //LockCount = 2
+<code class="lineno">4 </code>cSec.Release; //LockCount = 1
+<code class="lineno">5 </code>cSec.Release; //LockCount = 0
+</pre></div>
+
+  </figure>
+
+</aside>
+
+<h4 id="synch-criticalsections-tomnics">
+<span class="section-number">5.1.2 </span>TOmniCS</h4>
+
+<p>Another <code>TCriticalSection</code> extension found in the OmniThreadLibrary is the <code>TOmniCS</code> record. It allows you to use a critical section by declaring a record in an appropriate place.</p>
+
+<p>Using <code>TOmniCS</code>, locking can be as simple as this:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">uses</code>
+<code class="lineno"> 2 </code>  <code class="n">GpLists</code><code class="o">,</code>
+<code class="lineno"> 3 </code>  <code class="n">OtlSync</code><code class="o">;</code>
+<code class="lineno"> 4 </code>
+<code class="lineno"> 5 </code><code class="k">procedure</code> <code class="nf">ProcessList</code><code class="p">(</code><code class="k">const</code> <code class="n">intf</code><code class="o">:</code> <code class="n">IGpIntegerList</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">begin</code>
+<code class="lineno"> 7 </code>  <code class="c1">//...</code>
+<code class="lineno"> 8 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 9 </code>
+<code class="lineno">10 </code><code class="k">var</code>
+<code class="lineno">11 </code>  <code class="n">lock</code><code class="o">:</code> <code class="n">TOmniCS</code><code class="o">;</code>
+<code class="lineno">12 </code>  <code class="n">intf</code><code class="o">:</code> <code class="n">IGpIntegerList</code><code class="o">;</code>
+<code class="lineno">13 </code>
+<code class="lineno">14 </code><code class="k">procedure</code> <code class="nf">Test1</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">begin</code>
+<code class="lineno">16 </code>  <code class="n">intf</code> <code class="o">:=</code> <code class="n">TGpIntegerList</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno">17 </code>  <code class="c1">//...</code>
+<code class="lineno">18 </code>  <code class="n">lock</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno">19 </code>  <code class="k">try</code>
+<code class="lineno">20 </code>    <code class="n">ProcessList</code><code class="p">(</code><code class="n">intf</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">21 </code>  <code class="k">finally</code> <code class="n">lock</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">22 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>TOmniCS</code> is implemented as a record with one private field holding the <a href="chap08.html#synch-criticalsections-iomnicriticalsection"><code>IOmniCriticalSection</code></a> interface. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">TOmniCS</code> <code class="o">=</code> <code class="k">record</code>
+<code class="lineno"> 3 </code>  <code class="n">strict</code> <code class="kp">private</code>
+<code class="lineno"> 4 </code>    <code class="n">ocsSync</code><code class="o">:</code> <code class="n">IOmniCriticalSection</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="kp">private</code>
+<code class="lineno"> 6 </code>    <code class="k">function</code>  <code class="nf">GetLockCount</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="k">function</code>  <code class="nf">GetSyncObj</code><code class="o">:</code> <code class="n">TSynchroObject</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="kp">public</code>
+<code class="lineno"> 9 </code>    <code class="k">procedure</code> <code class="nf">Initialize</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="k">procedure</code> <code class="nf">Acquire</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">11 </code>    <code class="k">procedure</code> <code class="nf">Release</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="k">property</code> <code class="py">LockCount</code><code class="o">:</code> <code class="kt">integer</code> <code class="kp">read</code> <code class="nf">GetLockCount</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="k">property</code> <code class="py">SyncObj</code><code class="o">:</code> <code class="n">TSynchroObject</code> <code class="kp">read</code> <code class="nf">GetSyncObj</code><code class="o">;</code>
+<code class="lineno">14 </code>  <code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The <code>Release</code> method merely calls the <code>Release</code> method on the internal interface, while the <code>Acquire</code> method is more tricky as it has to initialize the <code>ocsSync</code> field first.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TOmniCS</code><code class="o">.</code><code class="nf">Acquire</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="nb">Initialize</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="n">ocsSync</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 6 </code>
+<code class="lineno"> 7 </code><code class="k">procedure</code> <code class="nc">TOmniCS</code><code class="o">.</code><code class="nf">Release</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">begin</code>
+<code class="lineno"> 9 </code>  <code class="n">ocsSync</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The initialization uses a global critical section to synchronize access to the code that should not be executed from two threads at once.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TOmniCS</code><code class="o">.</code><code class="nf">Initialize</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="n">ocsSync</code><code class="p">)</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 4 </code>    <code class="n">GOmniCSInitializer</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">try</code>
+<code class="lineno"> 6 </code>      <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="n">ocsSync</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno"> 7 </code>        <code class="n">ocsSync</code> <code class="o">:=</code> <code class="n">CreateOmniCriticalSection</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="k">finally</code> <code class="n">GOmniCSInitializer</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h4 id="synch-criticalsections-lockedt">
+<span class="section-number">5.1.3 </span>Locked&lt;T&gt;</h4>
+
+<p><code>TOmniCS</code> is a great simplification of the critical section concept, but it still requires you to declare a separate locking entity. If this locking entity is only used to synchronize access to a specific instance (being that an object, record, interface or even a simple type) it is often better to declare a variable/field of type <code>Locked&lt;T&gt;</code> which combines any type with a critical section.</p>
+
+<p>Using <code>Locked&lt;T&gt;</code>, the example from the <a href="chap08.html#synch-criticalsections-tomnics"><code>TOmniCS</code></a> section can be rewritten as follows.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">uses</code>
+<code class="lineno"> 2 </code>  <code class="n">GpLists</code><code class="o">,</code>
+<code class="lineno"> 3 </code>  <code class="n">OtlSync</code><code class="o">;</code>
+<code class="lineno"> 4 </code>
+<code class="lineno"> 5 </code><code class="k">procedure</code> <code class="nf">ProcessList</code><code class="p">(</code><code class="k">const</code> <code class="n">intf</code><code class="o">:</code> <code class="n">IGpIntegerList</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">begin</code>
+<code class="lineno"> 7 </code>  <code class="c1">//...</code>
+<code class="lineno"> 8 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 9 </code>
+<code class="lineno">10 </code><code class="k">var</code>
+<code class="lineno">11 </code>  <code class="n">lockedIntf</code><code class="o">:</code> <code class="n">Locked</code><code class="o">&lt;</code><code class="n">IGpIntegerList</code><code class="o">&gt;;</code>
+<code class="lineno">12 </code>
+<code class="lineno">13 </code><code class="k">procedure</code> <code class="nf">Test2</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">begin</code>
+<code class="lineno">15 </code>  <code class="n">lockedIntf</code> <code class="o">:=</code> <code class="n">TGpIntegerList</code><code class="o">.</code><code class="n">CreateInterface</code><code class="o">;</code>
+<code class="lineno">16 </code>  <code class="c1">//...</code>
+<code class="lineno">17 </code>  <code class="n">lockedIntf</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno">18 </code>  <code class="k">try</code>
+<code class="lineno">19 </code>    <code class="n">ProcessList</code><code class="p">(</code><code class="n">lockedIntf</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">20 </code>  <code class="k">finally</code> <code class="n">lockedIntf</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">21 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The interesting fact to notice is although the <code>lockedIntf</code> is declared as a variable of type <code>Locked&lt;IGpIntegerList&gt;</code>, it can be initialized and used as if it is of type <code>IGpIntegerList</code>. This is accomplished by providing <code>Implicit</code> operators for conversion from <code>Locked&lt;T&gt;</code> to <code>T</code> and back. Delphi compiler is (sadly) not smart enough to use this conversion operator in some cases so you would still sometimes have to use the provided <code>Value</code> property. For example, you’d have to do it to release wrapped object. (In the example above we have wrapped an interface and the compiler itself handled the destruction.)</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nf">ProcessObjList</code><code class="p">(</code><code class="n">obj</code><code class="o">:</code> <code class="n">TGpIntegerList</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="c1">//...</code>
+<code class="lineno"> 4 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 5 </code>
+<code class="lineno"> 6 </code><code class="k">var</code>
+<code class="lineno"> 7 </code>  <code class="n">lockedObj</code><code class="o">:</code> <code class="n">Locked</code><code class="o">&lt;</code><code class="n">TGpIntegerList</code><code class="o">&gt;;</code>
+<code class="lineno"> 8 </code>
+<code class="lineno"> 9 </code><code class="k">procedure</code> <code class="nf">Test3</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">begin</code>
+<code class="lineno">11 </code>  <code class="n">lockedObj</code> <code class="o">:=</code> <code class="n">TGpIntegerList</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno">12 </code>  <code class="k">try</code>
+<code class="lineno">13 </code>    <code class="c1">//...</code>
+<code class="lineno">14 </code>    <code class="n">lockedObj</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno">15 </code>    <code class="k">try</code>
+<code class="lineno">16 </code>      <code class="n">ProcessObjList</code><code class="p">(</code><code class="n">lockedObj</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="k">finally</code> <code class="n">lockedObj</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="c1">//...</code>
+<code class="lineno">19 </code>  <code class="k">finally</code> <code class="n">lockedObj</code><code class="o">.</code><code class="n">Value</code><code class="o">.</code><code class="n">Free</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">20 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Besides the standard <code>Acquire</code>/<code>Release</code> methods, <code>Locked&lt;T&gt;</code> also implements methods used for <em>pessimistic locking</em>, which is described <a href="chap08.html#synch-initialization-pessimistic">later in this chapter</a>, and two almost identical methods called <code>Locked</code> which allow you to execute a code segment (a procedure, a method or an anonymous method) while the critical section is acquired. (In other words, you can be assured that the code passed to the <code>Locked</code> method is always executed only once provided that all code in the program properly locks access to the shared variable.)</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code> <code class="o">=</code> <code class="k">record</code>
+<code class="lineno"> 3 </code>  <code class="kp">public</code>
+<code class="lineno"> 4 </code>    <code class="k">type</code> <code class="n">TFactory</code> <code class="o">=</code> <code class="n">reference</code> <code class="k">to</code> <code class="k">function</code><code class="o">:</code> <code class="nf">T</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">type</code> <code class="n">TProcT</code> <code class="o">=</code> <code class="n">reference</code> <code class="k">to</code> <code class="k">procedure</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="k">constructor</code> <code class="nf">Create</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">ownsObject</code><code class="o">:</code> <code class="kt">boolean</code> <code class="o">=</code> <code class="k">true</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="k">function</code>  <code class="nf">Initialize</code><code class="p">(</code><code class="n">factory</code><code class="o">:</code> <code class="n">TFactory</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="cm">{$IFDEF OTL_ERTTI}</code>
+<code class="lineno">11 </code>    <code class="k">function</code>  <code class="nf">Initialize</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="cm">{$ENDIF OTL_ERTTI}</code>
+<code class="lineno">13 </code>    <code class="k">procedure</code> <code class="nf">Acquire</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="k">procedure</code> <code class="nf">Locked</code><code class="p">(</code><code class="n">proc</code><code class="o">:</code> <code class="n">TProc</code><code class="p">)</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">15 </code>    <code class="k">procedure</code> <code class="nf">Locked</code><code class="p">(</code><code class="n">proc</code><code class="o">:</code> <code class="n">TProcT</code><code class="p">)</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">16 </code>    <code class="k">procedure</code> <code class="nf">Release</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="k">procedure</code> <code class="nf">Free</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="k">property</code> <code class="py">Value</code><code class="o">:</code> <code class="n">T</code> <code class="kp">read</code> <code class="nf">GetValue</code><code class="o">;</code>
+<code class="lineno">19 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">20 </code>
+<code class="lineno">21 </code><code class="k">procedure</code> <code class="nf">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Locked</code><code class="p">(</code><code class="n">proc</code><code class="o">:</code> <code class="n">TProc</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">22 </code><code class="k">begin</code>
+<code class="lineno">23 </code>  <code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno">24 </code>  <code class="k">try</code>
+<code class="lineno">25 </code>    <code class="n">proc</code><code class="o">;</code>
+<code class="lineno">26 </code>  <code class="k">finally</code> <code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">27 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno">28 </code>
+<code class="lineno">29 </code><code class="k">procedure</code> <code class="nf">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Locked</code><code class="p">(</code><code class="n">proc</code><code class="o">:</code> <code class="n">TProcT</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">30 </code><code class="k">begin</code>
+<code class="lineno">31 </code>  <code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno">32 </code>  <code class="k">try</code>
+<code class="lineno">33 </code>    <code class="n">proc</code><code class="p">(</code><code class="n">Value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">34 </code>  <code class="k">finally</code> <code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">35 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h5 id="leanpub-auto-why-not-use-tmonitor">
+<span class="section-number">5.1.3.1 </span>Why not use TMonitor?</h5>
+
+<p>There is an alternative built into Delphi since 2009 which provides functionality similar to the <code>Locked&lt;T&gt;</code> – <code>TMonitor</code>. In modern Delphis, <strong>every</strong> object can be locked by using <code>System.TMonitor.Enter</code> function and unlocked by using <code>System.TMonitor.Exit</code>. The example above could be rewritten to use the <code>TMonitor</code> with little work.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">var</code>
+<code class="lineno"> 2 </code>  <code class="n">obj</code><code class="o">:</code> <code class="n">TGpIntegerList</code><code class="o">;</code>
+<code class="lineno"> 3 </code>
+<code class="lineno"> 4 </code><code class="k">procedure</code> <code class="nf">Test4</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">begin</code>
+<code class="lineno"> 6 </code>  <code class="n">obj</code> <code class="o">:=</code> <code class="n">TGpIntegerList</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="k">try</code>
+<code class="lineno"> 8 </code>    <code class="c1">//...</code>
+<code class="lineno"> 9 </code>    <code class="n">System</code><code class="o">.</code><code class="n">TMonitor</code><code class="o">.</code><code class="n">Enter</code><code class="p">(</code><code class="n">obj</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="k">try</code>
+<code class="lineno">11 </code>      <code class="n">ProcessObjList</code><code class="p">(</code><code class="n">obj</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="k">finally</code> <code class="n">System</code><code class="o">.</code><code class="n">TMonitor</code><code class="o">.</code><code class="k">Exit</code><code class="p">(</code><code class="n">obj</code><code class="p">)</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="c1">//...</code>
+<code class="lineno">14 </code>  <code class="k">finally</code> <code class="nb">FreeAndNil</code><code class="p">(</code><code class="n">obj</code><code class="p">)</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>A reasonable question to ask is, therefore, why implementing <code>Locked&lt;T&gt;</code>. Why is <code>TMonitor</code> not good enough? There are plenty of reasons for that.</p>
+
+<ul>
+  <li>
+<code>TMonitor</code> was buggy since its inception<sup id="fnref-tmonitor-bug-links"><a href="chap17.html#fn-tmonitor-bug-links" rel="footnote">9</a></sup><sup>,</sup><sup id="fnref-tmonitor-bug-links-2"><a href="chap17.html#fn-tmonitor-bug-links-2" rel="footnote">10</a></sup> (although that was fixed few years later).</li>
+  <li>Using <code>TMonitor</code> doesn’t convey your intentions. Just by looking at the variable/field declaration you wouldn’t know that the entity is supposed to be used in a thread-safe manner. Using <code>Locked&lt;T&gt;</code>, however, explicitly declares your intent.</li>
+  <li>
+<code>TMonitor.Enter</code>/<code>Exit</code> doesn’t work with interfaces, records and primitive types. <code>Locked&lt;T&gt;</code> does.</li>
+</ul>
+
+<p>On the positive size, <code>TMonitor</code> is faster than a critical section.</p>
+
+
+<h3 id="synch-tomnimrew">
+<span class="section-number">5.2 </span>TOmniMREW</h3>
+
+<p>A typical situation in a multi-threaded program is a <em>multiple readers/exclusive writer</em> scenario. It occurs when there are multiple <em>reader</em> threads which can operate on the same object simultaneously, but must be locked out when an exclusive <em>writer</em> thread wants to make changes to this object. Delphi already implements a synchronizer for this scenario (<code>TMultiReadExclusiveWriteSynchronizer</code><sup id="fnref-mrew-links"><a href="chap17.html#fn-mrew-links" rel="footnote">11</a></sup><sup>,</sup><sup id="fnref-mrew-links-2"><a href="chap17.html#fn-mrew-links-2" rel="footnote">12</a></sup> from <em>SysUtils</em>), but it is quite a <em>heavyweight</em> object which you can use in many ways. For situations when the probability of collision<sup id="fnref-mrew-collision"><a href="chap17.html#fn-mrew-collision" rel="footnote">13</a></sup> is low and especially, when the object is not locked for a long period, a <code>TOmniMREW</code> synchronizer will give you a better performance.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">TOmniMREW</code> <code class="o">=</code> <code class="k">record</code>
+<code class="lineno"> 3 </code>  <code class="kp">public</code>
+<code class="lineno"> 4 </code>    <code class="k">procedure</code> <code class="nf">EnterReadLock</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">procedure</code> <code class="nf">EnterWriteLock</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="k">procedure</code> <code class="nf">ExitReadLock</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="k">procedure</code> <code class="nf">ExitWriteLock</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="k">function</code>  <code class="nf">TryEnterReadLock</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">integer</code> <code class="o">=</code> <code class="mi">0</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="k">function</code>  <code class="nf">TryEnterWriteLock</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">integer</code> <code class="o">=</code> <code class="mi">0</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<aside class="warning blurb">
+    <p>When used in revisions up to <sup>[r1257]</sup> (which includes all OmniThreadLibrary releases up to 3.02), <code>TOmniMREW</code> must always be included in an object (as a field) because it requires that the compiler initializes it to zero before it is used. In release 1258, internal implementation was changed to enforce this initialization even when the <code>TOmniMREW</code> is used as a local variable or as a part of another record.</p>
+
+</aside>
+
+<p>To use the <code>TOmniMREW</code> synchronizer, a reader must call <code>EnterReadLock</code> before reading the object and <code>ExitReadLock</code> when it doesn’t need the object anymore. Similarly, a writer must call <code>EnterWriteLock</code> and <code>ExitWriteLock</code>.</p>
+
+<p>Function <code>TryEnterReadLock</code> and <code>TryEnterWriteLock</code> <sup>[3.07.6]</sup> try to enter a read/write lock. If the lock cannot be acquired in <code>timeout_ms</code> milliseconds, the functions return <code>False</code>.</p>
+
+<p>I’d like to stress again the importance of not locking an object for a long time when using <code>TOmniMREW</code>. Both <code>Enter</code> methods wait in a tight loop while waiting to get access, which can quickly use lots of CPU time if probability of collisions are high. (Collisions typically occur more often if an object is locked for extensive periods of time.)</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TOmniMREW</code><code class="o">.</code><code class="nf">EnterReadLock</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">currentReference</code><code class="o">:</code> <code class="n">NativeInt</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">begin</code>
+<code class="lineno"> 5 </code>  <code class="c1">//Wait on writer to reset write flag so Reference.Bit0 must be 0</code>
+<code class="lineno"> 6 </code>  <code class="c1">//then increase Reference</code>
+<code class="lineno"> 7 </code>  <code class="k">repeat</code>
+<code class="lineno"> 8 </code>    <code class="n">currentReference</code> <code class="o">:=</code> <code class="n">NativeInt</code><code class="p">(</code><code class="n">omrewReference</code><code class="p">)</code> <code class="k">AND</code> <code class="k">NOT</code> <code class="mi">1</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">until</code> <code class="n">CAS</code><code class="p">(</code><code class="n">currentReference</code><code class="o">,</code> <code class="n">currentReference</code> <code class="o">+</code> <code class="mi">2</code><code class="o">,</code> 
+<code class="lineno">10 </code>            <code class="n">NativeInt</code><code class="p">(</code><code class="n">omrewReference</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">end</code><code class="o">;</code> 
+<code class="lineno">12 </code>
+<code class="lineno">13 </code><code class="k">procedure</code> <code class="nc">TOmniMREW</code><code class="o">.</code><code class="nf">EnterWriteLock</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">var</code>
+<code class="lineno">15 </code>  <code class="n">currentReference</code><code class="o">:</code> <code class="n">NativeInt</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">begin</code>
+<code class="lineno">17 </code>  <code class="c1">//Wait on writer to reset write flag so omrewReference.Bit0 must be 0 </code>
+<code class="lineno">18 </code>  <code class="c1">//then set omrewReference.Bit0</code>
+<code class="lineno">19 </code>  <code class="k">repeat</code>
+<code class="lineno">20 </code>    <code class="n">currentReference</code> <code class="o">:=</code> <code class="n">NativeInt</code><code class="p">(</code><code class="n">omrewReference</code><code class="p">)</code> <code class="k">AND</code> <code class="k">NOT</code> <code class="mi">1</code><code class="o">;</code>
+<code class="lineno">21 </code>  <code class="k">until</code> <code class="n">CAS</code><code class="p">(</code><code class="n">currentReference</code><code class="o">,</code> <code class="n">currentReference</code> <code class="o">+</code> <code class="mi">1</code><code class="o">,</code> 
+<code class="lineno">22 </code>            <code class="n">NativeInt</code><code class="p">(</code><code class="n">omrewReference</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">23 </code>  <code class="c1">//Now wait on all readers</code>
+<code class="lineno">24 </code>  <code class="k">repeat</code>
+<code class="lineno">25 </code>  <code class="k">until</code> <code class="n">NativeInt</code><code class="p">(</code><code class="n">omrewReference</code><code class="p">)</code> <code class="o">=</code> <code class="mi">1</code><code class="o">;</code>
+<code class="lineno">26 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Because of an optimized implementation that favours speed over safety, you’ll get a cryptic access violation error if the <code>TOmniMREW</code> instance is destroyed while a read or write lock is taken. To be clear, this is a programming error; you should never destroy a synchronization object while it holds a lock. It’s just that the error displayed will not make it very clear what you are doing wrong.</p>
+
+<p>For example, the following test code fragment will cause an access violation.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">procedure</code> <code class="nf">Test5</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">var</code>
+<code class="lineno">3 </code>  <code class="n">cs</code><code class="o">:</code> <code class="n">TOmniMREW</code><code class="o">;</code>
+<code class="lineno">4 </code><code class="k">begin</code>
+<code class="lineno">5 </code>  <code class="n">cs</code><code class="o">.</code><code class="n">EnterWriteLock</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno">7 </code>
+<code class="lineno">8 </code><code class="n">Test5</code><code class="o">;</code> <code class="c1">//&lt;-- accvio here!</code>
+</pre></div>
+
+</figure>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 80%;">
+    <img src="images/synchronization----tomnimrew-accvio.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+
+<h3 id="synch-cancellationtoken">
+<span class="section-number">5.3 </span>Cancellation token</h3>
+
+<p>Sometimes you want to instruct background tasks to stop whatever they are doing and quit. Typically, this happens when the program is shutting down. Programs using the “standard” multi-threaded programming (i.e. <code>TThread</code>) are solving this problem each in its own way, typically by using boolean flags or Windows events. </p>
+
+<p>To make the task cancellation simpler and more standardized, OmniThreadLibrary introduces a <em>cancellation token</em>. A cancellation token is an instance of the <code>IOmniCancellationToken</code> interface and implements functionality very similar to the Windows <em>event</em> synchronization primitive.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">type</code>
+<code class="lineno">2 </code>  <code class="n">IOmniCancellationToken</code> <code class="o">=</code> <code class="k">interface</code> 
+<code class="lineno">3 </code>    <code class="k">procedure</code> <code class="nf">Clear</code><code class="o">;</code>
+<code class="lineno">4 </code>    <code class="k">function</code>  <code class="nf">IsSignalled</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">5 </code>    <code class="k">procedure</code> <code class="nf">Signal</code><code class="o">;</code>
+<code class="lineno">6 </code>    <code class="k">property</code> <code class="py">Handle</code><code class="o">:</code> <code class="kt">THandle</code> <code class="kp">read</code> <code class="nf">GetHandle</code><code class="o">;</code>
+<code class="lineno">7 </code>  <code class="k">end</code><code class="o">;</code> <code class="cm">{ IOmniCancellationToken }</code>
+<code class="lineno">8 </code>
+<code class="lineno">9 </code><code class="k">function</code> <code class="nf">CreateOmniCancellationToken</code><code class="o">:</code> <code class="n">IOmniCancellationToken</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>By default, a cancellation token is in a <em>cleared</em> (inactive) state. To <em>signal</em> it, a code calls the <code>Signal</code> method. Signalled token can be cleared by calling the <code>Clear</code> method.</p>
+
+<p>The task can check the cancellation token’s state by calling the <code>IsSignalled</code> method or by waiting (using <code>WaitForSingleObject</code> or any of its variants) on the <code>Handle</code> property. Wait will succeed when the cancellation token is signalled.</p>
+
+<p>An important part of the cancellation token implementation is that the same token can be shared between multiple tasks. To cancel all tasks, the code must only call <code>Signal</code> once (provided that other parts of the program don’t call <code>Clear</code>).</p>
+
+<p>Cancellation tokens are used in <a href="chap07.html#lowlevel">low-level</a> and <a href="chap06.html#highlevel">high-level</a> multi-threading. Low-level multi-threading uses the <a href="chap07.html#lowlevel-simpletasks-cancellationtoken"><code>CancelWith</code></a> method to pass a multi-threading token around while the high-level multi-threading uses the <a href="chap06.html#highlevel-taskconfig">task configuration block</a>.</p>
+
+<p>
+  <em>Cancellation is demonstrated in <a href="chap12.html#demos">examples</a> <code>35_ParallelFor</code> and <code>38_OrderedFor</code>.</em>
+</p>
+
+
+<h3 id="synch-waitablevalue">
+<span class="section-number">5.4 </span>Waitable value</h3>
+
+<p>The communication framework in the OmniThreadLibrary works <em>asynchronously</em> (you cannot know when a task or owner will receive and process the message). Most of the time that functions great, but sometimes you have to process messages <em>synchronously</em> (that is, you want to wait until the task processes the message) because otherwise the code gets too complicated. For those situations, OmniThreadLibrary offers a <em>waitable value</em> <code>TOmniWaitableValue</code>, which is also exposed as an interface <code>IOmniWaitableValue</code>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">IOmniWaitableValue</code> <code class="o">=</code> <code class="k">interface</code>
+<code class="lineno"> 3 </code>    <code class="k">procedure</code> <code class="nf">Reset</code><code class="o">;</code>
+<code class="lineno"> 4 </code>    <code class="k">procedure</code> <code class="nf">Signal</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">procedure</code> <code class="nf">Signal</code><code class="p">(</code><code class="k">const</code> <code class="n">data</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="k">function</code>  <code class="nf">WaitFor</code><code class="p">(</code><code class="n">maxWait_ms</code><code class="o">:</code> <code class="kt">cardinal</code> <code class="o">=</code> <code class="n">INFINITE</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="k">property</code> <code class="py">Handle</code><code class="o">:</code> <code class="kt">THandle</code> <code class="kp">read</code> <code class="nf">GetHandle</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="k">property</code> <code class="py">Value</code><code class="o">:</code> <code class="n">TOmniValue</code> <code class="kp">read</code> <code class="nf">GetValue</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">10 </code>
+<code class="lineno">11 </code>  <code class="n">TOmniWaitableValue</code> <code class="o">=</code> <code class="k">class</code><code class="p">(</code><code class="n">TInterfacedObject</code><code class="o">,</code> <code class="n">IOmniWaitableValue</code><code class="p">)</code>
+<code class="lineno">12 </code>  <code class="kp">public</code>
+<code class="lineno">13 </code>    <code class="k">constructor</code> <code class="nf">Create</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="k">destructor</code>  <code class="nf">Destroy</code><code class="o">;</code> <code class="kp">override</code><code class="o">;</code>
+<code class="lineno">15 </code>    <code class="k">procedure</code> <code class="nf">Reset</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">16 </code>    <code class="k">procedure</code> <code class="nf">Signal</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="k">procedure</code> <code class="nf">Signal</code><code class="p">(</code><code class="k">const</code> <code class="n">data</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="k">function</code>  <code class="nf">WaitFor</code><code class="p">(</code><code class="n">maxWait_ms</code><code class="o">:</code> <code class="kt">cardinal</code> <code class="o">=</code> <code class="n">INFINITE</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="k">property</code> <code class="py">Handle</code><code class="o">:</code> <code class="kt">THandle</code> <code class="kp">read</code> <code class="nf">GetHandle</code><code class="o">;</code>
+<code class="lineno">20 </code>    <code class="k">property</code> <code class="py">Value</code><code class="o">:</code> <code class="n">TOmniValue</code> <code class="kp">read</code> <code class="nf">GetValue</code><code class="o">;</code>
+<code class="lineno">21 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">22 </code>  
+<code class="lineno">23 </code><code class="k">function</code>  <code class="nf">CreateWaitableValue</code><code class="o">:</code> <code class="n">IOmniWaitableValue</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The usage pattern is simple. The caller creates an object or interface of that type, sends it to another thread (typically via <code>Task.Comm.Send</code>) and calls the <code>WaitFor</code> method. The task receives the message, does the processing and calls <code>Signal</code> to signal completion or <code>Signal(some_data)</code> to signal completion and return data. At that point, the <code>WaitFor</code> returns and caller can read the data from the <code>Value</code> property.</p>
+
+<p>A practical example should clarify this explanation. The two methods below are taken from the <em>OtlThreadPool</em> unit.</p>
+
+<p>When a code wants to cancel threadpooled task, it will call the <code>Cancel</code> function. This function sends the <code>Cancel</code> message to the worker task and passes along the ID of the task to be cancelled and a <code>TOmniWaitableValue</code> object. Then it waits for the object to become signalled. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniThreadPool</code><code class="o">.</code><code class="nf">Cancel</code><code class="p">(</code><code class="n">taskID</code><code class="o">:</code> <code class="kt">int64</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">res</code><code class="o">:</code> <code class="n">TOmniWaitableValue</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">begin</code>
+<code class="lineno"> 5 </code>  <code class="n">res</code> <code class="o">:=</code> <code class="n">TOmniWaitableValue</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="k">try</code>
+<code class="lineno"> 7 </code>    <code class="n">otpWorkerTask</code><code class="o">.</code><code class="n">Invoke</code><code class="p">(</code><code class="o">@</code><code class="n">TOTPWorker</code><code class="o">.</code><code class="n">Cancel</code><code class="o">,</code> <code class="p">[</code><code class="n">taskID</code><code class="o">,</code> <code class="n">res</code><code class="p">])</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="n">res</code><code class="o">.</code><code class="n">WaitFor</code><code class="p">(</code><code class="n">INFINITE</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="n">res</code><code class="o">.</code><code class="n">Value</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">finally</code> <code class="nb">FreeAndNil</code><code class="p">(</code><code class="n">res</code><code class="p">)</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The <code>Cancel</code> method in the worker task processes the message, does lots of complicated work (removed for clarity) and at the end calls the <code>Signal</code> method on the <code>TOmniWaitableValue</code> object to signal completion and return a boolean value.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">procedure</code> <code class="nc">TOTPWorker</code><code class="o">.</code><code class="nf">Cancel</code><code class="p">(</code><code class="k">const</code> <code class="n">params</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">var</code>
+<code class="lineno">3 </code>  <code class="n">waitParam</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">4 </code>  <code class="n">wasTerminated</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="k">begin</code>
+<code class="lineno">6 </code>  <code class="c1">//... lots of code; sets wasTerminated to some value</code>
+<code class="lineno">7 </code>  <code class="n">waitParam</code> <code class="o">:=</code> <code class="n">params</code><code class="p">[</code><code class="mi">1</code><code class="p">]</code><code class="o">;</code>
+<code class="lineno">8 </code>  <code class="p">(</code><code class="n">waitParam</code><code class="o">.</code><code class="n">AsObject</code> <code class="k">as</code> <code class="n">TOmniWaitableValue</code><code class="p">)</code><code class="o">.</code><code class="n">Signal</code><code class="p">(</code><code class="n">wasTerminated</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">9 </code><code class="k">end</code><code class="o">;</code> <code class="cm">{ TOTPWorker.Cancel }</code>
+</pre></div>
+
+</figure>
+
+<p>Soon after the <code>Signal</code> is called, the <code>WaitFor</code> in the caller code exits and <code>TOmniThreadPool.Cancel</code> retrieves result from the <code>Value</code> property.</p>
+
+
+<h3 id="synch-inversesemaphore">
+<span class="section-number">5.5 </span>Inverse semaphore</h3>
+
+<p>A <em>semaphore</em> is a counting synchronisation object that starts at some value (typically greater than <em>0</em>) which usually represents a number of available resources of some kind. To allocate a semaphore, one waits on it. If the semaphore count is greater than zero, the semaphore is signalled, wait will succeed and semaphore count gets decremented by one. [Of course, all of this occurs atomically.] If the semaphore count is zero, the semaphore is not signalled and wait will block until the timeout or until some other thread releases the semaphore, which increments the semaphore’s count and puts it into the signalled state.</p>
+
+<aside class="tip blurb">
+    <p>Semaphores are very useful in multi-threaded programming but sadly out of scope of this book. If you are interested in their practical usage, I’d heartily recommend reading <a href="http://www.greenteapress.com/semaphores/">The Little Book of Semaphores</a>, a free textbook on all things semaphorical. <a href="http://www.nickhodges.com/MultiThreadingInDelphi/ToC.html">Multithreading – The Delphi Way</a> also contains a chapter on semaphores.</p>
+
+</aside>
+
+<p>While semaphores are implemented in the Windows kernel and Delphi wraps them in a pretty object <a href="http://docwiki.embarcadero.com/Libraries/en/System.SyncObjs.TSemaphore"><code>TSemaphore</code></a>, Windows doesn’t support an useful variation on the theme – an <em>inverse semaphore</em>, also known as a <em>countdown event</em>. </p>
+
+<aside class="information blurb">
+    <p>Delphi implementation for this type of synchronisation primitive, <code>TCountdownEvent</code>, was added in release XE2.</p>
+
+</aside>
+
+<p>Inverse semaphore differs from a normal semaphore by getting signalled when the count drops to zero. This allows another thread to execute a blocking wait that will succeed only when the semaphore’s count is zero. Why is that good, you’ll ask? Because it simplifies resource exhaustion detection. If you wait on an inverse semaphore and this semaphore becomes signalled, then you know that the resource is fully used.</p>
+
+<p>The inverse semaphore is implemented by the <code>TOmniResourceCount</code> class which implements an <code>IOmniResourceCount</code> interface.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">IOmniResourceCount</code> <code class="o">=</code> <code class="k">interface</code> 
+<code class="lineno"> 3 </code>    <code class="k">function</code>  <code class="nf">Allocate</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code> 
+<code class="lineno"> 4 </code>    <code class="k">function</code>  <code class="nf">Release</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">function</code>  <code class="nf">TryAllocate</code><code class="p">(</code><code class="k">var</code> <code class="n">resourceCount</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code> 
+<code class="lineno"> 6 </code>      <code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code> <code class="o">=</code> <code class="mi">0</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="k">property</code> <code class="py">Handle</code><code class="o">:</code> <code class="kt">THandle</code> <code class="kp">read</code> <code class="nf">GetHandle</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 9 </code>
+<code class="lineno">10 </code>  <code class="n">TOmniResourceCount</code> <code class="o">=</code> <code class="k">class</code><code class="p">(</code><code class="n">TInterfacedObject</code><code class="o">,</code> <code class="n">IOmniResourceCount</code><code class="p">)</code>
+<code class="lineno">11 </code>  <code class="kp">public</code>
+<code class="lineno">12 </code>    <code class="k">constructor</code> <code class="nf">Create</code><code class="p">(</code><code class="n">initialCount</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="k">destructor</code>  <code class="nf">Destroy</code><code class="o">;</code> <code class="kp">override</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="k">function</code>  <code class="nf">Allocate</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">15 </code>    <code class="k">function</code>  <code class="nf">Release</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno">16 </code>    <code class="k">function</code>  <code class="nf">TryAllocate</code><code class="p">(</code><code class="k">var</code> <code class="n">resourceCount</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code> 
+<code class="lineno">17 </code>      <code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code> <code class="o">=</code> <code class="mi">0</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="k">property</code> <code class="py">Handle</code><code class="o">:</code> <code class="kt">THandle</code> <code class="kp">read</code> <code class="nf">GetHandle</code><code class="o">;</code>
+<code class="lineno">19 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">20 </code>
+<code class="lineno">21 </code><code class="k">function</code> <code class="nf">CreateResourceCount</code><code class="p">(</code><code class="n">initialCount</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniResourceCount</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Initial resource count is passed to the constructor or to the <code>CreateResourceCount</code> function. <code>Allocate</code> will block if this count is zero (and will unblock automatically when the count becomes greater than zero); otherwise it will decrement the count. The new value of the resource count is returned as a function result. </p>
+
+<aside class="tip blurb">
+    <p>You should keep in mind that this number may no longer be correct when it is processed in the calling code if other threads are using the same inverse semaphore at that time.</p>
+
+</aside>
+
+<p>The <code>TryAllocate</code> is a safer version of <code>Allocate</code> taking a timeout parameter (which may be set to <code>INFINITE</code>) and returning success/fail status as a function result.</p>
+
+<p><code>Release</code> increments the count and unblocks waiting <code>Allocate</code>s. New resource count (potentially already incorrect at the moment caller sees it) is returned as the result.</p>
+
+<p>Finally, there is a <code>Handle</code> property exposing a handle which is signalled when resource count is zero and unsignalled otherwise.</p>
+
+
+<h3 id="synch-initialization">
+<span class="section-number">5.6 </span>Initialization</h3>
+
+<p>Initializing an object in a multi-threaded world is not a problem – as long as the object is initialized before it is shared. To put this into a simple language – everything is fine if we can initialize object first and then pass it to multiple tasks.<sup id="fnref-sync-init-single-task"><a href="chap17.html#fn-sync-init-single-task" rel="footnote">14</a></sup> </p>
+
+<p>In most cases, this is not a problem, but sometimes we want to use a shared global object in multiple tasks. In that case, the first task that wants to use the object will have to create it. While this may look as a weird approach to programming, it is a legitimate programming pattern, called <em>lazy initialization</em>.</p>
+
+<p>The reason behind this weirdness is that sometimes we don’t know in advance whether an object (or some part of a composite object) will be used at all. If the probability that the object will be used is low enough, it may be a good idea not to initialize it in advance, as that would take some time and use some memory (or maybe even lots of memory). </p>
+
+<p>Additionally, there may not be a good place to call the initialization. A good example is the <a href="chap08.html#synch-criticalsections-tomnics"><code>TOmniCS</code></a> record where we want to do an implicit initialization the first time an <code>Acquire</code> method is called. As this record is usually just declared as a variable/field and not explicitly initialized, there is no better place to call the initialization code than from the <code>Acquire</code> itself.</p>
+
+<p>This part of the book will explain two well-known approaches to shared initialization – a <a href="chap08.html#synch-initialization-pessimistic"><em>pessimistic</em></a> initialization and an <a href="chap08.html#synch-initialization-optimistic"><em>optimistic</em></a> initialization. There’s also a third approach – <em>busy-wait</em> – which you can read more about on <a href="http://www.thedelphigeek.com/2011/12/busy-wait-initialization.html">my blog</a>.</p>
+
+<p>The difference between the two approaches is visible from the following pseudo-code.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">var</code>
+<code class="lineno"> 2 </code>  <code class="n">Shared</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 3 </code>
+<code class="lineno"> 4 </code><code class="k">procedure</code> <code class="nf">OptimisticInitializer</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">var</code>
+<code class="lineno"> 6 </code>  <code class="n">temp</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">begin</code>
+<code class="lineno"> 8 </code>  <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="n">Shared</code><code class="p">)</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 9 </code>    <code class="n">temp</code> <code class="o">:=</code> <code class="n">T</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="k">if</code> <code class="k">not</code> <code class="n">AtomicallyTestAndStore</code><code class="p">(</code><code class="n">Shared</code><code class="o">,</code> <code class="k">nil</code><code class="o">,</code> <code class="n">temp</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">11 </code>      <code class="n">temp</code><code class="o">.</code><code class="n">Free</code><code class="o">;</code>
+<code class="lineno">12 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno">14 </code>
+<code class="lineno">15 </code><code class="k">procedure</code> <code class="nf">PessimisticInitializer</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">begin</code>
+<code class="lineno">17 </code>  <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="n">Shared</code><code class="p">)</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">18 </code>    <code class="n">Lock</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="k">try</code>
+<code class="lineno">20 </code>      <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="n">Shared</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">21 </code>        <code class="n">Shared</code> <code class="o">:=</code> <code class="n">T</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno">22 </code>    <code class="k">finally</code> <code class="n">Unlock</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">23 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">24 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>An <em>optimistic initializer</em> assumes that there’s hardly a chance of initialization being called from two tasks at the same time. Under this assumption, it is fastest to initialize the object (in the code above, the initialization is represented by creation of the shared object) and then <em>atomically</em> copying this object into the shared field/variable. The (nonexisting) <code>AtomicallyTestAndStore</code> method compares old value of <code>Shared</code> with <code>nil</code> and stores <code>temp</code> into <code>Shared</code> if <code>Shared</code> is nil. It makes all this in a way that prevents the code from being executed from two threads at the same time. If the <code>AtomicallyTestAndStore</code> fails (returns False), another task has already modified the <code>Shared</code> variable and we must destroy the temporary resource.</p>
+
+<p>The advantage of this approach is that there is no locking so we don’t have to create an additional critical section. Only CPU-level bus locking is used to implement the <code>AtomicallyTestAndStore</code>. The disadvantage is that duplicate objects may be created at some point.</p>
+
+<p>A <em>pessimistic initializer</em> assumes that there’s a significant probability of initialization being called from two tasks at the same time and uses an additional critical section to lock access to the initialization part. A <em>test, lock, retest</em> pattern is used for performance reason – the code first checks whether the shared object is initialized then (if it is not) locks the critical section and retests the shared object as another task could have initialized it in the meantime.</p>
+
+<p>The advantage of this approach is that only a single object is created. The disadvantage is that we must manage additional critical section that will be used for locking.</p>
+
+<p>It is unclear which approach is better. Although locking slows the application more than micro-locking, creating duplicate resources may slow it down even more. On the other hand, pessimistic initializer requires additional lock, but that won’t make much difference if you don’t create millions of shared objects. In most cases initialization code will be rarely called and the complexity of initializer will not change the program performance in any meaningful way so the choice of initializer will mainly be a matter of personal taste.</p>
+
+<h4 id="synch-initialization-pessimistic">
+<span class="section-number">5.6.1 </span>Pessimistic initialization</h4>
+
+<p>While pessimistic initialization doesn’t represent any problems for a skilled programmer, it is bothersome as we must manage an additional locking object. (Typically that will be a critical section.) To simplify the code and to make it more <a href="https://en.wikipedia.org/wiki/Intentional_programming"><em>intentional</em></a>, OmniThreadLibrary introduces a <a href="chap08.html#synch-criticalsections-lockedt"><code>Locked&lt;T&gt;</code></a> type which wraps any type (the type of your shared object) and a critical section.</p>
+
+<p>An instance of the <code>Locked&lt;T&gt;</code> type contains two fields – one holding your data (<code>FValue</code>) and another containing a critical section (<code>FLock</code>). <code>Locked&lt;T&gt;</code> provides two helper functions (<code>Initialize</code>) which implement the pessimistic initialization pattern.</p>
+
+<p>The first version accepts a factory function which creates the object. The code implements the <em>test, lock, retest</em> pattern explained previously in this section.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nf">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Initialize</code><code class="p">(</code><code class="n">factory</code><code class="o">:</code> <code class="n">TFactory</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="k">if</code> <code class="k">not</code> <code class="n">FInitialized</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 4 </code>    <code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="k">try</code>
+<code class="lineno"> 6 </code>      <code class="k">if</code> <code class="k">not</code> <code class="n">FInitialized</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 7 </code>        <code class="n">FValue</code> <code class="o">:=</code> <code class="n">factory</code><code class="p">()</code><code class="o">;</code>
+<code class="lineno"> 8 </code>        <code class="n">FInitialized</code> <code class="o">:=</code> <code class="k">true</code><code class="o">;</code>
+<code class="lineno"> 9 </code>      <code class="k">end</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="k">finally</code> <code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">11 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">12 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">FValue</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Another version, implemented only in Delphi 2010 and newer, doesn’t require a factory function but calls the default (parameter-less) constructor. This is only possible if the <code>T</code> type represents a class. Actually, this method simply calls the other version and provides a special factory method which travels the extended RTTI information, selects an appropriate constructor and executes it to create the shared object.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nf">Locked</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Initialize</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="k">if</code> <code class="k">not</code> <code class="n">FInitialized</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 4 </code>    <code class="k">if</code> <code class="n">PTypeInfo</code><code class="p">(</code><code class="nb">TypeInfo</code><code class="p">(</code><code class="n">T</code><code class="p">))</code><code class="o">^.</code><code class="n">Kind</code>  <code class="o">&lt;&gt;</code> <code class="n">tkClass</code> <code class="k">then</code>
+<code class="lineno"> 5 </code>      <code class="k">raise</code> <code class="n">Exception</code><code class="o">.</code><code class="n">Create</code><code class="p">(</code><code class="s">'Locked&lt;T&gt;.Initialize: Unsupported type'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="nb">Initialize</code><code class="p">(</code>
+<code class="lineno"> 7 </code>      <code class="k">function</code><code class="o">:</code> <code class="nf">T</code>
+<code class="lineno"> 8 </code>      <code class="k">var</code>
+<code class="lineno"> 9 </code>        <code class="n">aMethCreate</code> <code class="o">:</code> <code class="n">TRttiMethod</code><code class="o">;</code>
+<code class="lineno">10 </code>        <code class="n">instanceType</code><code class="o">:</code> <code class="n">TRttiInstanceType</code><code class="o">;</code>
+<code class="lineno">11 </code>        <code class="n">ctx</code>         <code class="o">:</code> <code class="n">TRttiContext</code><code class="o">;</code>
+<code class="lineno">12 </code>        <code class="n">params</code>      <code class="o">:</code> <code class="n">TArray</code><code class="o">&lt;</code><code class="n">TRttiParameter</code><code class="o">&gt;;</code>
+<code class="lineno">13 </code>        <code class="n">resValue</code>    <code class="o">:</code> <code class="n">TValue</code><code class="o">;</code>
+<code class="lineno">14 </code>        <code class="n">rType</code>       <code class="o">:</code> <code class="n">TRttiType</code><code class="o">;</code>
+<code class="lineno">15 </code>      <code class="k">begin</code>
+<code class="lineno">16 </code>        <code class="n">ctx</code> <code class="o">:=</code> <code class="n">TRttiContext</code><code class="o">.</code><code class="n">Create</code><code class="o">;</code>
+<code class="lineno">17 </code>        <code class="n">rType</code> <code class="o">:=</code> <code class="n">ctx</code><code class="o">.</code><code class="n">GetType</code><code class="p">(</code><code class="nb">TypeInfo</code><code class="p">(</code><code class="n">T</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">18 </code>        <code class="k">for</code> <code class="n">aMethCreate</code> <code class="k">in</code> <code class="n">rType</code><code class="o">.</code><code class="n">GetMethods</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">19 </code>          <code class="k">if</code> <code class="n">aMethCreate</code><code class="o">.</code><code class="n">IsConstructor</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">20 </code>            <code class="n">params</code> <code class="o">:=</code> <code class="n">aMethCreate</code><code class="o">.</code><code class="n">GetParameters</code><code class="o">;</code>
+<code class="lineno">21 </code>            <code class="k">if</code> <code class="nb">Length</code><code class="p">(</code><code class="n">params</code><code class="p">)</code> <code class="o">=</code> <code class="mi">0</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">22 </code>              <code class="n">instanceType</code> <code class="o">:=</code> <code class="n">rType</code><code class="o">.</code><code class="n">AsInstance</code><code class="o">;</code>
+<code class="lineno">23 </code>              <code class="n">resValue</code> <code class="o">:=</code> <code class="n">AMethCreate</code><code class="o">.</code><code class="n">Invoke</code><code class="p">(</code>
+<code class="lineno">24 </code>                            <code class="n">instanceType</code><code class="o">.</code><code class="n">MetaclassType</code><code class="o">,</code> <code class="p">[])</code><code class="o">;</code>
+<code class="lineno">25 </code>              <code class="bp">Result</code> <code class="o">:=</code> <code class="n">resValue</code><code class="o">.</code><code class="n">AsType</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;;</code>
+<code class="lineno">26 </code>              <code class="k">break</code><code class="o">;</code> <code class="c1">//for</code>
+<code class="lineno">27 </code>            <code class="k">end</code><code class="o">;</code>
+<code class="lineno">28 </code>          <code class="k">end</code><code class="o">;</code>
+<code class="lineno">29 </code>        <code class="k">end</code><code class="o">;</code> <code class="c1">//for</code>
+<code class="lineno">30 </code>      <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">31 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">32 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>Locked&lt;T&gt;</code> also implements methods <code>Acquire</code> and <code>Release</code> which use the built-in critical section to implement synchronization.</p>
+
+<h4 id="synch-initialization-optimistic">
+<span class="section-number">5.6.2 </span>Optimistic initialization</h4>
+
+<p>An optimistic initialization is supported with the <code>Atomic&lt;T&gt;</code> class which is much simpler than the pessimistic <code>Locked&lt;T&gt;</code> alternative.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">type</code>
+<code class="lineno">2 </code>  <code class="n">Atomic</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code> <code class="o">=</code> <code class="k">class</code>
+<code class="lineno">3 </code>    <code class="k">type</code> <code class="n">TFactory</code> <code class="o">=</code> <code class="n">reference</code> <code class="k">to</code> <code class="k">function</code><code class="o">:</code> <code class="nf">T</code><code class="o">;</code>
+<code class="lineno">4 </code>    <code class="k">class</code> <code class="k">function</code> <code class="nf">Initialize</code><code class="p">(</code><code class="k">var</code> <code class="n">storage</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> 
+<code class="lineno">5 </code>      <code class="n">factory</code><code class="o">:</code> <code class="n">TFactory</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">6 </code>    <code class="cm">{$IFDEF OTL_ERTTI}</code>
+<code class="lineno">7 </code>    <code class="k">class</code> <code class="k">function</code> <code class="nf">Initialize</code><code class="p">(</code><code class="k">var</code> <code class="n">storage</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">8 </code>    <code class="cm">{$ENDIF OTL_ERTTI}</code>
+<code class="lineno">9 </code>  <code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>As in <code>Locked&lt;T&gt;</code>, there are two <code>Initialize</code> functions, one creating the object using a user-provided factory function and another using RTTI to call the default parameter-less constructor. We’ll only examine the former.</p>
+
+<aside class="tip blurb">
+    <p>The second overload is only available in Delphi 2010 and newer.</p>
+
+</aside>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">Atomic</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Initialize</code><code class="p">(</code><code class="k">var</code> <code class="n">storage</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code> <code class="n">factory</code><code class="o">:</code> <code class="n">TFactory</code><code class="p">)</code><code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">interlockRes</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="n">tmpT</code>        <code class="o">:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">begin</code>
+<code class="lineno"> 6 </code>  <code class="k">if</code> <code class="k">not</code> <code class="nb">assigned</code><code class="p">(</code><code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">storage</code><code class="p">)</code><code class="o">^</code><code class="p">)</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 7 </code>    <code class="nb">Assert</code><code class="p">(</code><code class="kt">cardinal</code><code class="p">(</code><code class="o">@</code><code class="n">storage</code><code class="p">)</code> <code class="k">mod</code> <code class="nb">SizeOf</code><code class="p">(</code><code class="kt">pointer</code><code class="p">)</code> <code class="o">=</code> <code class="mi">0</code><code class="o">,</code> 
+<code class="lineno"> 8 </code>      <code class="s">'Atomic&lt;T&gt;.Initialize: storage is not properly aligned!'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="nb">Assert</code><code class="p">(</code><code class="kt">cardinal</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code> <code class="k">mod</code> <code class="nb">SizeOf</code><code class="p">(</code><code class="kt">pointer</code><code class="p">)</code> <code class="o">=</code> <code class="mi">0</code><code class="o">,</code> 
+<code class="lineno">10 </code>      <code class="s">'Atomic&lt;T&gt;.Initialize: tmpT is not properly aligned!'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">11 </code>    <code class="n">tmpT</code> <code class="o">:=</code> <code class="n">factory</code><code class="p">()</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="n">interlockRes</code> <code class="o">:=</code> <code class="n">InterlockedCompareExchangePointer</code><code class="p">(</code>
+<code class="lineno">13 </code>                      <code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">storage</code><code class="p">)</code><code class="o">^,</code> <code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code><code class="o">^,</code> <code class="k">nil</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="k">case</code> <code class="n">PTypeInfo</code><code class="p">(</code><code class="nb">TypeInfo</code><code class="p">(</code><code class="n">T</code><code class="p">))</code><code class="o">^.</code><code class="n">Kind</code> <code class="k">of</code>
+<code class="lineno">15 </code>      <code class="n">tkInterface</code><code class="o">:</code>
+<code class="lineno">16 </code>        <code class="k">if</code> <code class="n">interlockRes</code> <code class="o">=</code> <code class="k">nil</code> <code class="k">then</code>
+<code class="lineno">17 </code>          <code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code><code class="o">^</code> <code class="o">:=</code> <code class="k">nil</code><code class="o">;</code>
+<code class="lineno">18 </code>      <code class="n">tkClass</code><code class="o">:</code>
+<code class="lineno">19 </code>        <code class="k">if</code> <code class="n">interlockRes</code> <code class="o">&lt;&gt;</code> <code class="k">nil</code> <code class="k">then</code>
+<code class="lineno">20 </code>          <code class="kt">TObject</code><code class="p">(</code><code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code><code class="o">^</code><code class="p">)</code><code class="o">.</code><code class="n">Free</code><code class="o">;</code>
+<code class="lineno">21 </code>      <code class="k">else</code>
+<code class="lineno">22 </code>        <code class="k">raise</code> <code class="n">Exception</code><code class="o">.</code><code class="n">Create</code><code class="p">(</code><code class="s">'Atomic&lt;T&gt;.Initialize: Unsupported type'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">23 </code>    <code class="k">end</code><code class="o">;</code> <code class="c1">//case</code>
+<code class="lineno">24 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">25 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">storage</code><code class="o">;</code>
+<code class="lineno">26 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The code first checks if the storage is already initialized by using a weird cast which assumes that the <code>T</code> is pointer-sized. This is a safe assumption because <code>Atomic&lt;T&gt;</code> only supports <code>T</code> being a class or an interface.</p>
+
+<p>Next the code checks whether the shared object and the temporary variable are properly aligned. This should in most cases not present a problem as all ‘normal’ fields (not stored in <code>packed record</code> types) should always be appropriately aligned. </p>
+
+<p>After that, the factory function is called to create an object.</p>
+
+<p>Next, the <code>InterlockedCompareExchangePointer</code> is called. It takes three parameters – a <em>destination</em> address, an <em>exchange</em> data and a <em>comparand</em>. The functionality of the code can be represented by the following pseudo-code:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code> <code class="nf">InterlockedCompareExchangePointer</code><code class="p">(</code><code class="k">var</code> <code class="n">destination</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno">2 </code>  <code class="n">exchange</code><code class="o">,</code> <code class="n">comparand</code><code class="o">:</code> <code class="kt">pointer</code><code class="p">)</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">begin</code>
+<code class="lineno">4 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">destination</code><code class="o">;</code>
+<code class="lineno">5 </code>  <code class="k">if</code> <code class="n">destination</code> <code class="o">=</code> <code class="n">comparand</code> <code class="k">then</code>
+<code class="lineno">6 </code>    <code class="n">destination</code> <code class="o">:=</code> <code class="n">exchange</code><code class="o">;</code>
+<code class="lineno">7 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The trick here is that this code is all executed inside the CPU, atomically. The CPU ensures that the destination value is not modified (by another CPU) during the execution of the code. It is hard to understand (interlocked functions always make my mind twirl in circles) but basically it reduces to two scenarios:</p>
+
+<ul>
+  <li>Function returns <code>nil</code> (old, uninitialized value of <code>storage</code>), and <code>storage</code> is set to the new object (<code>tmpT</code>).</li>
+  <li>Function returns already existing object (old, just initialized value of <code>storage</code>) and <code>storage</code> is not modified. </li>
+</ul>
+
+<p>In yet another words – <code>InterlockedCompareExchangePointer</code> either stores the new value in the <code>storage</code> and returns <code>nil</code> or does nothing, leaves already initialized <code>storage</code> intact and returns something else than <code>nil</code>.</p>
+
+<p>At the end, the code handles two specific cases. If a <code>T</code> is an interface type and initialization was successful, the temporary value in <code>tmpT</code> must be replaced with <code>nil</code>. Otherwise two variables (<code>storage</code> and <code>tmpT</code>) would own an interface with a reference count of <em>1</em> which would cause big problems.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">if</code> <code class="n">interlockRes</code> <code class="o">=</code> <code class="k">nil</code> <code class="k">then</code>
+<code class="lineno">2 </code>  <code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code><code class="o">^</code> <code class="o">:=</code> <code class="k">nil</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>It a <code>T</code> is a class type and initialization was <strong>not</strong> successful, the temporary value stored in <code>tmpT</code> must be destroyed.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">if</code> <code class="n">interlockRes</code> <code class="o">&lt;&gt;</code> <code class="k">nil</code> <code class="k">then</code>
+<code class="lineno">2 </code>  <code class="kt">TObject</code><code class="p">(</code><code class="kt">PPointer</code><code class="p">(</code><code class="o">@</code><code class="n">tmpT</code><code class="p">)</code><code class="o">^</code><code class="p">)</code><code class="o">.</code><code class="n">Free</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>Initialize</code> returns the same shared object twice – once in the <code>storage</code> parameter and once as the function result. This allows us to write space-efficient initializers like in the example below, taken from the <em>OtlParallel</em> unit. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code> <code class="nc">TOmniWorkItem</code><code class="o">.</code><code class="nf">GetCancellationToken</code><code class="o">:</code> <code class="n">IOmniCancellationToken</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">begin</code>
+<code class="lineno">3 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">Atomic</code><code class="o">&lt;</code><code class="n">IOmniCancellationToken</code><code class="o">&gt;.</code><code class="n">Initialize</code><code class="p">(</code>
+<code class="lineno">4 </code>    <code class="n">FCancellationToken</code><code class="o">,</code> <code class="n">CreateOmniCancellationToken</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p id="synch-initialization-optimistic-twoparam">When you are initializing an interface and a new instance of the implementing object is created by calling the default constructor <code>Create</code>, you can use the two-parameter version of <code>Atomic</code> to simplify the code. <sup>[3.06]</sup> This is only supported in Delphi XE and newer.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code>  <code class="n">Atomic</code><code class="o">&lt;</code><code class="n">I</code><code class="o">;</code> <code class="n">T</code><code class="o">:</code><code class="k">constructor</code><code class="o">&gt;</code> <code class="o">=</code> <code class="k">class</code>
+<code class="lineno">2 </code>    <code class="k">class</code> <code class="k">function</code> <code class="nf">Initialize</code><code class="p">(</code><code class="k">var</code> <code class="n">storage</code><code class="o">:</code> <code class="n">I</code><code class="p">)</code><code class="o">:</code> <code class="n">I</code><code class="o">;</code>
+<code class="lineno">3 </code>  <code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>For example, if the shared object is stored in <code>shared: IMyInterface</code> and is created by calling <code>TMyInterface.Create</code>, you can initialize it via:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">Atomic</code><code class="o">&lt;</code><code class="n">IMyInterface</code><code class="o">,</code> <code class="n">TMyInterface</code><code class="o">&gt;.</code><code class="n">Initialize</code><code class="p">(</code><code class="n">shared</code><code class="p">)</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+
+<h3 id="synch-twaitfor">
+<span class="section-number">5.7 </span>TWaitFor</h3>
+
+<p>A common scenario in parallel programming is that the program has to wait for something to happen. The occurrence of that <em>something</em> is usually signalled with an <a href="https://en.wikipedia.org/wiki/Event_" title="synchronization_primitive">event</a>.</p>
+
+<p>On Windows, this is usually accomplished by calling one of the functions from the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx"><code>WaitForMultipleObjects</code></a> family. While they are powerful and quite simple to use, they also have a big limitation – one can only wait for up to 64 events at the same time.  </p>
+
+<p>Windows also offers a <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms685061(v=vs.85).aspx"><code>RegisterWaitForSingleObject</code></a> API call which can be used to circumvent this limitation. Its use is, however, quite complicated to use. To simplify programmer’s life, OmniThreadLibrary introduces a <code>TWaitFor</code> class which allows the code to wait for any number of events.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">TWaitFor</code> <code class="o">=</code> <code class="k">class</code>
+<code class="lineno"> 3 </code>  <code class="kp">public</code> <code class="k">type</code>
+<code class="lineno"> 4 </code>    <code class="n">TWaitResult</code> <code class="o">=</code> <code class="p">(</code>
+<code class="lineno"> 5 </code>      <code class="n">waAwaited</code><code class="o">,</code>      <code class="c1">// WAIT_OBJECT_0 .. WAIT_OBJECT_n</code>
+<code class="lineno"> 6 </code>      <code class="n">waTimeout</code><code class="o">,</code>      <code class="c1">// WAIT_TIMEOUT</code>
+<code class="lineno"> 7 </code>      <code class="n">waFailed</code><code class="o">,</code>       <code class="c1">// WAIT_FAILED</code>
+<code class="lineno"> 8 </code>      <code class="n">waIOCompletion</code>  <code class="c1">// WAIT_IO_COMPLETION</code>
+<code class="lineno"> 9 </code>    <code class="p">)</code><code class="o">;</code>
+<code class="lineno">10 </code>    <code class="n">THandleInfo</code> <code class="o">=</code> <code class="k">record</code>
+<code class="lineno">11 </code>      <code class="kp">Index</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="n">THandles</code> <code class="o">=</code> <code class="k">array</code> <code class="k">of</code> <code class="n">THandleInfo</code><code class="o">;</code>
+<code class="lineno">14 </code>
+<code class="lineno">15 </code>    <code class="k">constructor</code> <code class="nf">Create</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">16 </code>    <code class="k">constructor</code> <code class="nf">Create</code><code class="p">(</code><code class="k">const</code> <code class="n">handles</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="kt">THandle</code><code class="p">)</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="k">destructor</code>  <code class="nf">Destroy</code><code class="o">;</code> <code class="kp">override</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="k">function</code>  <code class="nf">MsgWaitAny</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">,</code> <code class="n">wakeMask</code><code class="o">,</code> <code class="n">flags</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="n">TWaitResult</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="k">procedure</code> <code class="nf">SetHandles</code><code class="p">(</code><code class="k">const</code> <code class="n">handles</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="kt">THandle</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">20 </code>    <code class="k">function</code>  <code class="nf">WaitAll</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="n">TWaitResult</code><code class="o">;</code>
+<code class="lineno">21 </code>    <code class="k">function</code>  <code class="nf">WaitAny</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code> <code class="n">alertable</code><code class="o">:</code> <code class="kt">boolean</code> <code class="o">=</code> <code class="k">false</code><code class="p">)</code><code class="o">:</code> <code class="n">TWaitResult</code><code class="o">;</code>
+<code class="lineno">22 </code>    <code class="k">property</code> <code class="py">Signalled</code><code class="o">:</code> <code class="n">THandles</code> <code class="kp">read</code> <code class="nf">FSignalledHandles</code><code class="o">;</code>
+<code class="lineno">23 </code>  <code class="k">end</code><code class="o">;</code> 
+</pre></div>
+
+</figure>
+
+<p>To use <code>TWaitFor</code>, create an instance of this class and pass it an array of handles either as a constructor parameter or by calling the <code>SetHandles</code> method. All handles must be created with the <code>CreateEvent</code> Windows function.</p>
+
+<p>You can then wait for any (<code>WaitAny</code>) or all (<code>WaitAll</code>) events to become signalled. In both cases the <code>Signalled</code> array is filled with information about signalled (set) events. The <code>Signalled</code> property is an array of <code>THandleInfo</code> records, each of which only contains one field - an index (into the <code>handles</code> array) of the signalled event.</p>
+
+<p>For example, if you want to wait for two events and then react to them, use the following approach:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">var</code>
+<code class="lineno"> 2 </code>  <code class="n">wf</code><code class="o">:</code> <code class="n">TWaitFor</code><code class="o">;</code>
+<code class="lineno"> 3 </code>  <code class="n">info</code><code class="o">:</code> <code class="n">THandleInfo</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  
+<code class="lineno"> 5 </code><code class="n">wf</code> <code class="o">:=</code> <code class="n">TWaitFor</code><code class="o">.</code><code class="n">Create</code><code class="p">([</code><code class="n">handle1</code><code class="o">,</code> <code class="n">handle2</code><code class="p">])</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">try</code>
+<code class="lineno"> 7 </code>  <code class="k">if</code> <code class="n">wf</code><code class="o">.</code><code class="n">WaitAny</code><code class="p">(</code><code class="n">INFINITE</code><code class="p">)</code> <code class="o">=</code> <code class="n">waAwaited</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 8 </code>    <code class="k">for</code> <code class="n">info</code> <code class="k">in</code> <code class="n">wf</code><code class="o">.</code><code class="n">Signalled</code> <code class="k">do</code>
+<code class="lineno"> 9 </code>      <code class="k">if</code> <code class="n">info</code><code class="o">.</code><code class="kp">Index</code> <code class="o">=</code> <code class="mi">0</code> <code class="k">then</code>
+<code class="lineno">10 </code>        <code class="c1">// handle1 is signalled - do something</code>
+<code class="lineno">11 </code>      <code class="k">else</code> <code class="k">if</code> <code class="n">info</code><code class="o">.</code><code class="kp">Index</code> <code class="o">=</code> <code class="mi">1</code> <code class="k">then</code>
+<code class="lineno">12 </code>        <code class="c1">// handle2 is signalled - do something </code>
+<code class="lineno">13 </code>  <code class="k">end</code><code class="o">;</code> 
+<code class="lineno">14 </code><code class="k">finally</code> <code class="nb">FreeAndNil</code><code class="p">(</code><code class="n">wf</code><code class="p">)</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>You don’t have to recreate <code>TWaitFor</code> for each wait operation; it is perfectly ok to call <code>WaitXXX</code> functions repeatedly on the same object. It is also fine to change the array of handles between two <code>WaitXXX</code> calls by calling the <code>SetHandles</code> method.</p>
+
+<p>The <code>WaitAny</code> method also comes in a variant which processes Windows messages, I/O completion routines and APC calls (<code>MsgWaitAny</code>).  It’s <code>wakeMask</code> and <code>flags</code> parameters are the same as the corresponding parameters to the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684245(v=vs.85).aspx"><code>MsgWaitForMultipleObjectsEx</code></a> API.</p>
+
+<p>
+  <em>The use of the <code>TWaitFor</code> is shown in <a href="chap12.html#demos">demo</a> <code>59_TWaitFor</code>.</em>
+</p>
+
+
+<h3 id="synch-tomnilockmanager">
+<span class="section-number">5.8 </span>TOmniLockManager&lt;K&gt;</h3>
+
+<p>The <code>TOmniLockManager&lt;K&gt;</code> class solves a specific problem – how to synchronize access to entities of any type. It is similar to <a href="http://docwiki.embarcadero.com/Libraries/en/System.TMonitor"><code>TMonitor</code></a>, except that it works on all types, not just on objects.</p>
+
+<aside class="tip blurb">
+    <p>If you need to lock access to objects, <code>TMonitor</code> should be used instead as it is much faster than the <code>TOmniLockManager&lt;K&gt;</code>.</p>
+
+</aside>
+
+<p>Following requirements are implemented in the <code>TOmniLockManager&lt;K&gt;</code>.</p>
+
+<ol class="numeric">
+  <li>The lock manager is used to lock entities of any type, not just objects. Let’s name such an entity a <em>key</em>.</li>
+  <li>Lock manager works similarly to a mutex. The caller can wait on a key with a timeout. Timeouts of <em>0</em> and INFINITE are supported.</li>
+  <li>The interface is similar to <code>TMonitor.Enter/Exit</code>. The code calls <code>Lock</code> to get exclusive access to a key and calls <code>Unlock</code> to release the key back to the public use.</li>
+  <li>The lock manager is reentrant. If a thread manages to get a lock on a key, it will always succeed in getting another lock before releasing the first one. Only when the number of <code>Unlock</code> calls in one thread matches the number of <code>Lock</code> calls, the key is unlocked. (In other words, if you call <code>Lock</code> twice with the same key, you also have to call <code>Unlock</code> twice to release that key.)</li>
+  <li>Exclusive access is granted fairly. If a thread A has started waiting on a key before the thread B, it will get access to that key before the thread B.</li>
+  <li>The set of keys is potentially huge, so it is not possible to create a critical section/mutex for each key.</li>
+  <li>A probability of collision (two threads trying to lock the same resource at the same time) is fairly low.</li>
+</ol>
+
+<aside class="information blurb">
+    <p>A series of three articles on my blog (ThreadSafe Lock Manager: <a href="http://www.thedelphigeek.com/2013/04/threadsafe-lock-manager-1-design.html">Design</a>, <a href="http://www.thedelphigeek.com/2013/04/threadsafe-lock-manager-2-code.html">Code</a>, <a href="http://www.thedelphigeek.com/2013/04/threadsafe-lock-manager-3-test.html">Test</a>) describes the design issues and code implementation in more details.</p>
+
+</aside>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">type</code>
+<code class="lineno"> 2 </code>  <code class="n">IOmniLockManagerAutoUnlock</code> <code class="o">=</code> <code class="k">interface</code>
+<code class="lineno"> 3 </code>    <code class="k">procedure</code> <code class="nf">Unlock</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">end</code><code class="o">;</code> 
+<code class="lineno"> 5 </code>
+<code class="lineno"> 6 </code>  <code class="n">IOmniLockManager</code><code class="o">&lt;</code><code class="n">K</code><code class="o">&gt;</code> <code class="o">=</code> <code class="k">interface</code>
+<code class="lineno"> 7 </code>    <code class="k">function</code>  <code class="nf">Lock</code><code class="p">(</code><code class="k">const</code> <code class="n">key</code><code class="o">:</code> <code class="n">K</code><code class="o">;</code> <code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="k">function</code>  <code class="nf">LockUnlock</code><code class="p">(</code><code class="k">const</code> <code class="n">key</code><code class="o">:</code> <code class="n">K</code><code class="o">;</code> <code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniLockManagerAutoUnlock</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="k">procedure</code> <code class="nf">Unlock</code><code class="p">(</code><code class="k">const</code> <code class="n">key</code><code class="o">:</code> <code class="n">K</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">end</code><code class="o">;</code> 
+</pre></div>
+
+</figure>
+
+<p>The <code>TOmniLockManager&lt;K&gt;</code> public class implements the <code>IOmniLockManager&lt;K&gt;</code> interface.</p>
+
+<p>The <code>Lock</code> function returns <code>False</code> if it does not lock the key in the specified timeout. Timeouts <em>0</em> and <code>INFINITE</code> are supported.</p>
+
+<p>There’s also a <code>LockUnlock</code> function which returns an interface that automatically unlocks the key when it is released. This interface also implements an <code>Unlock</code> function which unlocks the key.</p>
+
+<p>
+  <em>A practical example of using the lock manager is shown in <a href="chap12.html#demos">demo</a> <code>54_LockManager</code>.</em>
+</p>
+
+
+<h3 id="synch-tomnisinglethreadusechecker">
+<span class="section-number">5.9 </span>TOmniSingleThreadUseChecker</h3>
+
+<p>For debugging purposes, OmniThreadLibrary implements the <code>TOmniSingleThreadUseChecker</code> record. It gives the programmer a simple way to make sure that some code is always executed from the same thread. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">type</code>
+<code class="lineno">2 </code>  <code class="n">TOmniSingleThreadUseChecker</code> <code class="o">=</code> <code class="k">record</code>
+<code class="lineno">3 </code>    <code class="k">procedure</code> <code class="nf">AttachToCurrentThread</code><code class="o">;</code> 
+<code class="lineno">4 </code>    <code class="k">procedure</code> <code class="nf">Check</code><code class="o">;</code>
+<code class="lineno">5 </code>    <code class="k">procedure</code> <code class="nf">DebugCheck</code><code class="o">;</code>
+<code class="lineno">6 </code>  <code class="k">end</code><code class="o">;</code> 
+</pre></div>
+
+</figure>
+
+<p>Using it is simple – first declare a variable/field of type <code>TOmniSingleThreadUseChecker</code> in a context that has to be checked and then call <code>Check</code> or <code>DebugCheck</code> method of that variable whenever you want to check that some part of code was not used from more than one thread.</p>
+
+<p>The difference between <code>Check</code> and <code>DebugCheck</code> is that the latter can be disabled during the compilation. It implements the check only if the conditional symbol <code>OTL_CheckThreadSafety</code> is defined. Otherwise, <code>DebugCheck</code> contains no code and does not affect the execution speed.</p>
+
+<p>In cases where you use such an object from more than one thread (for example, if you use it from a task and then from the task controller after the task terminates) you can call <code>AttachToCurrentThread</code> to associate the checker with the current thread.</p>
+
+
+
+</div>
+</body>
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap08.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:00 GMT -->
+</html>

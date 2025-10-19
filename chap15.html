@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap15.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:17 GMT -->
+<head>
+  <meta charset="utf-8">
+  <title>E. ForEach internals</title>
+  <link href="stylesheet.css" rel="stylesheet" />
+</head>
+<body dir="ltr" class="kramdown">
+<div id="leanpub-toc">
+<h2></h2>
+<ol class="toc">
+<ul class='toc no-parts'>
+  <li>
+    <a href='chap00.html#intro-advert'>About me</a>
+  </li>
+  <li>
+    <a href='chap01.html#credits'>Credits</a>
+  </li>
+  <li>
+    <a href='chap02.html#introduction'>Introduction</a>
+    <ul>
+      <li>
+        <a href='chap02.html#leanpub-auto-formatting-conventions'>Formatting conventions</a>
+      </li>
+      <li>
+        <a href='chap02.html#leanpub-auto-learn-more'>Learn more</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap03.html#leanpub-auto-release-notes'>Release notes</a>
+  </li>
+  <li>
+    <a href='chap04.html#intro-mt'><span class="section-number">1. </span>Introduction to multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap04.html#leanpub-auto-multi-threading-as-a-source-of-problems'><span class="section-number">1.1 </span>Multi-threading as a source of problems</a>
+        <ul>
+          <li>
+            <a href='chap04.html#leanpub-auto-reading-and-writing-shared-data'><span class="section-number">1.1.1 </span>Reading and writing shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-modifying-shared-data'><span class="section-number">1.1.2 </span>Modifying shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-writes-masquerading-as-reads'><span class="section-number">1.1.3 </span>Writes masquerading as reads</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap05.html#intro-otl'><span class="section-number">2. </span>Introduction to OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap05.html#leanpub-auto-requirements'><span class="section-number">2.1 </span>Requirements</a>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-license'><span class="section-number">2.2 </span>License</a>
+      </li>
+      <li>
+        <a href='chap05.html#installation'><span class="section-number">2.3 </span>Installation</a>
+        <ul>
+          <li>
+            <a href='chap05.html#appendix-installing-getit'><span class="section-number">2.3.1 </span>Installing with GetIt</a>
+          </li>
+          <li>
+            <a href='chap05.html#appendix-installing-delphinus'><span class="section-number">2.3.2 </span>Installing with Delphinus</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-installing-design-package'><span class="section-number">2.3.3 </span>Installing design package</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-why-use-omnithreadlibrary'><span class="section-number">2.4 </span>Why use OmniThreadLibrary?</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tasksvsthreads'><span class="section-number">2.5 </span>Tasks vs. threads</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-lockingvsmessaging'><span class="section-number">2.6 </span>Locking vs. messaging</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-messagelooprequired'><span class="section-number">2.7 </span>Message loop required</a>
+        <ul>
+          <li>
+            <a href='chap05.html#introotl-messagelooprequired-console'><span class="section-number">2.7.1 </span>OmniThreadLibrary and console</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-another-task'><span class="section-number">2.7.2 </span>OmniThreadLibrary task started from another task</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-a-tthread'><span class="section-number">2.7.3 </span>OmniThreadLibrary task started from a TThread</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tomnivalue'><span class="section-number">2.8 </span>TOmniValue</a>
+        <ul>
+          <li>
+            <a href='chap05.html#leanpub-auto-data-access'><span class="section-number">2.8.1 </span>Data access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-typetesting'><span class="section-number">2.8.2 </span>Type testing</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-clearing'><span class="section-number">2.8.3 </span>Clearing the content</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-operators'><span class="section-number">2.8.4 </span>Operators</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-generictypes'><span class="section-number">2.8.5 </span>Using with generic types</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-array'><span class="section-number">2.8.6 </span>Array access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-records'><span class="section-number">2.8.7 </span>Handling records</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-object-ownership'><span class="section-number">2.8.8 </span>Object ownership</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-working-with-tvalue'><span class="section-number">2.8.9 </span>Working with TValue</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-low-level-methods'><span class="section-number">2.8.10 </span>Low-level methods</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-tomnivalueobj'><span class="section-number">2.9 </span>TOmniValueObj</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-fluentinterfaces'><span class="section-number">2.10 </span>Fluent interfaces</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap06.html#highlevel'><span class="section-number">3. </span>High-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap06.html#highlevel-introduction'><span class="section-number">3.1 </span>Introduction</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-a-life-cycle-of-an-abstraction'><span class="section-number">3.1.1 </span>A life cycle of an abstraction</a>
+          </li>
+          <li>
+            <a href='chap06.html#highLevel-intro-AnonymousEtAl'><span class="section-number">3.1.2 </span>Anonymous methods, procedures, and methods</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-introduction-pooling'><span class="section-number">3.1.3 </span>Pooling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-blocking-collection'><span class="section-number">3.2 </span>Blocking collection</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-iomniblockingcollection'><span class="section-number">3.2.1 </span>IOmniBlockingCollection</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-bulk-impexp'><span class="section-number">3.2.2 </span>Bulk import and export</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-throttling'><span class="section-number">3.2.3 </span>Throttling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-taskconfig'><span class="section-number">3.3 </span>Task configuration</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-async'><span class="section-number">3.4 </span>Async</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions'><span class="section-number">3.4.1 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-asyncawait'><span class="section-number">3.5 </span>Async/Await</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-future'><span class="section-number">3.6 </span>Future</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnifuturet-interface'><span class="section-number">3.6.1 </span>IOmniFuture&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-completion-detection'><span class="section-number">3.6.2 </span>Completion detection</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation'><span class="section-number">3.6.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-1'><span class="section-number">3.6.4 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples'><span class="section-number">3.6.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-join'><span class="section-number">3.7 </span>Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleljoin-interface'><span class="section-number">3.7.1 </span>IOmniParallelJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnijoinstate-interface'><span class="section-number">3.7.2 </span>IOmniJoinState interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation-1'><span class="section-number">3.7.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-join-exceptions'><span class="section-number">3.7.4 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-paralleltask'><span class="section-number">3.8 </span>Parallel task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleltask-interface'><span class="section-number">3.8.1 </span>IOmniParallelTask interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-example'><span class="section-number">3.8.2 </span>Example</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-2'><span class="section-number">3.8.3 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-1'><span class="section-number">3.8.4 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-backgroundworker'><span class="section-number">3.9 </span>Background worker</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics'><span class="section-number">3.9.1 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnibackgroundworker-interface'><span class="section-number">3.9.2 </span>IOmniBackgroundWorker interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-initialization'><span class="section-number">3.9.3 </span>Task initialization</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-work-item-configuration'><span class="section-number">3.9.4 </span>Work item configuration</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-iomniworkitem'><span class="section-number">3.9.5 </span>Work item interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-2'><span class="section-number">3.9.6 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-pipeline'><span class="section-number">3.10 </span>Pipeline</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-background'><span class="section-number">3.10.1 </span>Background</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics-1'><span class="section-number">3.10.2 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnipipeline-interface'><span class="section-number">3.10.3 </span>IOmniPipeline interface</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-example-1'><span class="section-number">3.10.3.1 </span>Example</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-generators-mutators-and-aggregators'><span class="section-number">3.10.4 </span>Generators, mutators, and aggregators</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-throttling'><span class="section-number">3.10.5 </span>Throttling</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-parallel'><span class="section-number">3.10.6 </span>Parallel stages</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-exceptions'><span class="section-number">3.10.7 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-3'><span class="section-number">3.10.8 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-for'><span class="section-number">3.11 </span>Parallel for</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-for-iomniparallelsimpleloop'><span class="section-number">3.11.1 </span>IOmniParallelSimpleLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-an-array'><span class="section-number">3.11.2 </span>Iterating over an array</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-4'><span class="section-number">3.11.3 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-foreach'><span class="section-number">3.12 </span>ForEach</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-cooperation'><span class="section-number">3.12.1 </span>Cooperation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-'><span class="section-number">3.12.2 </span>Iterating over …</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-number-ranges'><span class="section-number">3.12.2.1 </span>… Number ranges</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-enumerable-collections'><span class="section-number">3.12.2.2 </span>… Enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-thread-safe-enumerable-collections'><span class="section-number">3.12.2.3 </span>… Thread-safe enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-blocking-collections'><span class="section-number">3.12.2.4 </span>… Blocking collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-anything'><span class="section-number">3.12.2.5 </span>… Anything</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-providing-external-input'><span class="section-number">3.12.3 </span>Providing external input</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelloop-interface'><span class="section-number">3.12.4 </span>IOmniParallelLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-preserveorder'><span class="section-number">3.12.5 </span>Preserving output order</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-aggregation'><span class="section-number">3.12.6 </span>Aggregation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-cancellation'><span class="section-number">3.12.7 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-taskinit'><span class="section-number">3.12.8 </span>Task initialization and finalization</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-exceptions'><span class="section-number">3.12.9 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-5'><span class="section-number">3.12.10 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-forkjoin'><span class="section-number">3.13 </span>Fork/Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniforkjoin-interface'><span class="section-number">3.13.1 </span>IOmniForkJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicompute-interface'><span class="section-number">3.13.2 </span>IOmniCompute interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicomputet-interface'><span class="section-number">3.13.3 </span>IOmniCompute&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-exceptions'><span class="section-number">3.13.4 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-6'><span class="section-number">3.13.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-map'><span class="section-number">3.14 </span>Map</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelmappert1t2-interface'><span class="section-number">3.14.1 </span>IOmniParallelMapper&lt;T1,T2&gt; interface</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-timedtask'><span class="section-number">3.15 </span>Timed task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-timedtask-iomnitimedtask'><span class="section-number">3.15.1 </span>IOmniTimedTask interface</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap07.html#lowlevel'><span class="section-number">4. </span>Low-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap07.html#leanpub-auto-low-level-for-the-impatient'><span class="section-number">4.1 </span>Low-level for the impatient</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-fourways'><span class="section-number">4.2 </span>Four ways to create a task</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitaskcontrol'><span class="section-number">4.3 </span>IOmniTaskControl and IOmniTask interfaces</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskControllerOwner'><span class="section-number">4.4 </span>Task controller needs an owner</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-communication'><span class="section-number">4.5 </span>Communication subsystem</a>
+      </li>
+      <li>
+        <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes'><span class="section-number">4.6 </span>Processor groups and NUMA nodes</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-threadpool'><span class="section-number">4.7 </span>Thread pooling</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-execution-flow'><span class="section-number">4.7.1 </span>Execution flow</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-interface'><span class="section-number">4.7.2 </span>IOmniThreadPool interface</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-exitcode'><span class="section-number">4.7.3 </span>Task exit code</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-monitoring'><span class="section-number">4.7.4 </span>Monitoring thread pool operations</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-1'><span class="section-number">4.7.5 </span>Processor groups and NUMA nodes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-lockfree'><span class="section-number">4.8 </span>Lock-free collections</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedstack'><span class="section-number">4.8.1 </span>Bounded Stack</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedqueue'><span class="section-number">4.8.2 </span>Bounded queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-messagequeue'><span class="section-number">4.8.3 </span>Message queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-dynamicqueue'><span class="section-number">4.8.4 </span>Dynamic queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-observing'><span class="section-number">4.8.5 </span>Observing lock-free collections</a>
+            <ul>
+              <li>
+                <a href='chap07.html#leanpub-auto-examples-7'><span class="section-number">4.8.5.1 </span>Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-benchmarks'><span class="section-number">4.8.6 </span>Benchmarks</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-eventmonitor'><span class="section-number">4.9 </span>Event monitor</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-simpletasks'><span class="section-number">4.10 </span>Simple tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-name'><span class="section-number">4.10.1 </span>Name</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-uniqueid'><span class="section-number">4.10.2 </span>UniqueID</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-parameters'><span class="section-number">4.10.3 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-termination'><span class="section-number">4.10.4 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-exitcode'><span class="section-number">4.10.5 </span>ExitCode</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-taskexceptions'><span class="section-number">4.10.6 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-communication'><span class="section-number">4.10.7 </span>Sending messages to a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-receiving'><span class="section-number">4.10.8 </span>Receiving messages from a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-chainto'><span class="section-number">4.10.9 </span>ChainTo</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-joinleave'><span class="section-number">4.10.10 </span>Join / Leave</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-monitorwith'><span class="section-number">4.10.11 </span>MonitorWith / RemoveMonitor</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-enforced'><span class="section-number">4.10.12 </span>Enforced</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-unobserved'><span class="section-number">4.10.13 </span>Unobserved</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-cancellationtoken'><span class="section-number">4.10.14 </span>Cancellation token / CancelWith</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-tasklock'><span class="section-number">4.10.15 </span>Lock / WithLock</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-counter'><span class="section-number">4.10.16 </span>WithCounter</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-setpriority'><span class="section-number">4.10.17 </span>SetPriority</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-setqueuesize'><span class="section-number">4.10.18 </span>SetQueueSize</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-tomniworker'><span class="section-number">4.11 </span>TOmniWorker tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-waitforinit'><span class="section-number">4.11.1 </span>WaitForInit</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-task'><span class="section-number">4.11.2 </span>Task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-communication'><span class="section-number">4.11.3 </span>Receiving messages</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-registercomm'><span class="section-number">4.11.4 </span>RegisterComm</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-tomniworkerinvoke'><span class="section-number">4.11.5 </span>Invoke</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-msgwait'><span class="section-number">4.11.6 </span>Windows message &amp; APC processing</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-timers'><span class="section-number">4.11.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-terminateWhen'><span class="section-number">4.11.8 </span>TerminateWhen</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-userdata'><span class="section-number">4.11.9 </span>UserData</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskgroup'><span class="section-number">4.12 </span>Task groups</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitask'><span class="section-number">4.13 </span>IOmniTask interface</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-name-and-id'><span class="section-number">4.13.1 </span>Name and ID</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-parameters'><span class="section-number">4.13.2 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-termination'><span class="section-number">4.13.3 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-exitstatus'><span class="section-number">4.13.4 </span>Exit status</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-exceptions-1'><span class="section-number">4.13.5 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-communication'><span class="section-number">4.13.6 </span>Communication</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-timers'><span class="section-number">4.13.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-registerwaitobject'><span class="section-number">4.13.8 </span>RegisterWaitObject</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-cancellationtoken'><span class="section-number">4.13.9 </span>CancellationToken</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-lock'><span class="section-number">4.13.10 </span>Lock</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-counter'><span class="section-number">4.13.11 </span>Counter</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-2'><span class="section-number">4.13.12 </span>Processor groups and NUMA nodes</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-internal-and-obsolete-functions'><span class="section-number">4.13.13 </span>Internal and obsolete functions</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap08.html#synch'><span class="section-number">5. </span>Synchronization</a>
+    <ul>
+      <li>
+        <a href='chap08.html#synch-criticalsections'><span class="section-number">5.1 </span>Critical sections</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-criticalsections-iomnicriticalsection'><span class="section-number">5.1.1 </span>IOmniCriticalSection</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-tomnics'><span class="section-number">5.1.2 </span>TOmniCS</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-lockedt'><span class="section-number">5.1.3 </span>Locked&lt;T&gt;</a>
+            <ul>
+              <li>
+                <a href='chap08.html#leanpub-auto-why-not-use-tmonitor'><span class="section-number">5.1.3.1 </span>Why not use TMonitor?</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnimrew'><span class="section-number">5.2 </span>TOmniMREW</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-cancellationtoken'><span class="section-number">5.3 </span>Cancellation token</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-waitablevalue'><span class="section-number">5.4 </span>Waitable value</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-inversesemaphore'><span class="section-number">5.5 </span>Inverse semaphore</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-initialization'><span class="section-number">5.6 </span>Initialization</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-initialization-pessimistic'><span class="section-number">5.6.1 </span>Pessimistic initialization</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-initialization-optimistic'><span class="section-number">5.6.2 </span>Optimistic initialization</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-twaitfor'><span class="section-number">5.7 </span>TWaitFor</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnilockmanager'><span class="section-number">5.8 </span>TOmniLockManager&lt;K&gt;</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnisinglethreadusechecker'><span class="section-number">5.9 </span>TOmniSingleThreadUseChecker</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap09.html#misc'><span class="section-number">6. </span>Miscellaneous</a>
+    <ul>
+      <li>
+        <a href='chap09.html#misc-tOmniTwoWayChannel'><span class="section-number">6.1 </span>TOmniTwoWayChannel</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnivaluecontainer'><span class="section-number">6.2 </span>TOmniValueContainer</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnicounter'><span class="section-number">6.3 </span>TOmniCounter</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-TOmniAlignedInt32'><span class="section-number">6.4 </span>TOmniAlignedInt32 and TOmniAlignedInt64</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecordwrapper'><span class="section-number">6.5 </span>TOmniRecordWrapper</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecord'><span class="section-number">6.6 </span>TOmniRecord</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniautodestroyobject'><span class="section-number">6.7 </span>IOmniAutoDestroyObject</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniintegerset'><span class="section-number">6.8 </span>IOmniIntegerSet</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-environment'><span class="section-number">6.9 </span>Environment</a>
+        <ul>
+          <li>
+            <a href='chap09.html#leanpub-auto-iomniaffinity'><span class="section-number">6.9.1 </span>IOmniAffinity</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap10.html#howto'><span class="section-number">7. </span>How-to</a>
+    <ul>
+      <li>
+        <a href='chap10.html#howto-backgroundFileScanning'><span class="section-number">7.1 </span>Background file scanning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-webDownload'><span class="section-number">7.2 </span>Web download and database storage</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForSyncOut'><span class="section-number">7.3 </span>Parallel for with synchronized output</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForTaskInit'><span class="section-number">7.4 </span>Using taskIndex and task initializer in parallel for</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-listPartitioning'><span class="section-number">7.5 </span>Background worker and list partitioning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelDataProduction'><span class="section-number">7.6 </span>Parallel data production</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-connectionPool'><span class="section-number">7.7 </span>Building a connection pool</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-from-theory-to-practice'><span class="section-number">7.7.1 </span>From theory to practice</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-running-the-demo'><span class="section-number">7.7.2 </span>Running the demo</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-quickSortParallelMax'><span class="section-number">7.8 </span>QuickSort and parallel max</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-quicksort'><span class="section-number">7.8.1 </span>QuickSort</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-parallel-max'><span class="section-number">7.8.2 </span>Parallel max</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelSearch'><span class="section-number">7.9 </span>Parallel search in a tree</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-multiFrame'><span class="section-number">7.10 </span>Multiple workers with multiple frames</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-worker'><span class="section-number">7.10.1 </span>The worker</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-frame'><span class="section-number">7.10.2 </span>The frame</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-form'><span class="section-number">7.10.3 </span>The form</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-databases'><span class="section-number">7.11 </span>OmniThreadLibrary and databases</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-database-model'><span class="section-number">7.11.1 </span>Database model</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-frame-and-worker'><span class="section-number">7.11.2 </span>Frame and worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-connecting-to-the-database'><span class="section-number">7.11.2.1 </span>Connecting to the database</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-retrieving-the-data'><span class="section-number">7.11.2.2 </span>Retrieving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-main-program'><span class="section-number">7.11.3 </span>Main program</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-com'><span class="section-number">7.12 </span>OmniThreadLibrary and COM/OLE</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-mqtthread'><span class="section-number">7.13 </span>Using a message queue with a TThread worker</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-multiple-producers-to-a-single-worker'><span class="section-number">7.13.1 </span>Sending data from multiple producers to a single worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup'><span class="section-number">7.13.1.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-worker'><span class="section-number">7.13.1.2 </span>Sending data to the worker</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data'><span class="section-number">7.13.1.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-a-worker-to-a-form'><span class="section-number">7.13.2 </span>Sending data from a worker to a form</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup-1'><span class="section-number">7.13.2.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-form'><span class="section-number">7.13.2.2 </span>Sending data to the form</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data-1'><span class="section-number">7.13.2.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap11.html#appendix-units'>A. Units</a>
+  </li>
+  <li>
+    <a href='chap12.html#demos'>B. Demo applications</a>
+  </li>
+  <li>
+    <a href='chap13.html#examples'>C. Examples</a>
+  </li>
+  <li>
+    <a href='chap14.html#appendix-hooking'>D. Hooking into OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap14.html#leanpub-auto-exception-notifications'>Exception notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-thread-notifications'>Thread notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-pool-notifications'>Pool notifications</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap15.html#highlevel-foreach-internals'>E. ForEach internals</a>
+    <ul>
+      <li>
+        <a href='chap15.html#leanpub-auto-source-provider'>Source provider</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-data-manager'>Data manager</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-local-queue'>Local queue</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-output-ordering'>Output ordering</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap16.html#leanpub-auto-f-hyperlinks'>F. Hyperlinks</a>
+  </li>
+  <li>
+    <a href='chap17.html#leanpub-endnotes'>Notes</a>
+  </li>
+</ul>
+
+</ol>
+</div>
+<div id="leanpub-main" class="kramdown">
+<h2 id="highlevel-foreach-internals">E. ForEach internals</h2>
+
+<p>This section gives an overview of how <a href="chap06.html#highlevel-foreach"><em>ForEach</em></a> abstraction is implemented.</p>
+
+<p>Let’s start with a very simple code.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">Parallel</code><code class="o">.</code><code class="n">ForEach</code><code class="p">(</code><code class="mi">1</code><code class="o">,</code> <code class="mi">1000</code><code class="p">)</code>
+<code class="lineno">2 </code>  <code class="o">.</code><code class="n">Execute</code><code class="p">(</code>
+<code class="lineno">3 </code>    <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">elem</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code>
+<code class="lineno">4 </code>    <code class="k">begin</code>
+<code class="lineno">5 </code>    <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>This simple code iterates from <em>1</em> to <em>1000</em> on all available cores in parallel and executes a simple procedure that contains no workload. All in all, the code will do nothing - but it will do it in a very complicated manner.</p>
+
+<p><code>ForEach</code> method creates a new <code>TOmniParallelLoop&lt;integer&gt;</code> object (that’s the object that will coordinate parallel tasks) and passes it a <em>source provider</em> - an object that knows how to access values that are being enumerated (integers from <em>1</em> to <em>1000</em> in this example).</p>
+
+<blockquote>
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 468px;">
+    <img src="images/highlevel----dataManager.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+</blockquote>
+
+<p><em>OtlDataManager</em> unit contains four different source providers - one for each type of source that can be passed to the <code>ForEach</code> method. If there is a need to extend <code>ForEach</code> with a new enumeration source, I would only have to add a few simple methods to the <em>OtlParallel</em> unit and write a new source provider.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">function</code> <code class="nc">Parallel</code><code class="o">.</code><code class="nf">ForEach</code><code class="p">(</code><code class="nb">low</code><code class="o">,</code> <code class="nb">high</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> <code class="n">step</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code>
+<code class="lineno">2 </code>  <code class="n">IOmniParallelLoop</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;;</code>
+<code class="lineno">3 </code><code class="k">begin</code>
+<code class="lineno">4 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">TOmniParallelLoop</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;.</code><code class="n">Create</code><code class="p">(</code>
+<code class="lineno">5 </code>    <code class="n">CreateSourceProvider</code><code class="p">(</code><code class="nb">low</code><code class="o">,</code> <code class="nb">high</code><code class="o">,</code> <code class="n">step</code><code class="p">)</code><code class="o">,</code> <code class="k">true</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><em>ForEach</em> tasks are started in <code>InternalExecuteTask</code>. This method firstly creates a <em>data manager</em> and attaches it to the source provider (compare this with the picture above - there is one source provider and one data manager in it). Next it creates an appropriate number of tasks and calls the task-specific delegate method from each one. [This delegate wraps your parallel code and provides it with proper input (and sometimes, output). There are many calls to <code>InternalExecuteTask</code> in the OtlParallel unit, each with a different <code>taskDelegate</code> and each providing support for a different kind of the loop.]</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TOmniParallelLoopBase</code><code class="o">.</code><code class="nf">InternalExecuteTask</code><code class="p">(</code>
+<code class="lineno"> 2 </code>  <code class="n">taskDelegate</code><code class="o">:</code> <code class="n">TOmniTaskDelegate</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">var</code>
+<code class="lineno"> 4 </code>  <code class="n">dmOptions</code>    <code class="o">:</code> <code class="n">TOmniDataManagerOptions</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="n">iTask</code>        <code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="n">numTasks</code>     <code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="n">task</code>         <code class="o">:</code> <code class="n">IOmniTaskControl</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="k">begin</code>
+<code class="lineno"> 9 </code>    <code class="o">...</code>
+<code class="lineno">10 </code>    <code class="n">oplDataManager</code> <code class="o">:=</code> <code class="n">CreateDataManager</code><code class="p">(</code><code class="n">oplSourceProvider</code><code class="o">,</code>
+<code class="lineno">11 </code>      <code class="n">numTasks</code><code class="o">,</code> <code class="n">dmOptions</code><code class="p">)</code><code class="o">;</code> 
+<code class="lineno">12 </code>    <code class="o">...</code>
+<code class="lineno">13 </code>    <code class="k">for</code> <code class="n">iTask</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="n">numTasks</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">14 </code>      <code class="n">task</code> <code class="o">:=</code> <code class="n">CreateTask</code><code class="p">(</code>
+<code class="lineno">15 </code>        <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTask</code><code class="p">)</code>
+<code class="lineno">16 </code>        <code class="k">begin</code>
+<code class="lineno">17 </code>          <code class="o">...</code>
+<code class="lineno">18 </code>          <code class="n">taskDelegate</code><code class="p">(</code><code class="n">task</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">19 </code>          <code class="o">...</code>
+<code class="lineno">20 </code>        <code class="k">end</code><code class="o">,</code>
+<code class="lineno">21 </code>        <code class="o">...</code>
+<code class="lineno">22 </code>      <code class="n">task</code><code class="o">.</code><code class="n">Schedule</code><code class="p">(</code><code class="n">GParallelPool</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">23 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">24 </code>    <code class="o">...</code>
+<code class="lineno">25 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">26 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Data manager is a global field in the <code>TOmniParallelLoop&lt;T&gt;</code> object so it can be simply reused from the task delegate. The simplest possible task delegate (below) just creates a <em>local queue</em> and fetches values from the local queue one by one. This results in many local queues - one per task - all connected to the same data manager.</p>
+
+<p>In case you’re wondering what <code>loopBody</code> is - it is the anonymous method you have passed to the <code>Parallel.ForEach.Execute</code> method. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nf">InternalExecuteTask</code><code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTask</code><code class="p">)</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">localQueue</code><code class="o">:</code> <code class="n">TOmniLocalQueue</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="n">value</code>     <code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">begin</code>
+<code class="lineno"> 6 </code>  <code class="n">localQueue</code> <code class="o">:=</code> <code class="n">oplDataManager</code><code class="o">.</code><code class="n">CreateLocalQueue</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="k">try</code>
+<code class="lineno"> 8 </code>    <code class="k">while</code> <code class="p">(</code><code class="k">not</code> <code class="n">Stopped</code><code class="p">)</code> <code class="k">and</code> <code class="n">localQueue</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">value</code><code class="p">)</code> <code class="k">do</code>
+<code class="lineno"> 9 </code>      <code class="n">loopBody</code><code class="p">(</code><code class="n">task</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">finally</code> <code class="nb">FreeAndNil</code><code class="p">(</code><code class="n">localQueue</code><code class="p">)</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Let’s reiterate:</p>
+
+<ul>
+  <li>
+<em>Source provider</em> is created. </li>
+  <li>
+<em>Data manager</em> is created and associated with the source provider. </li>
+  <li>Each task creates its own <em>local queue</em> and uses it to access the source data.</li>
+  <li>As you’ll see in the next section, local queue retrieves data in packages (<em>data package</em>) and sends it to an <em>output buffer</em> which makes sure that the output is produced in a correct order (the output buffer part happens only if <code>PreserveOrder</code> method is called in the high-level code). </li>
+  <li>If the task runs out of work, it requests a new data package from the data manager, which gets this data from the source provider (more on that below). If the source provider runs out of data, data manager will attempt to steal some data from other tasks.</li>
+</ul>
+
+<blockquote>
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 468px;">
+    <img src="images/highlevel----dataFlow.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+</blockquote>
+
+<p>All this was designed to provide fast data access (blocking is limited to the source provider, all other interactions are lock-free), good workload distribution (when a task runs out of work before other tasks, it will steal some work from other tasks) and output ordering (when required).</p>
+
+<h3 id="leanpub-auto-source-provider">Source provider</h3>
+
+<p>A <em>source provider</em> is an object that fetches data from the enumeration source (the data that was passed to the parallel for) and repackages it into a format suitable for parallel consumption. Currently there are three source providers defined in the <em>OtlDataManager</em> unit.</p>
+
+<ul>
+  <li>
+<code>TOmniIntegerRangeProvider</code>
+    <p>Iterates over integer ranges (just like a ‘normal’ <code>for</code> statement does). As such, it doesn’t really fetch data from enumeration source but generates it internally. </p>
+  </li>
+  <li>
+<code>TOmniValueEnumeratorProvider</code>
+    <p>Iterates over <code>IOmniValueEnumerator</code>, which is a special enumerator that can be accessed from multiple readers and doesn’t require locking. Currently, this enumerator is only provided by the <code>IOmniBlockingCollection</code>. </p>
+  </li>
+  <li>
+<code>TOmniEnumeratorProvider</code>
+    <p>Iterates over Windows enumerators (<code>IEnumerator</code>) or Delphi enumerators (<code>GetEnumerator</code>, wrapped into <code>TOmniValueEnumerator</code> class). </p>
+  </li>
+</ul>
+
+<p>All source providers descend from an abstract class <code>TOmniSourceProvider</code> which provides common source provider interface. In theory, an interface should be used for that purpose, but in practice source providers are very performance intensive and not using interfaces speeds the program by a measurable amount. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="n">TOmniSourceProvider</code> <code class="o">=</code> <code class="k">class</code> <code class="kp">abstract</code>
+<code class="lineno"> 2 </code><code class="kp">public</code>
+<code class="lineno"> 3 </code>  <code class="k">function</code>  <code class="nf">Count</code><code class="o">:</code> <code class="kt">int64</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">function</code>  <code class="nf">CreateDataPackage</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="k">function</code>  <code class="nf">GetCapabilities</code><code class="o">:</code> <code class="n">TOmniSourceProviderCapabilities</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="k">function</code>  <code class="nf">GetPackage</code><code class="p">(</code><code class="n">dataCount</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> 
+<code class="lineno"> 8 </code>    <code class="n">package</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">function</code>  <code class="nf">GetPackageSizeLimit</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Not all source providers are created equal, and that’s why function <code>GetCapabilities</code> returns source provider capabilities:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">TOmniSourceProviderCapability</code> <code class="o">=</code> <code class="p">(</code>
+<code class="lineno">2 </code>  <code class="n">spcCountable</code><code class="o">,</code>  <code class="c1">// source provider that knows how much data it holds</code>
+<code class="lineno">3 </code>  <code class="n">spcFast</code><code class="o">,</code>       <code class="c1">// source provider operations are O(1)</code>
+<code class="lineno">4 </code>  <code class="n">spcDataLimit</code>   <code class="c1">// data package can only hold limited amount of data</code>
+<code class="lineno">5 </code><code class="p">)</code><code class="o">;</code> 
+<code class="lineno">6 </code>
+<code class="lineno">7 </code><code class="n">TOmniSourceProviderCapabilities</code> <code class="o">=</code> <code class="k">set</code> <code class="k">of</code>
+<code class="lineno">8 </code>  <code class="n">TOmniSourceProviderCapability</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>TOmniIntegerRangeProvider</code> is both <em>countable</em> (it’s easy to know how many values are between <em>1</em> and <em>10</em>, for example) and <em>fast</em> (it takes a same amount of time to fetch <em>10</em> values or <em>10,000</em> values) while other two source providers are neither <em>countable</em> nor <em>fast</em>. The third capability, <code>spcDataLimit</code> is obsolete and not used. It was replaced by the <code>GetPackageSizeLimit</code> method.</p>
+
+<p>The other important aspect of a source provider is the <code>GetPackage</code> method. It accesses the source (by ensuring a locked access if necessary), retrieves data and returns it in the <em>data package</em>. Implementation is highly dependent on the source data. For example, integer source provider just advances the current low field value and returns data package that doesn’t contain a bunch of values but just low and high boundaries (and that’s why it is considered being <em>fast</em>). Enumerator source provider locks the source, fetches the data and builds data package value by value. And in the simplest case, <code>TOmniValueEnumerator</code> source provider just fetches values and builds data package. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniValueEnumeratorProvider</code><code class="o">.</code><code class="nf">GetPackage</code><code class="p">(</code><code class="n">dataCount</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> 
+<code class="lineno"> 2 </code>  <code class="n">package</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">var</code>
+<code class="lineno"> 4 </code>  <code class="n">iData</code>     <code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="n">intPackage</code><code class="o">:</code> <code class="n">TOmniValueEnumeratorDataPackage</code> <code class="k">absolute</code> <code class="n">package</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="n">timeout</code>   <code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="n">value</code>     <code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">begin</code>
+<code class="lineno"> 9 </code>  <code class="nb">Assert</code><code class="p">(</code><code class="k">not</code> <code class="n">StorePositions</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="k">false</code><code class="o">;</code>
+<code class="lineno">11 </code>  <code class="n">dataCount</code> <code class="o">:=</code> <code class="n">intPackage</code><code class="o">.</code><code class="n">Prepare</code><code class="p">(</code><code class="n">dataCount</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">12 </code>  <code class="n">timeout</code> <code class="o">:=</code> <code class="n">INFINITE</code><code class="o">;</code>
+<code class="lineno">13 </code>  <code class="k">for</code> <code class="n">iData</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="n">dataCount</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">14 </code>    <code class="k">if</code> <code class="k">not</code> <code class="n">vepEnumerator</code><code class="o">.</code><code class="n">TryTake</code><code class="p">(</code><code class="n">value</code><code class="o">,</code> <code class="n">timeout</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">15 </code>      <code class="k">break</code><code class="o">;</code> <code class="c1">//for</code>
+<code class="lineno">16 </code>    <code class="n">intPackage</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="n">timeout</code> <code class="o">:=</code> <code class="mi">0</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="k">true</code><code class="o">;</code>
+<code class="lineno">19 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">20 </code><code class="k">end</code><code class="o">;</code> 
+</pre></div>
+
+</figure>
+
+<h3 id="leanpub-auto-data-manager">Data manager</h3>
+
+<p><em>Data manager</em> is the central hub in the OtlDataManager hierarchy. It seats between multiple <em>local queues</em> and the single <em>source provider</em> and makes sure that all parallel tasks always have work to do.</p>
+
+<p>Two different data managers are implemented at the moment - a <em>countable</em> data manager and a <em>heuristic</em> data manager. The former is used if source provider is <em>countable</em> and the latter if it is not. Both descend from the abstract class <code>TOmniDataManager</code>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="n">TOmniDataManager</code> <code class="o">=</code> <code class="k">class</code> <code class="kp">abstract</code>
+<code class="lineno"> 2 </code><code class="kp">public</code>
+<code class="lineno"> 3 </code>  <code class="k">function</code>  <code class="nf">CreateLocalQueue</code><code class="o">:</code> <code class="n">TOmniLocalQueue</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">function</code>  <code class="nf">AllocateOutputBuffer</code><code class="o">:</code> <code class="n">TOmniOutputBuffer</code><code class="o">;</code> 
+<code class="lineno"> 5 </code>    <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="k">function</code>  <code class="nf">GetNext</code><code class="p">(</code><code class="n">package</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> 
+<code class="lineno"> 7 </code>    <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="k">procedure</code> <code class="nf">ReleaseOutputBuffer</code><code class="p">(</code><code class="n">buffer</code><code class="o">:</code> <code class="n">TOmniOutputBuffer</code><code class="p">)</code><code class="o">;</code> 
+<code class="lineno"> 9 </code>    <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">procedure</code> <code class="nf">SetOutput</code><code class="p">(</code><code class="k">const</code> <code class="n">queue</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">11 </code>    <code class="n">overload</code><code class="o">;</code> <code class="kp">virtual</code><code class="o">;</code> <code class="kp">abstract</code><code class="o">;</code>
+<code class="lineno">12 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The main difference between them lies in function <code>GetNextFromProvider</code> which reads data from the source provider (by calling its <code>GetPackage</code> method). In the <em>countable</em> provider this is just a simple forwarder while in the <em>heuristic</em> provider this function tries to find a good package size that will allow all parallel tasks to work at the full speed.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniHeuristicDataManager</code><code class="o">.</code><code class="nf">GetNextFromProvider</code><code class="p">(</code>
+<code class="lineno"> 2 </code>  <code class="n">package</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="o">;</code> <code class="n">generation</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">const</code>
+<code class="lineno"> 4 </code>  <code class="n">CDataLimit</code> <code class="o">=</code> <code class="nb">Trunc</code><code class="p">(</code><code class="nb">High</code><code class="p">(</code><code class="kt">integer</code><code class="p">)</code> <code class="o">/</code> <code class="n">CFetchTimeout_ms</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">var</code>
+<code class="lineno"> 6 </code>  <code class="n">dataPerMs</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="n">dataSize</code> <code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="nb">time</code>     <code class="o">:</code> <code class="kt">int64</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">begin</code>
+<code class="lineno">10 </code>  <code class="c1">// the goal is to fetch as much (but not exceeding &lt;fetch_limit&gt;)</code>
+<code class="lineno">11 </code>  <code class="c1">// data as possible in &lt;fetch_timeout&gt; milliseconds; highest amount</code>
+<code class="lineno">12 </code>  <code class="c1">// of data is limited by the GetDataCountForGeneration method.</code>
+<code class="lineno">13 </code>  <code class="n">dataSize</code> <code class="o">:=</code> <code class="n">GetDataCountForGeneration</code><code class="p">(</code><code class="n">generation</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">14 </code>  <code class="k">if</code> <code class="n">dataSize</code> <code class="o">&gt;</code> <code class="n">hdmEstimatedPackageSize</code><code class="o">.</code><code class="n">Value</code> <code class="k">then</code>
+<code class="lineno">15 </code>    <code class="n">dataSize</code> <code class="o">:=</code> <code class="n">hdmEstimatedPackageSize</code><code class="o">.</code><code class="n">Value</code><code class="o">;</code>
+<code class="lineno">16 </code>  <code class="nb">time</code> <code class="o">:=</code> <code class="n">DSiTimeGetTime64</code><code class="o">;</code>
+<code class="lineno">17 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">SourceProvider</code><code class="o">.</code><code class="n">GetPackage</code><code class="p">(</code><code class="n">dataSize</code><code class="o">,</code> <code class="n">package</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">18 </code>  <code class="nb">time</code> <code class="o">:=</code> <code class="n">DSiTimeGetTime64</code> <code class="o">-</code> <code class="nb">time</code><code class="o">;</code>
+<code class="lineno">19 </code>  <code class="k">if</code> <code class="bp">Result</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">20 </code>    <code class="k">if</code> <code class="nb">time</code> <code class="o">=</code> <code class="mi">0</code> <code class="k">then</code>
+<code class="lineno">21 </code>      <code class="n">dataPerMs</code> <code class="o">:=</code> <code class="n">CDataLimit</code>
+<code class="lineno">22 </code>    <code class="k">else</code> <code class="k">begin</code>
+<code class="lineno">23 </code>      <code class="n">dataPerMs</code> <code class="o">:=</code> <code class="nb">Round</code><code class="p">(</code><code class="n">dataSize</code> <code class="o">/</code> <code class="nb">time</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">24 </code>      <code class="k">if</code> <code class="n">dataPerMs</code> <code class="o">&gt;=</code> <code class="n">CDataLimit</code> <code class="k">then</code>
+<code class="lineno">25 </code>        <code class="n">dataPerMs</code> <code class="o">:=</code> <code class="n">CDataLimit</code><code class="o">;</code>
+<code class="lineno">26 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">27 </code>    <code class="c1">// average over last four fetches for dynamic adaptation</code>
+<code class="lineno">28 </code>    <code class="n">hdmEstimatedPackageSize</code><code class="o">.</code><code class="n">Value</code> <code class="o">:=</code> <code class="nb">Round</code>
+<code class="lineno">29 </code>      <code class="p">((</code><code class="n">hdmEstimatedPackageSize</code><code class="o">.</code><code class="n">Value</code> <code class="o">/</code> <code class="mi">4</code> <code class="o">*</code> <code class="mi">3</code><code class="p">)</code> <code class="o">+</code> 
+<code class="lineno">30 </code>       <code class="p">(</code><code class="n">dataPerMs</code> <code class="o">/</code> <code class="mi">4</code><code class="p">)</code> <code class="o">*</code> <code class="n">CFetchTimeout_ms</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">31 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">32 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h3 id="leanpub-auto-local-queue">Local queue</h3>
+
+<p>Each parallel task reads data from a <em>local queue</em>, which is just a simple interface to the <em>data manager</em>. The most important part of a local queue is its <code>GetNext</code> method which provides the task with the next value.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code> <code class="nc">TOmniLocalQueueImpl</code><code class="o">.</code><code class="nf">GetNext</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">begin</code>
+<code class="lineno">3 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataPackage</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">4 </code>  <code class="k">if</code> <code class="k">not</code> <code class="bp">Result</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">5 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataManager_ref</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">lqiDataPackage</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">6 </code>    <code class="k">if</code> <code class="bp">Result</code> <code class="k">then</code>
+<code class="lineno">7 </code>      <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataPackage</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">8 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">9 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Each local queue contains a local <em>data package</em>. <code>GetNext</code> first tries to read the next value from that data package. If that fails (data packages is empty – it was already fully processed), it tries to get new data package from the data manager and (if successful) retries fetching next data from the (refreshed) data package. </p>
+
+<p><code>GetNext</code> in the data manager first tries to get the next package from the source provider (via private method <code>GetNextFromProvider</code> which calls source provider’s <code>GetPackage</code> method). If that fails, it tries to steal part of workload from another task. </p>
+
+<p>Stealing is the feature that allows all parallel tasks to be active up to the last value being enumerated. To implement it, data manager iterates over all local queues and tries to split each local queue’s data package in half. If that succeeds, half of the data package is left in the original local queue and another half is returned to the local queue that requested more data.</p>
+
+<p>Package splitting is highly dependent on data type. For example, integer data package just recalculates boundaries while enumerator-based packages must copy data around.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniValueEnumeratorDataPackage</code><code class="o">.</code><code class="nf">Split</code><code class="p">(</code>
+<code class="lineno"> 2 </code>  <code class="n">package</code><code class="o">:</code> <code class="n">TOmniDataPackage</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">var</code>
+<code class="lineno"> 4 </code>  <code class="n">intPackage</code><code class="o">:</code> <code class="n">TOmniValueEnumeratorDataPackage</code> <code class="k">absolute</code> <code class="n">package</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="n">iValue</code>    <code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="n">value</code>     <code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">begin</code>
+<code class="lineno"> 8 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="k">false</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">for</code> <code class="n">iValue</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="n">intPackage</code><code class="o">.</code><code class="n">Prepare</code><code class="p">(</code><code class="n">vedpApproxCount</code><code class="o">.</code><code class="n">Value</code> <code class="k">div</code> <code class="mi">2</code><code class="p">)</code>
+<code class="lineno">10 </code>  <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">11 </code>    <code class="k">if</code> <code class="k">not</code> <code class="n">GetNext</code><code class="p">(</code><code class="n">value</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">12 </code>      <code class="k">break</code><code class="o">;</code> <code class="c1">//for</code>
+<code class="lineno">13 </code>    <code class="n">intPackage</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="k">true</code><code class="o">;</code>
+<code class="lineno">15 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h3 id="leanpub-auto-output-ordering">Output ordering</h3>
+
+<p>Ordering (<code>PreserveOrder</code>) is usually used together with the <code>Into</code> modifier. The reason lies in the integration between the <code>Parallel.ForEach</code> infrastructure and your parallel code (the one that is executing as <code>Execute</code> payload). In the ‘normal’ <code>ForEach</code>, output from this parallel payload is not defined. You are allowed to generate any output in the payload but <code>ForEach</code> will know nothing about that. In this case OTL has no ability to preserver ordering because - at least from the viewpoint of the library - the parallelized code is producing no output.</p>
+
+<p>When <code>Into</code> is used, however, your code uses a different signature (different parameters). </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">Parallel</code><code class="o">.</code><code class="n">ForEach</code><code class="p">(</code><code class="mi">1</code><code class="o">,</code> <code class="n">CMaxTest</code><code class="p">)</code>
+<code class="lineno">2 </code>  <code class="o">.</code><code class="n">PreserveOrder</code>
+<code class="lineno">3 </code>  <code class="o">.</code><code class="n">Into</code><code class="p">(</code><code class="n">primeQueue</code><code class="p">)</code>
+<code class="lineno">4 </code>  <code class="o">.</code><code class="n">Execute</code><code class="p">(</code>
+<code class="lineno">5 </code>    <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> <code class="k">var</code> <code class="n">res</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code>
+<code class="lineno">6 </code>    <code class="k">begin</code>
+<code class="lineno">7 </code>      <code class="k">if</code> <code class="n">IsPrime</code><code class="p">(</code><code class="n">value</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">8 </code>        <code class="n">res</code> <code class="o">:=</code> <code class="n">value</code><code class="o">;</code>
+<code class="lineno">9 </code>    <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Parallel payload now takes two parameters. First is – as in the more common case – the input value while the second takes the output value. As you can see from the example, the parallelized code can produce zero or one output but not more.</p>
+
+<p>This small modification changes everything. As the Parallel infrastructure has control over the output parameter, it can manage it internally, associate it with the input and make sure that output is generated in the same order as input was.</p>
+
+<p>Let’s look at the innermost code - the part that is scheduling parallel tasks. When <code>Into</code> is used, <code>InternalExecuteTask</code> executes the following quite complicated code.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="n">InternalExecuteTask</code><code class="p">(</code>
+<code class="lineno"> 2 </code>  <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTask</code><code class="p">)</code>
+<code class="lineno"> 3 </code>  <code class="k">var</code>
+<code class="lineno"> 4 </code>    <code class="n">localQueue</code>      <code class="o">:</code> <code class="n">TOmniLocalQueue</code><code class="o">;</code>
+<code class="lineno"> 5 </code>    <code class="n">outputBuffer_ref</code><code class="o">:</code> <code class="n">TOmniOutputBuffer</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="n">position</code>        <code class="o">:</code> <code class="kt">int64</code><code class="o">;</code>
+<code class="lineno"> 7 </code>    <code class="bp">result</code>          <code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="n">value</code>           <code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">begin</code>
+<code class="lineno">10 </code>    <code class="n">oplDataManager</code><code class="o">.</code><code class="n">SetOutput</code><code class="p">(</code><code class="n">oplIntoQueueIntf</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">11 </code>    <code class="n">localQueue</code> <code class="o">:=</code> <code class="n">oplDataManager</code><code class="o">.</code><code class="n">CreateLocalQueue</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="k">try</code>
+<code class="lineno">13 </code>      <code class="n">outputBuffer_ref</code> <code class="o">:=</code> <code class="n">oplDataManager</code><code class="o">.</code><code class="n">AllocateOutputBuffer</code><code class="o">;</code>
+<code class="lineno">14 </code>      <code class="k">try</code>
+<code class="lineno">15 </code>        <code class="n">localQueue</code><code class="o">.</code><code class="n">AssociateBuffer</code><code class="p">(</code><code class="n">outputBuffer_ref</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">16 </code>        <code class="bp">result</code> <code class="o">:=</code> <code class="n">TOmniValue</code><code class="o">.</code><code class="n">Null</code><code class="o">;</code>
+<code class="lineno">17 </code>        <code class="k">while</code> <code class="p">(</code><code class="k">not</code> <code class="n">Stopped</code><code class="p">)</code> <code class="k">and</code> 
+<code class="lineno">18 </code>              <code class="n">localQueue</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">position</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code> <code class="k">do</code> 
+<code class="lineno">19 </code>        <code class="k">begin</code>
+<code class="lineno">20 </code>          <code class="n">loopBody</code><code class="p">(</code><code class="n">task</code><code class="o">,</code> <code class="n">value</code><code class="o">,</code> <code class="bp">result</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">21 </code>          <code class="k">if</code> <code class="k">not</code> <code class="bp">result</code><code class="o">.</code><code class="n">IsEmpty</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">22 </code>            <code class="n">outputBuffer_ref</code><code class="o">.</code><code class="n">Submit</code><code class="p">(</code><code class="n">position</code><code class="o">,</code> <code class="bp">result</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">23 </code>            <code class="bp">result</code> <code class="o">:=</code> <code class="n">TOmniValue</code><code class="o">.</code><code class="n">Null</code><code class="o">;</code>
+<code class="lineno">24 </code>          <code class="k">end</code><code class="o">;</code>
+<code class="lineno">25 </code>        <code class="k">end</code><code class="o">;</code>
+<code class="lineno">26 </code>      <code class="k">finally</code> 
+<code class="lineno">27 </code>        <code class="n">oplDataManager</code><code class="o">.</code><code class="n">ReleaseOutputBuffer</code><code class="p">(</code><code class="n">outputBuffer_ref</code><code class="p">)</code><code class="o">;</code> 
+<code class="lineno">28 </code>      <code class="k">end</code><code class="o">;</code>
+<code class="lineno">29 </code>    <code class="k">finally</code> 
+<code class="lineno">30 </code>      <code class="nb">FreeAndNil</code><code class="p">(</code><code class="n">localQueue</code><code class="p">)</code><code class="o">;</code> 
+<code class="lineno">31 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">32 </code>  <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Important points here are:</p>
+
+<ul>
+  <li>The data manager is associated with the output queue. (The <code>oplIntoQueueIntf</code> field contains a value passed to the <code>Into</code> method.)</li>
+  <li>A local queue is created, same as when ‘normal’ <code>ForEach</code> is executed.</li>
+  <li>An output buffer is created by the data manager and associated with the local queue.</li>
+  <li>For each input user code is executed and each non-empty output value is written into the output buffer.</li>
+  <li>Output buffer is released, as is local queue.</li>
+</ul>
+
+<p>The interesting part is hidden in the background; inside local queue, data manager and output buffer.</p>
+
+<p>The first modification lies in the data source. When <code>PreserveOrder</code> is used, each data package knows the source position it was read from. To simplify matters, data package splitting is not used in this case. [And because of that, data stealing cannot be used causing slightly less effective use of CPU as in the simpler <code>ForEach</code> case.]</p>
+
+<p>Each local queue has an <em>output buffer set</em> associated with it.</p>
+
+<p>Each output buffer set manages two <em>output buffers</em>. One is active and task is writing into it and another may be either empty or full. Each output buffer is associated with an input position - just as the data package is.</p>
+
+<blockquote>
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 393px;">
+    <img src="images/highlevel----outputQueue.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+</blockquote>
+
+<p>When we look at data reading/writing from the perspective of one task, everything is very simple. The task is reading data from a local queue (which reads data from a data package, associated with some position) and writing it to an output buffer (associated with the same position).</p>
+
+<p>The tricky part comes up when the data package is exhausted (the <code>if not Result</code> branch in the code below).</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniLocalQueueImpl</code><code class="o">.</code><code class="nf">GetNext</code><code class="p">(</code><code class="k">var</code> <code class="n">position</code><code class="o">:</code> <code class="kt">int64</code><code class="o">;</code> <code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataPackage</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">position</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">if</code> <code class="k">not</code> <code class="bp">Result</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 5 </code>    <code class="n">lqiBufferSet</code><code class="o">.</code><code class="n">ActiveBuffer</code><code class="o">.</code><code class="n">MarkFull</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="n">lqiBufferSet</code><code class="o">.</code><code class="n">ActivateBuffer</code><code class="o">;</code> 
+<code class="lineno"> 7 </code>      <code class="c1">// this will block if alternate buffer is also full</code>
+<code class="lineno"> 8 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataManager_ref</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">lqiDataPackage</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="k">if</code> <code class="bp">Result</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno">10 </code>      <code class="bp">Result</code> <code class="o">:=</code> <code class="n">lqiDataPackage</code><code class="o">.</code><code class="n">GetNext</code><code class="p">(</code><code class="n">position</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">11 </code>      <code class="k">if</code> <code class="bp">Result</code> <code class="k">then</code>
+<code class="lineno">12 </code>        <code class="n">lqiBufferSet</code><code class="o">.</code><code class="n">ActiveBuffer</code><code class="o">.</code><code class="n">Range</code> <code class="o">:=</code> <code class="n">lqiDataPackage</code><code class="o">.</code><code class="n">Range</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">14 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>First, the currently active buffer is marked as full. This causes <code>NotifyBufferFull</code> to be called (see below). Then, alternate buffer is activated. This call (<code>ActivateBuffer</code>) will actually block if alternate buffer is not free. In this case, the current thread is blocked until one of its buffers is written into the output queue.</p>
+
+<p>From this point on, <code>GetNext</code> proceeds in the same way as when used in the simple <code>ForEach</code>, except that it sets active buffer’s position whenever new data package is read from the data manager.</p>
+
+<p>The other part of the magic happens in the method that is called from <code>MarkFull</code>. It walks the buffer list and checks if there are any output buffers that are a) full and b) destined for the current output position. Such buffers are copied to the output and returned into use.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TOmniBaseDataManager</code><code class="o">.</code><code class="nf">NotifyBufferFull</code><code class="p">(</code>
+<code class="lineno"> 2 </code>  <code class="n">buffer</code><code class="o">:</code> <code class="n">TOmniOutputBufferImpl</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">begin</code>
+<code class="lineno"> 4 </code>  <code class="c1">// Remove buffer from the list. Check if next buffer is waiting in</code>
+<code class="lineno"> 5 </code>  <code class="c1">// the list. Copy buffer if it is full and repeat the process.</code>
+<code class="lineno"> 6 </code>  <code class="n">dmBufferRangeLock</code><code class="o">.</code><code class="n">Acquire</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="k">try</code>
+<code class="lineno"> 8 </code>    <code class="k">while</code> <code class="p">(</code><code class="n">dmBufferRangeList</code><code class="o">.</code><code class="n">Count</code> <code class="o">&gt;</code> <code class="mi">0</code><code class="p">)</code> <code class="k">and</code>
+<code class="lineno"> 9 </code>          <code class="p">(</code><code class="n">BufferList</code><code class="p">[</code><code class="mi">0</code><code class="p">]</code><code class="o">.</code><code class="n">Range</code><code class="o">.</code><code class="n">First</code> <code class="o">=</code> <code class="n">dmNextPosition</code><code class="p">)</code> <code class="k">and</code>
+<code class="lineno">10 </code>          <code class="n">BufferList</code><code class="p">[</code><code class="mi">0</code><code class="p">]</code><code class="o">.</code><code class="n">IsFull</code> <code class="k">do</code>
+<code class="lineno">11 </code>    <code class="k">begin</code>
+<code class="lineno">12 </code>      <code class="n">buffer</code> <code class="o">:=</code> <code class="n">TOmniOutputBufferImpl</code><code class="p">(</code>
+<code class="lineno">13 </code>        <code class="n">dmBufferRangeList</code><code class="o">.</code><code class="n">ExtractObject</code><code class="p">(</code><code class="mi">0</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">14 </code>      <code class="n">dmNextPosition</code> <code class="o">:=</code> <code class="n">buffer</code><code class="o">.</code><code class="n">Range</code><code class="o">.</code><code class="n">Last</code> <code class="o">+</code> <code class="mi">1</code><code class="o">;</code>
+<code class="lineno">15 </code>      <code class="n">buffer</code><code class="o">.</code><code class="n">CopyToOutput</code><code class="o">;</code>
+<code class="lineno">16 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">17 </code>  <code class="k">finally</code> <code class="n">dmBufferRangeLock</code><code class="o">.</code><code class="n">Release</code><code class="o">;</code> <code class="k">end</code><code class="o">;</code>
+<code class="lineno">18 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>To recap:</p>
+
+<ul>
+  <li>Each data buffer is associated with a position.</li>
+  <li>Each local queue has two output buffers, one is active, and another is either free or full.</li>
+  <li>Each output buffer is also associated with a position.</li>
+  <li>Local queue writes data to an output buffer.</li>
+  <li>When a buffer is full, it is put into a list of waiting buffers. At that moment all appropriate waiting buffers are copied to output.</li>
+</ul>
+
+
+
+</div>
+</body>
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap15.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:29:20 GMT -->
+</html>

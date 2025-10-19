@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap05.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:28:24 GMT -->
+<head>
+  <meta charset="utf-8">
+  <title>2. Introduction to OmniThreadLibrary</title>
+  <link href="stylesheet.css" rel="stylesheet" />
+</head>
+<body dir="ltr" class="kramdown">
+<div id="leanpub-toc">
+<h2></h2>
+<ol class="toc">
+<ul class='toc no-parts'>
+  <li>
+    <a href='chap00.html#intro-advert'>About me</a>
+  </li>
+  <li>
+    <a href='chap01.html#credits'>Credits</a>
+  </li>
+  <li>
+    <a href='chap02.html#introduction'>Introduction</a>
+    <ul>
+      <li>
+        <a href='chap02.html#leanpub-auto-formatting-conventions'>Formatting conventions</a>
+      </li>
+      <li>
+        <a href='chap02.html#leanpub-auto-learn-more'>Learn more</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap03.html#leanpub-auto-release-notes'>Release notes</a>
+  </li>
+  <li>
+    <a href='chap04.html#intro-mt'><span class="section-number">1. </span>Introduction to multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap04.html#leanpub-auto-multi-threading-as-a-source-of-problems'><span class="section-number">1.1 </span>Multi-threading as a source of problems</a>
+        <ul>
+          <li>
+            <a href='chap04.html#leanpub-auto-reading-and-writing-shared-data'><span class="section-number">1.1.1 </span>Reading and writing shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-modifying-shared-data'><span class="section-number">1.1.2 </span>Modifying shared data</a>
+          </li>
+          <li>
+            <a href='chap04.html#leanpub-auto-writes-masquerading-as-reads'><span class="section-number">1.1.3 </span>Writes masquerading as reads</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap05.html#intro-otl'><span class="section-number">2. </span>Introduction to OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap05.html#leanpub-auto-requirements'><span class="section-number">2.1 </span>Requirements</a>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-license'><span class="section-number">2.2 </span>License</a>
+      </li>
+      <li>
+        <a href='chap05.html#installation'><span class="section-number">2.3 </span>Installation</a>
+        <ul>
+          <li>
+            <a href='chap05.html#appendix-installing-getit'><span class="section-number">2.3.1 </span>Installing with GetIt</a>
+          </li>
+          <li>
+            <a href='chap05.html#appendix-installing-delphinus'><span class="section-number">2.3.2 </span>Installing with Delphinus</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-installing-design-package'><span class="section-number">2.3.3 </span>Installing design package</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-why-use-omnithreadlibrary'><span class="section-number">2.4 </span>Why use OmniThreadLibrary?</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tasksvsthreads'><span class="section-number">2.5 </span>Tasks vs. threads</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-lockingvsmessaging'><span class="section-number">2.6 </span>Locking vs. messaging</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-messagelooprequired'><span class="section-number">2.7 </span>Message loop required</a>
+        <ul>
+          <li>
+            <a href='chap05.html#introotl-messagelooprequired-console'><span class="section-number">2.7.1 </span>OmniThreadLibrary and console</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-another-task'><span class="section-number">2.7.2 </span>OmniThreadLibrary task started from another task</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-omnithreadlibrary-task-started-from-a-tthread'><span class="section-number">2.7.3 </span>OmniThreadLibrary task started from a TThread</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-tomnivalue'><span class="section-number">2.8 </span>TOmniValue</a>
+        <ul>
+          <li>
+            <a href='chap05.html#leanpub-auto-data-access'><span class="section-number">2.8.1 </span>Data access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-typetesting'><span class="section-number">2.8.2 </span>Type testing</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-clearing'><span class="section-number">2.8.3 </span>Clearing the content</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-operators'><span class="section-number">2.8.4 </span>Operators</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-generictypes'><span class="section-number">2.8.5 </span>Using with generic types</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-array'><span class="section-number">2.8.6 </span>Array access</a>
+          </li>
+          <li>
+            <a href='chap05.html#introotl-tomnivalue-records'><span class="section-number">2.8.7 </span>Handling records</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-object-ownership'><span class="section-number">2.8.8 </span>Object ownership</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-working-with-tvalue'><span class="section-number">2.8.9 </span>Working with TValue</a>
+          </li>
+          <li>
+            <a href='chap05.html#leanpub-auto-low-level-methods'><span class="section-number">2.8.10 </span>Low-level methods</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap05.html#leanpub-auto-tomnivalueobj'><span class="section-number">2.9 </span>TOmniValueObj</a>
+      </li>
+      <li>
+        <a href='chap05.html#introotl-fluentinterfaces'><span class="section-number">2.10 </span>Fluent interfaces</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap06.html#highlevel'><span class="section-number">3. </span>High-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap06.html#highlevel-introduction'><span class="section-number">3.1 </span>Introduction</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-a-life-cycle-of-an-abstraction'><span class="section-number">3.1.1 </span>A life cycle of an abstraction</a>
+          </li>
+          <li>
+            <a href='chap06.html#highLevel-intro-AnonymousEtAl'><span class="section-number">3.1.2 </span>Anonymous methods, procedures, and methods</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-introduction-pooling'><span class="section-number">3.1.3 </span>Pooling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-blocking-collection'><span class="section-number">3.2 </span>Blocking collection</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-iomniblockingcollection'><span class="section-number">3.2.1 </span>IOmniBlockingCollection</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-bulk-impexp'><span class="section-number">3.2.2 </span>Bulk import and export</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-blocking-collection-throttling'><span class="section-number">3.2.3 </span>Throttling</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-taskconfig'><span class="section-number">3.3 </span>Task configuration</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-async'><span class="section-number">3.4 </span>Async</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions'><span class="section-number">3.4.1 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-asyncawait'><span class="section-number">3.5 </span>Async/Await</a>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-future'><span class="section-number">3.6 </span>Future</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnifuturet-interface'><span class="section-number">3.6.1 </span>IOmniFuture&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-completion-detection'><span class="section-number">3.6.2 </span>Completion detection</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation'><span class="section-number">3.6.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-1'><span class="section-number">3.6.4 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples'><span class="section-number">3.6.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-join'><span class="section-number">3.7 </span>Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleljoin-interface'><span class="section-number">3.7.1 </span>IOmniParallelJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnijoinstate-interface'><span class="section-number">3.7.2 </span>IOmniJoinState interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-cancellation-1'><span class="section-number">3.7.3 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-join-exceptions'><span class="section-number">3.7.4 </span>Handling exceptions</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-paralleltask'><span class="section-number">3.8 </span>Parallel task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparalleltask-interface'><span class="section-number">3.8.1 </span>IOmniParallelTask interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-example'><span class="section-number">3.8.2 </span>Example</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-handling-exceptions-2'><span class="section-number">3.8.3 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-1'><span class="section-number">3.8.4 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-backgroundworker'><span class="section-number">3.9 </span>Background worker</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics'><span class="section-number">3.9.1 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnibackgroundworker-interface'><span class="section-number">3.9.2 </span>IOmniBackgroundWorker interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-initialization'><span class="section-number">3.9.3 </span>Task initialization</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-work-item-configuration'><span class="section-number">3.9.4 </span>Work item configuration</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-backgroundworker-iomniworkitem'><span class="section-number">3.9.5 </span>Work item interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-2'><span class="section-number">3.9.6 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-pipeline'><span class="section-number">3.10 </span>Pipeline</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-background'><span class="section-number">3.10.1 </span>Background</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-basics-1'><span class="section-number">3.10.2 </span>Basics</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnipipeline-interface'><span class="section-number">3.10.3 </span>IOmniPipeline interface</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-example-1'><span class="section-number">3.10.3.1 </span>Example</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-generators-mutators-and-aggregators'><span class="section-number">3.10.4 </span>Generators, mutators, and aggregators</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-throttling'><span class="section-number">3.10.5 </span>Throttling</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-parallel'><span class="section-number">3.10.6 </span>Parallel stages</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-pipeline-exceptions'><span class="section-number">3.10.7 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-3'><span class="section-number">3.10.8 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-for'><span class="section-number">3.11 </span>Parallel for</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-for-iomniparallelsimpleloop'><span class="section-number">3.11.1 </span>IOmniParallelSimpleLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-an-array'><span class="section-number">3.11.2 </span>Iterating over an array</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-4'><span class="section-number">3.11.3 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-foreach'><span class="section-number">3.12 </span>ForEach</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-cooperation'><span class="section-number">3.12.1 </span>Cooperation</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iterating-over-'><span class="section-number">3.12.2 </span>Iterating over …</a>
+            <ul>
+              <li>
+                <a href='chap06.html#leanpub-auto-number-ranges'><span class="section-number">3.12.2.1 </span>… Number ranges</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-enumerable-collections'><span class="section-number">3.12.2.2 </span>… Enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-thread-safe-enumerable-collections'><span class="section-number">3.12.2.3 </span>… Thread-safe enumerable collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-blocking-collections'><span class="section-number">3.12.2.4 </span>… Blocking collections</a>
+              </li>
+              <li>
+                <a href='chap06.html#leanpub-auto-anything'><span class="section-number">3.12.2.5 </span>… Anything</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-providing-external-input'><span class="section-number">3.12.3 </span>Providing external input</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelloop-interface'><span class="section-number">3.12.4 </span>IOmniParallelLoop interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-preserveorder'><span class="section-number">3.12.5 </span>Preserving output order</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-aggregation'><span class="section-number">3.12.6 </span>Aggregation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-cancellation'><span class="section-number">3.12.7 </span>Cancellation</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-taskinit'><span class="section-number">3.12.8 </span>Task initialization and finalization</a>
+          </li>
+          <li>
+            <a href='chap06.html#highlevel-foreach-exceptions'><span class="section-number">3.12.9 </span>Handling exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-5'><span class="section-number">3.12.10 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-forkjoin'><span class="section-number">3.13 </span>Fork/Join</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniforkjoin-interface'><span class="section-number">3.13.1 </span>IOmniForkJoin interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicompute-interface'><span class="section-number">3.13.2 </span>IOmniCompute interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomnicomputet-interface'><span class="section-number">3.13.3 </span>IOmniCompute&lt;T&gt; interface</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-exceptions'><span class="section-number">3.13.4 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap06.html#leanpub-auto-examples-6'><span class="section-number">3.13.5 </span>Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-map'><span class="section-number">3.14 </span>Map</a>
+        <ul>
+          <li>
+            <a href='chap06.html#leanpub-auto-iomniparallelmappert1t2-interface'><span class="section-number">3.14.1 </span>IOmniParallelMapper&lt;T1,T2&gt; interface</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap06.html#highlevel-timedtask'><span class="section-number">3.15 </span>Timed task</a>
+        <ul>
+          <li>
+            <a href='chap06.html#highlevel-timedtask-iomnitimedtask'><span class="section-number">3.15.1 </span>IOmniTimedTask interface</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap07.html#lowlevel'><span class="section-number">4. </span>Low-level multi-threading</a>
+    <ul>
+      <li>
+        <a href='chap07.html#leanpub-auto-low-level-for-the-impatient'><span class="section-number">4.1 </span>Low-level for the impatient</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-fourways'><span class="section-number">4.2 </span>Four ways to create a task</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitaskcontrol'><span class="section-number">4.3 </span>IOmniTaskControl and IOmniTask interfaces</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskControllerOwner'><span class="section-number">4.4 </span>Task controller needs an owner</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-communication'><span class="section-number">4.5 </span>Communication subsystem</a>
+      </li>
+      <li>
+        <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes'><span class="section-number">4.6 </span>Processor groups and NUMA nodes</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-threadpool'><span class="section-number">4.7 </span>Thread pooling</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-execution-flow'><span class="section-number">4.7.1 </span>Execution flow</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-interface'><span class="section-number">4.7.2 </span>IOmniThreadPool interface</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-exitcode'><span class="section-number">4.7.3 </span>Task exit code</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-threadpool-monitoring'><span class="section-number">4.7.4 </span>Monitoring thread pool operations</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-1'><span class="section-number">4.7.5 </span>Processor groups and NUMA nodes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-lockfree'><span class="section-number">4.8 </span>Lock-free collections</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedstack'><span class="section-number">4.8.1 </span>Bounded Stack</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-boundedqueue'><span class="section-number">4.8.2 </span>Bounded queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-messagequeue'><span class="section-number">4.8.3 </span>Message queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-dynamicqueue'><span class="section-number">4.8.4 </span>Dynamic queue</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-lockfree-observing'><span class="section-number">4.8.5 </span>Observing lock-free collections</a>
+            <ul>
+              <li>
+                <a href='chap07.html#leanpub-auto-examples-7'><span class="section-number">4.8.5.1 </span>Examples</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-benchmarks'><span class="section-number">4.8.6 </span>Benchmarks</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-eventmonitor'><span class="section-number">4.9 </span>Event monitor</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-simpletasks'><span class="section-number">4.10 </span>Simple tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-name'><span class="section-number">4.10.1 </span>Name</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-uniqueid'><span class="section-number">4.10.2 </span>UniqueID</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-parameters'><span class="section-number">4.10.3 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-termination'><span class="section-number">4.10.4 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-exitcode'><span class="section-number">4.10.5 </span>ExitCode</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-taskexceptions'><span class="section-number">4.10.6 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-communication'><span class="section-number">4.10.7 </span>Sending messages to a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-receiving'><span class="section-number">4.10.8 </span>Receiving messages from a task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-chainto'><span class="section-number">4.10.9 </span>ChainTo</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-joinleave'><span class="section-number">4.10.10 </span>Join / Leave</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-monitorwith'><span class="section-number">4.10.11 </span>MonitorWith / RemoveMonitor</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-enforced'><span class="section-number">4.10.12 </span>Enforced</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-unobserved'><span class="section-number">4.10.13 </span>Unobserved</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-cancellationtoken'><span class="section-number">4.10.14 </span>Cancellation token / CancelWith</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-tasklock'><span class="section-number">4.10.15 </span>Lock / WithLock</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-counter'><span class="section-number">4.10.16 </span>WithCounter</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-simpletasks-setpriority'><span class="section-number">4.10.17 </span>SetPriority</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-setqueuesize'><span class="section-number">4.10.18 </span>SetQueueSize</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-tomniworker'><span class="section-number">4.11 </span>TOmniWorker tasks</a>
+        <ul>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-waitforinit'><span class="section-number">4.11.1 </span>WaitForInit</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-task'><span class="section-number">4.11.2 </span>Task</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-communication'><span class="section-number">4.11.3 </span>Receiving messages</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-registercomm'><span class="section-number">4.11.4 </span>RegisterComm</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-tomniworkerinvoke'><span class="section-number">4.11.5 </span>Invoke</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-msgwait'><span class="section-number">4.11.6 </span>Windows message &amp; APC processing</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-timers'><span class="section-number">4.11.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-tomniworker-terminateWhen'><span class="section-number">4.11.8 </span>TerminateWhen</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-userdata'><span class="section-number">4.11.9 </span>UserData</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-taskgroup'><span class="section-number">4.12 </span>Task groups</a>
+      </li>
+      <li>
+        <a href='chap07.html#lowlevel-iomnitask'><span class="section-number">4.13 </span>IOmniTask interface</a>
+        <ul>
+          <li>
+            <a href='chap07.html#leanpub-auto-name-and-id'><span class="section-number">4.13.1 </span>Name and ID</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-parameters'><span class="section-number">4.13.2 </span>Parameters</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-termination'><span class="section-number">4.13.3 </span>Termination</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-exitstatus'><span class="section-number">4.13.4 </span>Exit status</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-exceptions-1'><span class="section-number">4.13.5 </span>Exceptions</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-communication'><span class="section-number">4.13.6 </span>Communication</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-timers'><span class="section-number">4.13.7 </span>Timers</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-registerwaitobject'><span class="section-number">4.13.8 </span>RegisterWaitObject</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-cancellationtoken'><span class="section-number">4.13.9 </span>CancellationToken</a>
+          </li>
+          <li>
+            <a href='chap07.html#lowlevel-iomnitask-lock'><span class="section-number">4.13.10 </span>Lock</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-counter'><span class="section-number">4.13.11 </span>Counter</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-processor-groups-and-numa-nodes-2'><span class="section-number">4.13.12 </span>Processor groups and NUMA nodes</a>
+          </li>
+          <li>
+            <a href='chap07.html#leanpub-auto-internal-and-obsolete-functions'><span class="section-number">4.13.13 </span>Internal and obsolete functions</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap08.html#synch'><span class="section-number">5. </span>Synchronization</a>
+    <ul>
+      <li>
+        <a href='chap08.html#synch-criticalsections'><span class="section-number">5.1 </span>Critical sections</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-criticalsections-iomnicriticalsection'><span class="section-number">5.1.1 </span>IOmniCriticalSection</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-tomnics'><span class="section-number">5.1.2 </span>TOmniCS</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-criticalsections-lockedt'><span class="section-number">5.1.3 </span>Locked&lt;T&gt;</a>
+            <ul>
+              <li>
+                <a href='chap08.html#leanpub-auto-why-not-use-tmonitor'><span class="section-number">5.1.3.1 </span>Why not use TMonitor?</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnimrew'><span class="section-number">5.2 </span>TOmniMREW</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-cancellationtoken'><span class="section-number">5.3 </span>Cancellation token</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-waitablevalue'><span class="section-number">5.4 </span>Waitable value</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-inversesemaphore'><span class="section-number">5.5 </span>Inverse semaphore</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-initialization'><span class="section-number">5.6 </span>Initialization</a>
+        <ul>
+          <li>
+            <a href='chap08.html#synch-initialization-pessimistic'><span class="section-number">5.6.1 </span>Pessimistic initialization</a>
+          </li>
+          <li>
+            <a href='chap08.html#synch-initialization-optimistic'><span class="section-number">5.6.2 </span>Optimistic initialization</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap08.html#synch-twaitfor'><span class="section-number">5.7 </span>TWaitFor</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnilockmanager'><span class="section-number">5.8 </span>TOmniLockManager&lt;K&gt;</a>
+      </li>
+      <li>
+        <a href='chap08.html#synch-tomnisinglethreadusechecker'><span class="section-number">5.9 </span>TOmniSingleThreadUseChecker</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap09.html#misc'><span class="section-number">6. </span>Miscellaneous</a>
+    <ul>
+      <li>
+        <a href='chap09.html#misc-tOmniTwoWayChannel'><span class="section-number">6.1 </span>TOmniTwoWayChannel</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnivaluecontainer'><span class="section-number">6.2 </span>TOmniValueContainer</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnicounter'><span class="section-number">6.3 </span>TOmniCounter</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-TOmniAlignedInt32'><span class="section-number">6.4 </span>TOmniAlignedInt32 and TOmniAlignedInt64</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecordwrapper'><span class="section-number">6.5 </span>TOmniRecordWrapper</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-tomnirecord'><span class="section-number">6.6 </span>TOmniRecord</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniautodestroyobject'><span class="section-number">6.7 </span>IOmniAutoDestroyObject</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-iomniintegerset'><span class="section-number">6.8 </span>IOmniIntegerSet</a>
+      </li>
+      <li>
+        <a href='chap09.html#misc-environment'><span class="section-number">6.9 </span>Environment</a>
+        <ul>
+          <li>
+            <a href='chap09.html#leanpub-auto-iomniaffinity'><span class="section-number">6.9.1 </span>IOmniAffinity</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap10.html#howto'><span class="section-number">7. </span>How-to</a>
+    <ul>
+      <li>
+        <a href='chap10.html#howto-backgroundFileScanning'><span class="section-number">7.1 </span>Background file scanning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-webDownload'><span class="section-number">7.2 </span>Web download and database storage</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForSyncOut'><span class="section-number">7.3 </span>Parallel for with synchronized output</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelForTaskInit'><span class="section-number">7.4 </span>Using taskIndex and task initializer in parallel for</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-listPartitioning'><span class="section-number">7.5 </span>Background worker and list partitioning</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelDataProduction'><span class="section-number">7.6 </span>Parallel data production</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-connectionPool'><span class="section-number">7.7 </span>Building a connection pool</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-from-theory-to-practice'><span class="section-number">7.7.1 </span>From theory to practice</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-running-the-demo'><span class="section-number">7.7.2 </span>Running the demo</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-quickSortParallelMax'><span class="section-number">7.8 </span>QuickSort and parallel max</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-quicksort'><span class="section-number">7.8.1 </span>QuickSort</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-parallel-max'><span class="section-number">7.8.2 </span>Parallel max</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-parallelSearch'><span class="section-number">7.9 </span>Parallel search in a tree</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-multiFrame'><span class="section-number">7.10 </span>Multiple workers with multiple frames</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-worker'><span class="section-number">7.10.1 </span>The worker</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-frame'><span class="section-number">7.10.2 </span>The frame</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-the-form'><span class="section-number">7.10.3 </span>The form</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-databases'><span class="section-number">7.11 </span>OmniThreadLibrary and databases</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-database-model'><span class="section-number">7.11.1 </span>Database model</a>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-frame-and-worker'><span class="section-number">7.11.2 </span>Frame and worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-connecting-to-the-database'><span class="section-number">7.11.2.1 </span>Connecting to the database</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-retrieving-the-data'><span class="section-number">7.11.2.2 </span>Retrieving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-main-program'><span class="section-number">7.11.3 </span>Main program</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href='chap10.html#howto-com'><span class="section-number">7.12 </span>OmniThreadLibrary and COM/OLE</a>
+      </li>
+      <li>
+        <a href='chap10.html#howto-mqtthread'><span class="section-number">7.13 </span>Using a message queue with a TThread worker</a>
+        <ul>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-multiple-producers-to-a-single-worker'><span class="section-number">7.13.1 </span>Sending data from multiple producers to a single worker</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup'><span class="section-number">7.13.1.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-worker'><span class="section-number">7.13.1.2 </span>Sending data to the worker</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data'><span class="section-number">7.13.1.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href='chap10.html#leanpub-auto-sending-data-from-a-worker-to-a-form'><span class="section-number">7.13.2 </span>Sending data from a worker to a form</a>
+            <ul>
+              <li>
+                <a href='chap10.html#leanpub-auto-initialization-and-cleanup-1'><span class="section-number">7.13.2.1 </span>Initialization and cleanup</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-sending-data-to-the-form'><span class="section-number">7.13.2.2 </span>Sending data to the form</a>
+              </li>
+              <li>
+                <a href='chap10.html#leanpub-auto-receiving-the-data-1'><span class="section-number">7.13.2.3 </span>Receiving the data</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap11.html#appendix-units'>A. Units</a>
+  </li>
+  <li>
+    <a href='chap12.html#demos'>B. Demo applications</a>
+  </li>
+  <li>
+    <a href='chap13.html#examples'>C. Examples</a>
+  </li>
+  <li>
+    <a href='chap14.html#appendix-hooking'>D. Hooking into OmniThreadLibrary</a>
+    <ul>
+      <li>
+        <a href='chap14.html#leanpub-auto-exception-notifications'>Exception notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-thread-notifications'>Thread notifications</a>
+      </li>
+      <li>
+        <a href='chap14.html#leanpub-auto-pool-notifications'>Pool notifications</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap15.html#highlevel-foreach-internals'>E. ForEach internals</a>
+    <ul>
+      <li>
+        <a href='chap15.html#leanpub-auto-source-provider'>Source provider</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-data-manager'>Data manager</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-local-queue'>Local queue</a>
+      </li>
+      <li>
+        <a href='chap15.html#leanpub-auto-output-ordering'>Output ordering</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href='chap16.html#leanpub-auto-f-hyperlinks'>F. Hyperlinks</a>
+  </li>
+  <li>
+    <a href='chap17.html#leanpub-endnotes'>Notes</a>
+  </li>
+</ul>
+
+</ol>
+</div>
+<div id="leanpub-main" class="kramdown">
+<h2 id="intro-otl">
+<span class="section-number">2. </span>Introduction to OmniThreadLibrary</h2>
+
+<p><a href="http://www.omnithreadlibrary.com/">OmniThreadLibrary</a> is a multi-threading library for Delphi, written mostly by the author of this book (see <a href="chap01.html#credits">Credits</a> for a full list of contributors). OmniThreadLibrary can be roughly divided into three parts. Firstly, there are building blocks that can be used either with the OmniThreadLibrary threading helpers or with any other threading approach (f.i. with Delphi’s <a href="http://docwiki.embarcadero.com/Libraries/en/System.Classes.TThread"><code>TThread</code></a> or with <a href="http://andy.jgknet.de/blog/?page_id=100">AsyncCalls</a>). Most of these building blocks are described in chapter <a href="chap09.html#misc">Miscellaneous</a>, while some parts are covered elsewhere in the book (<a href="chap07.html#lowlevel-lockfree">Lock-free Collections</a>, <a href="chap06.html#highlevel-blocking-collection">Blocking collection</a>, <a href="chap08.html#synch">Synchronization</a>).</p>
+
+<p>Secondly, OmniThreadLibrary brings <a href="chap07.html#lowlevel">low-level multithreading</a> framework, which can be thought of as a scaffolding that wraps the TThread class. This framework simplifies passing messages to and from the background threads, starting background tasks, using thread pools and more. In some ways it is similar to <a href="http://docwiki.embarcadero.com/Libraries/en/System.Threading.ITask"><code>ITask</code></a> which was introduced in Delphi XE7 except that OmniThreadLibrary’s implementation offers more rounded feature set.</p>
+
+<p>Thirdly, OmniThreadLibrary introduces <a href="chap06.html#highlevel">high-level multithreading</a> concept. High-level framework contains multiple pre-packaged solutions (so-called <em>abstractions</em>) which can be used in your code. The idea is that the user should just choose appropriate abstraction (<a href="chap06.html#highlevel-future"><em>Future</em></a>, <a href="chap06.html#highlevel-pipeline"><em>Pipeline</em></a>, <a href="chap06.html#highlevel-map"><em>Map</em></a> …) and write the worker code, while the OmniThreadLibrary provides the framework that implements the tricky multi-threaded parts, takes care of synchronisation and handles other menial tasks.</p>
+
+<h3 id="leanpub-auto-requirements">
+<span class="section-number">2.1 </span>Requirements</h3>
+
+<p>OmniThreadLibrary requires at least Delphi 2007 and doesn’t work with FreePascal. The reason for this is that most parts of OmniThreadLibrary use language constructs that are not yet supported by the FreePascal compiler.</p>
+
+<p><a href="chap06.html#highlevel">High-level multithreading</a> framework requires at least Delphi 2009. Delphi XE or newer is recommended as some parts of the framework aren’t supported in Delphi 2009 and 2010 due to compiler bugs.</p>
+
+<p>OmniThreadLibrary only works in Windows applications. Both 32-bit and 64-bit platform are supported. Applications can be compiled with the VCL library, as a service or as a <a href="chap05.html#introotl-messagelooprequired-console">console</a> application. FireMonkey is currently not supported.   </p>
+
+<h3 id="leanpub-auto-license">
+<span class="section-number">2.2 </span>License</h3>
+
+<p>OmniThreadLibrary is an open-sourced library with the OpenBSD license.</p>
+
+<blockquote>
+  <p>This software is distributed under the BSD license.</p>
+
+  <p>Copyright (c) Primoz Gabrijelcic</p>
+
+  <p>All rights reserved.</p>
+
+  <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+  <ul>
+    <li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+    <li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+    <li>The name of the Primoz Gabrijelcic may not be used to endorse or promote products derived from this software without specific prior written permission.</li>
+  </ul>
+
+  <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</blockquote>
+
+<p>In simpler words, the license says:</p>
+
+<ol class="numeric">
+  <li>You can use the library in any project, free, open source or commercial, without having to mention my name or the name of the library anywhere in your project, documentation or on the website.</li>
+  <li>You can change the source for your own use. You can also put a modified version on the web, but you must not remove my name or the license from the source code.</li>
+  <li>I’m not guilty if the software blows in your face. Remember, you got OmniThreadLibrary for free.</li>
+</ol>
+
+<p>In case your company would like to get a support contract for the OmniThreadLibrary, please <a href="chap00.html#intro-advert">contact me</a>.</p>
+
+<h3 id="installation">
+<span class="section-number">2.3 </span>Installation</h3>
+
+<ol class="numeric">
+  <li>Download the last stable edition (download link is available at the OmniThreadLibrary <a href="http://www.omnithreadlibrary.com/omnithreadlibrary/download.htm">site</a>), or download the latest state from the <a href="https://github.com/gabr42/OmniThreadLibrary">repository</a>. Typically, it is safe to follow the repository trunk as only tested code is committed.</li>
+  <li>If you have downloaded the last stable edition, unpack it to a folder.</li>
+  <li>Add the folder where you [unpacked last stable edition/checked out the SVN trunk] to the Delphi’s <em>Library path</em>. Also add the <em>src</em> subfolder to the <em>Library path</em>. In case you are already using units from my <a href="https://github.com/gabr42/GpDelphiUnits">GpDelphiUnits</a> project, you can ignore the copies in the <em>src</em> folder and use <em>GpDelphiUnits</em> version.</li>
+  <li>Add necessary units to the <code>uses</code> statement and start using the library!</li>
+</ol>
+
+<h4 id="appendix-installing-getit">
+<span class="section-number">2.3.1 </span>Installing with GetIt</h4>
+
+<p>Delphi/RAD Studio XE8 and newer come with an integrated package manager called GetIt.</p>
+
+<p>With GetIt you can install OmniThreadLibrary with just a few clicks. Start Delphi and open <strong>Tools, GetIt Package Manager</strong>. Enter ‘omnithreadlibrary’ into the search bar. Then click on the <strong>INSTALL</strong> button under the OmniThreadLibrary graphics. </p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 467px;">
+    <img src="images/installGetIt.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<p>GetIt will download OmniThreadLibrary from Embarcadero’s servers, add source path to the Library path and compile and install the design package. </p>
+
+<p>To find the <a href="chap12.html#demos">demos</a>, look at the <strong>Library path</strong>. It will contain something like this at the end: <code>$(BDSCatalogRepository)\OmniThreadLibrary_3.07.1-Tokyo\src\</code>. To find the true path, look into <strong>Tools, Options, Environment Options, Environment Variables</strong> where <code>BDSCatalogRepository</code> is defined.</p>
+
+<p>Removing OmniThreadLibrary from Delphi is equally simple. Just open GetIt, select the <strong>Installed</strong> category and click the <strong>UNINSTALL</strong> button under the OmniThreadLibrary graphics.</p>
+
+<h4 id="appendix-installing-delphinus">
+<span class="section-number">2.3.2 </span>Installing with Delphinus</h4>
+
+<p>Delphinus is a 3<sup>rd</sup> party package manager for Delphi XE and newer, similar to Embarcadero’s own GetIt package manager.</p>
+
+<p>Unlike GetIt, which comes integrated into Delphi, you have to install Delphinus manually. Recommended installation procedure is:</p>
+
+<ol class="numeric">
+  <li>Stop Delphi/RAD Studio.</li>
+  <li>Install Delphinus with the <a href="http://memnarch.bplaced.net/blog/pojects/all-downloads/?did=19">web installer</a>.
+    <ol class="lower-alpha">
+      <li>It is recommended to right-click on the installer and select ‘Run as administrator’. Otherwise Delphinus may not be able to create the installation folder.</li>
+    </ol>
+  </li>
+  <li>Start Delphi/RAD Studio.</li>
+  <li>(Optional, but highly recommended) Open <strong>Tools, Delphinus</strong>, click the <strong>Settings</strong> icon and enter <strong>OAuth-Token</strong>. This will prevent frequent GitHub ‘rate limitation’ errors during operation. Instructions for generating the token can be found on the <a href="https://github.com/Memnarch/Delphinus/wiki/Installing-Delphinus">Delphinus wiki</a>.</li>
+</ol>
+
+<p>Once Delphinus is installed, click the <strong>Tools, Delphinus</strong> and in the Delphinus window click the green <strong>Refresh</strong> icon. When the package list is refreshed, enter ‘omnithreadlibrary’ into the search bar and press &lt;Enter&gt;. Click on the OmniThreadLibrary list item to get additional description in the panel on the right. </p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 467px;">
+    <img src="images/installDelphinus.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<p>To install OmniThreadLibrary, click the <strong>Install</strong> icon (blue arrow pointing downwards to the disk drive). Be patient as Delphinus may take some time without displaying any progress on the screen.</p>
+
+<p>When installation is complete, click the <strong>Show log</strong> button and in the log find the path where OmniThreadLibrary was installed (look for <strong>Adding libpathes</strong> message). Inside that folder you’ll also find all OmniThreadLibrary <a href="chap12.html#demos">demos</a>.</p>
+
+<p>K&gt; You can find this path in Delphi’s <strong>Library path</strong> configuration setting.</p>
+
+<p>Delphinus will compile and install appropriate package so everything is set up for you. </p>
+
+<p>Removing OmniThreadLibrary from Delphi is equally simple. Just open Delphinus, select the <strong>Installed</strong> category, select OmniThreadLibrary and click the <strong>Remove</strong> icon (red circle with white X). </p>
+
+<h4 id="leanpub-auto-installing-design-package">
+<span class="section-number">2.3.3 </span>Installing design package</h4>
+
+<p>OmniThreadLibrary includes one design-time component (<a href="chap07.html#lowlevel-simpletasks-monitorwith"><code>TOmniEventMonitor</code></a>) which may be used to receive messages sent from the background tasks and to monitor thread creation/destruction. It is used in some <a href="chap12.html#demos">demo applications</a>. </p>
+
+<p>If you installed OmniThreadLibrary with <a href="chap05.html#appendix-installing-delphinus">GetIt</a> or <a href="chap05.html#appendix-installing-delphinus">Delphinus</a> the installation process has already installed the design package and you may omit this step.</p>
+
+<p>To compile and install the package containing this component, follow these steps:</p>
+
+<ul>
+  <li>From Delphi, open <em>packages</em> subfolder of the OmniThreadLibrary installation and select file <em>OmniThreadLibraryPackages.groupproj</em> from the appropriate folder.</li>
+  <li>In the Project Manager window you’ll find two projects – <em>OmniThreadLibraryRuntime{VER}.bpl</em> and <em>OmniThreadLibraryDesigntime{VER}.bpl</em> (where {VER} is <strong>package version</strong><sup id="fnref-docwiki-packagever"><a href="chap17.html#fn-docwiki-packagever" rel="footnote">1</a></sup> of your Delphi). If the Project Manager window is not visible, select <em>View</em>, <em>Project Manager</em> from the menu.</li>
+</ul>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 50%;">
+    <img src="images/packageManager.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<ul>
+  <li>Right-click on the <em>OmniThreadLibraryRuntime{VER}.bpl</em> and select <em>Build</em> from the pop-up menu.</li>
+  <li>Right-click on the <em>OmniThreadLibraryDesigntime{VER}.bpl</em> and select <em>Build</em> from the pop-up menu.</li>
+  <li>Right-click again on the <em>OmniThreadLibraryDesigntime{VER}.bpl</em> and select <em>Install</em> from the pop-up menu.</li>
+  <li>Delphi will report that the <code>TOmniEventMonitor</code> component was installed.</li>
+</ul>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 70%;">
+    <img src="images/packageInstalled.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<ul>
+  <li>Close the project group with <em>File</em>, <em>Close All</em>. If Delphi asks you whether to save modified files, choose <em>No</em>.</li>
+</ul>
+
+<p>You should repeat these steps whenever the OmniThreadLibrary installation is updated.</p>
+
+<h3 id="leanpub-auto-why-use-omnithreadlibrary">
+<span class="section-number">2.4 </span>Why use OmniThreadLibrary?</h3>
+
+<p>OmniThreadLibrary approaches the threading problem from a different perspective than TThread. While the Delphi’s native approach is oriented towards creating and managing threads on a very low level, the main design guideline behind OmniThreadLibrary is: “Enable the programmer to work with threads in as fluent way as possible.” The code should ideally relieve you from all burdens commonly associated with multi-threading. </p>
+
+<p>OmniThreadLibrary was designed to become a “VCL for multi-threading” – a library that will make typical multi-threading tasks really simple but still allow you to dig deeper and mess with the multi-threading code at the operating system level. While still allowing this low-level tinkering, OmniThreadLibrary enables you to work on a higher level of abstraction most of the time.</p>
+
+<p>There are two important points of distinction between TThread and OmniThreadLibrary, both explained further in this chapter. One is that OmniThreadLibrary focuses on <a href="chap05.html#introotl-tasksvsthreads">tasks, not threads</a> and another is that in OmniThreadLibrary <a href="chap05.html#introotl-lockingvsmessaging">messaging tries to replace locking</a> whenever possible.</p>
+
+<p>By moving most of the critical multi-threaded code into reusable components (classes and high-level abstractions), OmniThreadLibrary allows you to write better multithreaded code faster.</p>
+
+
+<h3 id="introotl-tasksvsthreads">
+<span class="section-number">2.5 </span>Tasks vs. threads</h3>
+
+<p>In OmniThreadLibrary you don’t create <em>threads</em> but <em>tasks</em>. A task can be executed in a new thread or in an existing thread, taken from a thread pool. </p>
+
+<p>A task is created using <code>CreateTask</code> function, which takes as a parameter a global procedure, a method, an instance of a <code>TOmniWorker</code> class (or, usually, a descendant of that class) or an anonymous method (in Delphi 2009 and newer). <code>CreateTask</code> returns an <code>IOmniTaskControl</code> interface, which can be used to control the task. A task is always created in a suspended state and you have to call <code>Run</code> to activate it (or <code>Schedule</code> to run it in a thread pool).</p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 293px;">
+    <img src="images/taskVsThread.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<p>The task has access to the <code>IOmniTask</code> interface and can use it to communicate with the owner (the part of the program that started the task). Both interfaces are explained in detail in chapter <a href="chap07.html#lowlevel">Low-level multithreading</a>.</p>
+
+<p>The distinction between the task and the thread can be summarized in few simple words.</p>
+
+<blockquote>
+  <p><em>Task is part of code that has to be executed.</em></p>
+
+  <p><em>Thread is the execution environment.</em></p>
+</blockquote>
+
+<p>You take care of the task, OmniThreadLibrary takes care of the thread.</p>
+
+
+<h3 id="introotl-lockingvsmessaging">
+<span class="section-number">2.6 </span>Locking vs. messaging</h3>
+
+<p>I believe that locking is evil. It leads to slow code and deadlocks and is one of the main reasons for <em>almost-working</em> multi-threaded code (especially when you use shared data and forget to lock it up). Because of that, OmniThreadLibrary tries to move as much away from the shared data approach as possible. Cooperation between threads is rather achieved with messaging.</p>
+
+<p>If we compare shared data approach with messaging, both have good and bad sides. On the good side, shared data approach is fast because it doesn’t move data around and is less memory intensive as the data is kept only in one copy. On the bad side, locking must be used to access data which leads to bad scaling (slowdowns when many threads are accessing the data), deadlocks and livelocks.</p>
+
+<aside class="information blurb">
+    <p>To see how easy it is to run into problems with locking, play the <a href="http://deadlockempire.4delphi.com/delphi/">The Deadlock Empire</a> game.</p>
+
+</aside>
+
+<p>The situation is almost reversed for messaging. There’s no shared data so no locking, which makes the program faster, more scalable and less prone to fall in the deadlocking trap. (Livelocking is still possible, though.) On the bad side, it uses more memory, requires copying data around (which may be a problem if shared data is large) and may lead to complicated and hard to understand algorithms.</p>
+
+<p>OmniThreadLibrary uses custom lock-free structures to transfer data between the task and its owner (or directly between two tasks). The system is tuned for high data rates and can transfer more than million messages per second. However, in some situations shared data approach is necessary, and that’s why OmniThreadLibrary adds significant support for <a href="chap08.html#synch">synchronisation</a>.</p>
+
+<aside>
+  <p>Some would disagree with the OmniThreadLibrary communication structures being called <em>lock-free</em>. In reality, there are no communication mechanisms that would correctly work in a multi-threaded world without using locking. The name <em>lock-free</em> only implies that no <em>operating system</em> locking primitives are being used. Instead, OmniThreadLibrary achieves the thread-safeness by using <em>bus locking</em>, a special processor instruction prefix that achieves atomic operation in a multiprocessor system. Bus-locked operations are slower than the normal assembler code, especially as they may stop other cores for the time of the operation execution, but then they are also faster than the operating system locking. </p>
+
+</aside>
+
+<p>Lock-free (or <em>micro-locked</em>) structures in OmniThreadLibrary encompass:</p>
+
+<ul>
+  <li><a href="chap07.html#lowlevel-lockfree-boundedstack">bounded (size-limited) stack</a></li>
+  <li><a href="chap07.html#lowlevel-lockfree-boundedqueue">bounded (size-limited) queue</a></li>
+  <li><a href="chap07.html#lowlevel-lockfree-messagequeue">message queue</a></li>
+  <li><a href="chap07.html#lowlevel-lockfree-dynamicqueue">dynamic (growing) queue</a></li>
+  <li><a href="chap06.html#highlevel-blocking-collection">blocking collection</a></li>
+</ul>
+
+<p>OmniThreadLibrary automatically inserts two bounded queues between the task owner (<a href="chap07.html#lowlevel-iomnitaskcontrol"><code>IOmniTaskControl</code></a>) and the task (<a href="chap07.html#lowlevel-iomnitask"><code>IOmniTask</code></a>) so that the messages can flow in both directions.</p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 467px;">
+    <img src="images/messageQueue.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+
+<h3 id="introotl-messagelooprequired">
+<span class="section-number">2.7 </span>Message loop required</h3>
+
+<p>Because of implementation details, OmniThreadLibrary requires that each thread owner maintains and processes a message queue. This condition is automatically satisfied in VCL and service applications, but running OmniThreadLibrary thread from a console application requires more work. Additional work is also required if you are creating OmniThreadLibrary threads from background threads.</p>
+
+<h4 id="introotl-messagelooprequired-console">
+<span class="section-number">2.7.1 </span>OmniThreadLibrary and console</h4>
+
+<p>To correctly use OmniThreadLibrary in a console application, said application must process Windows messages. This is demonstrated in the <code>62_console</code> <a href="chap12.html#demos">demo</a> which is reproduced below.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">program</code> <code class="n">app_62_console</code><code class="o">;</code>
+<code class="lineno"> 2 </code>
+<code class="lineno"> 3 </code><code class="cm">{$APPTYPE CONSOLE}</code>
+<code class="lineno"> 4 </code>
+<code class="lineno"> 5 </code><code class="k">uses</code>
+<code class="lineno"> 6 </code>  <code class="n">Windows</code><code class="o">,</code> <code class="n">Messages</code><code class="o">,</code> <code class="n">SysUtils</code><code class="o">,</code>
+<code class="lineno"> 7 </code>  <code class="n">OtlComm</code><code class="o">,</code> <code class="n">OtlTask</code><code class="o">,</code> <code class="n">OtlTaskControl</code><code class="o">,</code> <code class="n">OtlParallel</code><code class="o">;</code>
+<code class="lineno"> 8 </code>
+<code class="lineno"> 9 </code><code class="k">const</code>
+<code class="lineno">10 </code>  <code class="n">MSG_STATUS</code> <code class="o">=</code> <code class="n">WM_USER</code><code class="o">;</code>
+<code class="lineno">11 </code>
+<code class="lineno">12 </code>  <code class="k">procedure</code> <code class="nf">ProcessMessages</code><code class="o">;</code>
+<code class="lineno">13 </code>  <code class="k">var</code>
+<code class="lineno">14 </code>    <code class="n">Msg</code><code class="o">:</code> <code class="n">TMsg</code><code class="o">;</code>
+<code class="lineno">15 </code>  <code class="k">begin</code>
+<code class="lineno">16 </code>    <code class="k">while</code> <code class="kt">integer</code><code class="p">(</code><code class="n">PeekMessage</code><code class="p">(</code><code class="n">Msg</code><code class="o">,</code> <code class="mi">0</code><code class="o">,</code> <code class="mi">0</code><code class="o">,</code> <code class="mi">0</code><code class="o">,</code> <code class="n">PM_REMOVE</code><code class="p">))</code> <code class="o">&lt;&gt;</code> <code class="mi">0</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">17 </code>      <code class="n">TranslateMessage</code><code class="p">(</code><code class="n">Msg</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">18 </code>      <code class="n">DispatchMessage</code><code class="p">(</code><code class="n">Msg</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">20 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">21 </code>
+<code class="lineno">22 </code>  <code class="k">function</code> <code class="nf">DoTheCalculation</code><code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTask</code><code class="p">)</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">23 </code>  <code class="k">var</code>
+<code class="lineno">24 </code>    <code class="n">i</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">25 </code>  <code class="k">begin</code>
+<code class="lineno">26 </code>    <code class="k">for</code> <code class="n">i</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="mi">5</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno">27 </code>      <code class="n">task</code><code class="o">.</code><code class="n">Comm</code><code class="o">.</code><code class="n">Send</code><code class="p">(</code><code class="n">MSG_STATUS</code><code class="o">,</code> <code class="s">'... still calculating'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">28 </code>      <code class="nb">Sleep</code><code class="p">(</code><code class="mi">1000</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">29 </code>    <code class="k">end</code><code class="o">;</code>
+<code class="lineno">30 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="mi">42</code><code class="o">;</code>
+<code class="lineno">31 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">32 </code>
+<code class="lineno">33 </code><code class="k">var</code>
+<code class="lineno">34 </code>  <code class="n">calc</code><code class="o">:</code> <code class="n">IOmniFuture</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;;</code>
+<code class="lineno">35 </code>
+<code class="lineno">36 </code><code class="k">begin</code>
+<code class="lineno">37 </code>  <code class="k">try</code>
+<code class="lineno">38 </code>    <code class="n">calc</code> <code class="o">:=</code> <code class="n">Parallel</code><code class="o">.</code><code class="n">Future</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;</code><code class="p">(</code><code class="n">DoTheCalculation</code><code class="o">,</code>
+<code class="lineno">39 </code>      <code class="n">parallel</code><code class="o">.</code><code class="n">TaskConfig</code><code class="o">.</code><code class="n">OnMessage</code><code class="p">(</code><code class="n">MSG_STATUS</code><code class="o">,</code>
+<code class="lineno">40 </code>        <code class="k">procedure</code><code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTaskControl</code><code class="o">;</code> <code class="k">const</code> <code class="n">msg</code><code class="o">:</code> <code class="n">TOmniMessage</code><code class="p">)</code>
+<code class="lineno">41 </code>        <code class="k">begin</code>
+<code class="lineno">42 </code>          <code class="nb">Writeln</code><code class="p">(</code><code class="n">msg</code><code class="o">.</code><code class="n">MsgData</code><code class="o">.</code><code class="n">AsString</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">43 </code>        <code class="k">end</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">44 </code>
+<code class="lineno">45 </code>    <code class="nb">Writeln</code><code class="p">(</code><code class="s">'Background thread is calculating ...'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">46 </code>    <code class="k">while</code> <code class="k">not</code> <code class="n">calc</code><code class="o">.</code><code class="n">IsDone</code> <code class="k">do</code>
+<code class="lineno">47 </code>      <code class="n">ProcessMessages</code><code class="o">;</code>
+<code class="lineno">48 </code>    <code class="nb">Writeln</code><code class="p">(</code><code class="s">'And the answer is: '</code><code class="o">,</code> <code class="n">calc</code><code class="o">.</code><code class="n">Value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">49 </code>
+<code class="lineno">50 </code>    <code class="k">if</code> <code class="n">DebugHook</code> <code class="o">&lt;&gt;</code> <code class="mi">0</code> <code class="k">then</code>
+<code class="lineno">51 </code>      <code class="nb">Readln</code><code class="o">;</code>
+<code class="lineno">52 </code>  <code class="k">except</code>
+<code class="lineno">53 </code>    <code class="k">on</code> <code class="n">E</code><code class="o">:</code> <code class="n">Exception</code> <code class="k">do</code>
+<code class="lineno">54 </code>      <code class="nb">Writeln</code><code class="p">(</code><code class="n">E</code><code class="o">.</code><code class="n">ClassName</code><code class="o">,</code> <code class="s">': '</code><code class="o">,</code> <code class="n">E</code><code class="o">.</code><code class="n">Message</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">55 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">56 </code><code class="k">end</code><code class="o">.</code>
+</pre></div>
+
+</figure>
+
+<p>The main program creates a <a href="chap06.html#highlevel-future"><em>Future</em></a> which runs a function <code>DoTheCalculation</code> and then waits for it to return a value (<code>while not calc.IsDone</code>).</p>
+
+<p>The future waits five seconds, and each second sends a message back to the owner (<code>task.Comm.Send(MSG_STATUS, '... still calculating')</code>). Main thread processes these messages in the <code>MSG_STATUS</code> handler.</p>
+
+<p>If you run the program, you’ll see that the message “<code>... still calculating</code>” is displayed five times with one second delay between two messages. After that, “<code>And the answer is: 42</code>” is displayed.</p>
+
+<p>The critical part of this program are two lines:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">while</code> <code class="k">not</code> <code class="n">calc</code><code class="o">.</code><code class="n">IsDone</code> <code class="k">do</code>
+<code class="lineno">2 </code>  <code class="n">ProcessMessages</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>If you comment them out, the program will write “<code>Background thread is calculating ...</code>”, then nothing will happen (visibly) for five seconds and then all messages will be displayed at once.</p>
+
+<p>In this example it is not critical to process messages. The program would continue to function correctly even when message processing is removed. In other cases, however, all kinds of weird behaviour can occur if messages are not processed. OmniThreadLibrary occasionally uses messages for internal purpose and if you prevent processing of these messages, applications may misbehave. The best approach is to always include periodic calls to ProcessMessages in a console application.</p>
+
+<h4 id="leanpub-auto-omnithreadlibrary-task-started-from-another-task">
+<span class="section-number">2.7.2 </span>OmniThreadLibrary task started from another task</h4>
+
+<p>Similar considerations take order when an OmniThreadLibrary task is started from another OmniThreadLibrary task. The <em>intermediate</em> task (the task which starts another task) must process messages. The easiest way to achieve that is by using the <a href="chap07.html#lowlevel-tomniworker-msgwait"><code>MsgWait</code></a> qualifier when creating a task.</p>
+
+<p>In the <code>66_ThreadsInThreads</code> <a href="chap12.html#demos">demo</a>, the click on the <strong>OTL from an OTL task</strong> button creates a task that will create a <a href="chap06.html#highlevel-future"><em>Future</em></a>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code>  <code class="n">FOwnerTask</code> <code class="o">:=</code> <code class="n">CreateTask</code><code class="p">(</code><code class="n">TWorker</code><code class="o">.</code><code class="n">Create</code><code class="p">()</code><code class="o">,</code> <code class="s">'OTL owner'</code><code class="p">)</code>
+<code class="lineno">2 </code>    <code class="o">.</code><code class="n">OnMessage</code><code class="p">(</code><code class="k">Self</code><code class="p">)</code>
+<code class="lineno">3 </code>    <code class="o">.</code><code class="n">OnTerminated</code><code class="p">(</code><code class="n">TaskTerminated</code><code class="p">)</code>
+<code class="lineno">4 </code>    <code class="o">.</code><code class="n">MsgWait</code> <code class="c1">// critical, this allows OTL task to process messages</code>
+<code class="lineno">5 </code>    <code class="o">.</code><code class="n">Run</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The important part of this demo is the call to <code>MsgWait</code> which causes internal loop in the task to process Windows messages. Without this <code>MsgWait</code> the program would stop working.</p>
+
+<p>The worker does all the work in its <a href="chap07.html#lowlevel-tomniworker-initialization"><code>Initialization</code></a> method.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TWorker</code><code class="o">.</code><code class="nf">Initialize</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="k">inherited</code> <code class="nb">Initialize</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">if</code> <code class="bp">Result</code> <code class="k">then</code> <code class="k">begin</code>
+<code class="lineno"> 5 </code>    <code class="n">Task</code><code class="o">.</code><code class="n">Comm</code><code class="o">.</code><code class="n">Send</code><code class="p">(</code><code class="n">WM_LOG</code><code class="o">,</code> <code class="nb">Format</code><code class="p">(</code><code class="s">'[%d] Starting a Future'</code><code class="o">,</code> <code class="p">[</code><code class="n">GetCurrentThreadID</code><code class="p">]))</code><code class="o">;</code>
+<code class="lineno"> 6 </code>    <code class="n">FCalc</code> <code class="o">:=</code> <code class="n">Parallel</code><code class="o">.</code><code class="n">Future</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;</code><code class="p">(</code><code class="n">Asy_DoTheCalculation</code><code class="o">,</code>
+<code class="lineno"> 7 </code>      <code class="n">Parallel</code><code class="o">.</code><code class="n">TaskConfig</code>
+<code class="lineno"> 8 </code>        <code class="o">.</code><code class="n">OnMessage</code><code class="p">(</code><code class="n">MSG_STATUS</code><code class="o">,</code>
+<code class="lineno"> 9 </code>          <code class="k">procedure</code><code class="p">(</code><code class="k">const</code> <code class="n">workerTask</code><code class="o">:</code> <code class="n">IOmniTaskControl</code><code class="o">;</code> <code class="k">const</code> <code class="n">msg</code><code class="o">:</code> <code class="n">TOmniMessage</code><code class="p">)</code>
+<code class="lineno">10 </code>          <code class="k">begin</code>
+<code class="lineno">11 </code>            <code class="c1">// workerTask = task controller for Parallel.Future worker thread</code>
+<code class="lineno">12 </code>            <code class="c1">// Task = TWorker.Task = interface of the TWorker task</code>
+<code class="lineno">13 </code>            <code class="n">Task</code><code class="o">.</code><code class="n">Comm</code><code class="o">.</code><code class="n">Send</code><code class="p">(</code><code class="n">WM_LOG</code><code class="o">,</code> <code class="nb">Format</code><code class="p">(</code><code class="s">'[%d] Future sent a message: %s'</code><code class="o">,</code>
+<code class="lineno">14 </code>              <code class="p">[</code><code class="n">GetCurrentThreadID</code><code class="o">,</code> <code class="n">msg</code><code class="o">.</code><code class="n">MsgData</code><code class="o">.</code><code class="n">AsString</code><code class="p">]))</code><code class="o">;</code>
+<code class="lineno">15 </code>          <code class="k">end</code><code class="p">)</code>
+<code class="lineno">16 </code>        <code class="o">.</code><code class="n">OnTerminated</code><code class="p">(</code>
+<code class="lineno">17 </code>          <code class="k">procedure</code>
+<code class="lineno">18 </code>          <code class="k">begin</code>
+<code class="lineno">19 </code>            <code class="nc">Task</code><code class="o">.</code><code class="nc">Comm</code><code class="o">.</code><code class="nf">Send</code><code class="p">(</code><code class="n">WM_LOG</code><code class="o">,</code> <code class="nb">Format</code><code class="p">(</code><code class="s">'[%d] Future terminated, result = %d'</code><code class="o">,</code>
+<code class="lineno">20 </code>              <code class="p">[</code><code class="n">GetCurrentThreadID</code><code class="o">,</code> <code class="n">FCalc</code><code class="o">.</code><code class="n">Value</code><code class="p">]))</code><code class="o">;</code>
+<code class="lineno">21 </code>            <code class="n">FCalc</code> <code class="o">:=</code> <code class="k">nil</code><code class="o">;</code>
+<code class="lineno">22 </code>            <code class="n">Task</code><code class="o">.</code><code class="n">Comm</code><code class="o">.</code><code class="n">Send</code><code class="p">(</code><code class="n">WM_LOG</code><code class="o">,</code> <code class="nb">Format</code><code class="p">(</code><code class="s">'[%d] Terminating worker'</code><code class="o">,</code> 
+<code class="lineno">23 </code>              <code class="p">[</code><code class="n">GetCurrentThreadID</code><code class="p">]))</code><code class="o">;</code>
+<code class="lineno">24 </code>            <code class="c1">// Terminate TWorker</code>
+<code class="lineno">25 </code>            <code class="n">Task</code><code class="o">.</code><code class="n">Terminate</code><code class="o">;</code>
+<code class="lineno">26 </code>          <code class="k">end</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">27 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">28 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>This code executes in a background worker thread. It may look complicated, however, the code simply creates a Future calculation (<code>FCalc := Parallel.Future&lt;integer&gt;</code>) and sets up event handlers that will process messages sent from the future (<code>.OnMessage</code>) and handle the completion of the future calculation (<code>.OnTerminated</code>).</p>
+
+<p><code>OnMessage</code> takes a message that was sent from the future, adds some text and current thread ID and sends new message to the form where it is logged in the <code>WMLog</code> method (not shown here).</p>
+
+<p><code>OnTerminated</code> also logs the event, clears the future interface and terminates self (<code>Task.Terminate</code>). After that, form’s <code>TaskTerminated</code> method (not shown here) is called and cleans the task controller interface.</p>
+
+<p>The future itself does nothing special, it simply sends five messages with one second delay between them and then returns a value.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TWorker</code><code class="o">.</code><code class="nf">Asy_DoTheCalculation</code><code class="p">(</code><code class="k">const</code> <code class="n">task</code><code class="o">:</code> <code class="n">IOmniTask</code><code class="p">)</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">i</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">begin</code>
+<code class="lineno"> 5 </code>  <code class="k">for</code> <code class="n">i</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="mi">5</code> <code class="k">do</code> <code class="k">begin</code>
+<code class="lineno"> 6 </code>    <code class="n">task</code><code class="o">.</code><code class="n">Comm</code><code class="o">.</code><code class="n">Send</code><code class="p">(</code><code class="n">MSG_STATUS</code><code class="o">,</code> <code class="nb">Format</code><code class="p">(</code><code class="s">'[%d] ... still calculating'</code><code class="o">,</code> 
+<code class="lineno"> 7 </code>      <code class="p">[</code><code class="n">GetCurrentThreadID</code><code class="p">]))</code><code class="o">;</code>
+<code class="lineno"> 8 </code>    <code class="nb">Sleep</code><code class="p">(</code><code class="mi">1000</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 9 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="mi">42</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>When you run the program and click on the button, following text will be displayed (thread IDs – numbers in brackets – will be different in your case).</p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 80%;">
+    <img src="images/threadFromTask.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+<p>We can see that Future messages were generated in thread 18420, then passed through the parent thread 6088 and ended in the main thread 11968.</p>
+
+<h4 id="leanpub-auto-omnithreadlibrary-task-started-from-a-tthread">
+<span class="section-number">2.7.3 </span>OmniThreadLibrary task started from a TThread</h4>
+
+<p>Enhancing a basic Delphi <code>TThread</code> is easy with the OmniThreadLibrary and takes only a few simple steps. We have to make sure that any thread messages are periodically processed by calling the <code>DSiProcessThreadMessages</code> function from the <em>DSiWin32</em> unit (or a similar code that calls <code>PeekMessage</code> / <code>TranslateMessage</code> / <code>DispatchMessage</code>).</p>
+
+<p>The <code>66_ThreadsInThreads</code> <a href="chap12.html#demos">demo</a> contains an example.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code>  <code class="n">FThread</code> <code class="o">:=</code> <code class="n">TWorkerThread</code><code class="o">.</code><code class="n">Create</code><code class="p">(</code><code class="k">true</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">2 </code>  <code class="n">FThread</code><code class="o">.</code><code class="n">OnTerminate</code> <code class="o">:=</code> <code class="n">ThreadTerminated</code><code class="o">;</code>
+<code class="lineno">3 </code>  <code class="n">FThread</code><code class="o">.</code><code class="n">FreeOnTerminate</code> <code class="o">:=</code> <code class="k">true</code><code class="o">;</code>
+<code class="lineno">4 </code>  <code class="n">FThread</code><code class="o">.</code><code class="n">Start</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>The main thread method firstly creates a <a href="chap06.html#highlevel-future"><em>Future</em></a> and sets up an <code>.OnMessage</code> handler which just resends messages to the main thread.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">procedure</code> <code class="nc">TWorkerThread</code><code class="o">.</code><code class="nf">Execute</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">var</code>
+<code class="lineno"> 3 </code>  <code class="n">awaited</code><code class="o">:</code> <code class="kt">DWORD</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="n">calc</code>   <code class="o">:</code> <code class="n">IOmniFuture</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;;</code>
+<code class="lineno"> 5 </code>  <code class="n">handles</code><code class="o">:</code> <code class="k">array</code> <code class="p">[</code><code class="mi">0</code><code class="o">..</code><code class="mi">0</code><code class="p">]</code> <code class="k">of</code> <code class="kt">THandle</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">begin</code>
+<code class="lineno"> 7 </code>  <code class="n">Log</code><code class="p">(</code><code class="s">'Starting a Future'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 8 </code>
+<code class="lineno"> 9 </code>  <code class="n">calc</code> <code class="o">:=</code> <code class="n">Parallel</code><code class="o">.</code><code class="n">Future</code><code class="o">&lt;</code><code class="kt">integer</code><code class="o">&gt;</code><code class="p">(</code><code class="n">Asy_DoTheCalculation</code><code class="o">,</code>
+<code class="lineno">10 </code>    <code class="n">Parallel</code><code class="o">.</code><code class="n">TaskConfig</code>
+<code class="lineno">11 </code>      <code class="o">.</code><code class="n">OnMessage</code><code class="p">(</code><code class="n">MSG_STATUS</code><code class="o">,</code>
+<code class="lineno">12 </code>        <code class="k">procedure</code><code class="p">(</code><code class="k">const</code> <code class="n">workerTask</code><code class="o">:</code> <code class="n">IOmniTaskControl</code><code class="o">;</code> <code class="k">const</code> <code class="n">msg</code><code class="o">:</code> <code class="n">TOmniMessage</code><code class="p">)</code>
+<code class="lineno">13 </code>        <code class="k">begin</code>
+<code class="lineno">14 </code>          <code class="n">Log</code><code class="p">(</code><code class="s">'Future sent a message: '</code> <code class="o">+</code> <code class="n">msg</code><code class="o">.</code><code class="n">MsgData</code><code class="o">.</code><code class="n">AsString</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">15 </code>        <code class="k">end</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">16 </code>
+<code class="lineno">17 </code>  <code class="k">repeat</code>
+<code class="lineno">18 </code>    <code class="n">awaited</code> <code class="o">:=</code> <code class="n">MsgWaitForMultipleObjects</code><code class="p">(</code><code class="mi">0</code><code class="o">,</code> <code class="n">handles</code><code class="o">,</code> <code class="k">false</code><code class="o">,</code> <code class="n">INFINITE</code><code class="o">,</code> <code class="n">QS_ALLPOSTMESSAGE</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="k">if</code> <code class="n">awaited</code> <code class="o">=</code> <code class="n">WAIT_OBJECT_0</code> <code class="o">+</code> <code class="mi">0</code> <code class="cm">{handle count}</code> <code class="k">then</code>
+<code class="lineno">20 </code>      <code class="n">DSiProcessThreadMessages</code><code class="o">;</code>
+<code class="lineno">21 </code>  <code class="k">until</code> <code class="n">calc</code><code class="o">.</code><code class="n">IsDone</code><code class="o">;</code>
+<code class="lineno">22 </code>
+<code class="lineno">23 </code>  <code class="n">Log</code><code class="p">(</code><code class="s">'Future terminated, result = '</code> <code class="o">+</code> <code class="nb">IntToStr</code><code class="p">(</code><code class="n">calc</code><code class="o">.</code><code class="n">Value</code><code class="p">))</code><code class="o">;</code>
+<code class="lineno">24 </code>  <code class="n">calc</code> <code class="o">:=</code> <code class="k">nil</code><code class="o">;</code>
+<code class="lineno">25 </code>  <code class="n">Log</code><code class="p">(</code><code class="s">'Terminating worker'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">26 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Then it enters a <code>repeat .. until</code> loop in which it waits for a Windows message (<code>MsgWaitForMultipleObjects</code>), processes all waiting messages (<code>DSiProcessThreadMessages</code>) and checks whether the calculation has completed (<code>calc.IsDone</code>).</p>
+
+<p>At the end it cleans up the future and exits. That destroys the <code>TWorkerThread</code> thread.</p>
+
+<p>Calling <code>MsgWaitForMultipleObjects</code><sup id="fnref-msdn-mwfmo"><a href="chap17.html#fn-msdn-mwfmo" rel="footnote">2</a></sup> is not strictly necessary. You could just call <code>DSiProcessThreadMessages</code> from time to time. It does, however, improve the performance as the code uses no CPU time in such wait.</p>
+
+<p>If you are already using some other kind of wait-and-dispach mechanism in your thread (<code>WaitForSingleObject</code>, <code>WaitForSingleObjectEx</code>, <code>WaitForMultipleObjects</code>, <code>WaitForMultipleObjectsEx</code>) then they are easy to convert to <code>MsgWaitForMultipleObjects</code> or <code>MsgWaitForMultipleObjectsEx</code>.</p>
+
+<p>Running the program shows a similar behaviour as in the previous example.</p>
+
+
+<div class="figure-wrapper center">
+  <figure class="image" style="width: 80%;">
+    <img src="images/threadFromTask.png" alt="" style="width: 100%;" />
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+
+<h3 id="introotl-tomnivalue">
+<span class="section-number">2.8 </span>TOmniValue</h3>
+
+<p>A <code>TOmniValue</code> (part of the <em>OtlCommon</em> unit) is a data type central to the whole OmniThreadLibrary. It is used in all parts of the code (for example in a <a href="chap07.html#lowlevel-communication">communication subsystem</a>) when type of the data that is to be stored/passed around is not known in advance.</p>
+
+<p>It is implemented as a smart record (a record with functions and operators) which functions similarly to a <a href="http://docwiki.embarcadero.com/Libraries/en/System.Variant"><code>Variant</code></a> or <a href="http://docwiki.embarcadero.com/Libraries/en/System.Rtti.TValue"><code>TValue</code></a> but is faster<sup id="fnref-tomnivalue-speed-1"><a href="chap17.html#fn-tomnivalue-speed-1" rel="footnote">3</a></sup>. It can store following data types:</p>
+
+<ul>
+  <li>simple values (byte, integer, char, double, …)</li>
+  <li>strings (Ansi, Unicode)</li>
+  <li>Variant</li>
+  <li>objects</li>
+  <li>interfaces</li>
+  <li>records (in D2009 and newer)</li>
+</ul>
+
+<p>In all cases ownership of reference-counted data types (strings, interfaces) is managed correctly so no memory leaks can occur when such a type is stored in a <code>TOmniValue</code> variable.</p>
+
+<aside class="tip blurb">
+    <p>Two kinds of floating-point numbers can be stored in a <code>TOmniValue</code> – <code>double</code> and <code>extended</code>. Former are stored directly in the <code>TOmniValue</code> record while latter are wrapped in an <code>TOmniExtendedData</code> record, which increases memory usage and decreases performance. The use of <code>double</code> floating-point numbers is therefore recommended.</p>
+
+</aside>
+
+<p>The <code>TOmniValue</code> type is too large to be shown in one piece so I’ll show various parts of its interface throughout this chapter.</p>
+
+<h4 id="leanpub-auto-data-access">
+<span class="section-number">2.8.1 </span>Data access</h4>
+
+<p>The content of a <code>TOmniValue</code> record can be accessed in many ways, the simplest (and in most cases the most useful) being through the <code>AsXXX</code> properties.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">property</code> <code class="py">AsAnsiString</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">property</code> <code class="py">AsBoolean</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">property</code> <code class="py">AsCardinal</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">property</code> <code class="py">AsDouble</code><code class="o">:</code> <code class="kt">Double</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">property</code> <code class="py">AsDateTime</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">property</code> <code class="py">AsException</code><code class="o">:</code> <code class="n">Exception</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">property</code> <code class="py">AsExtended</code><code class="o">:</code> <code class="kt">Extended</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">property</code> <code class="py">AsInt64</code><code class="o">:</code> <code class="kt">int64</code> <code class="kp">read</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">property</code> <code class="nf">AsInteger</code><code class="o">:</code> <code class="py">integer</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">property</code> <code class="py">AsInterface</code><code class="o">:</code> <code class="n">IInterface</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">property</code> <code class="py">AsObject</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">12 </code><code class="k">property</code> <code class="py">AsOwnedObject</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">property</code> <code class="py">AsPointer</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">property</code> <code class="py">AsString</code><code class="o">:</code> <code class="k">string</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">property</code> <code class="py">AsVariant</code><code class="o">:</code> <code class="kt">Variant</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">property</code> <code class="py">AsWideString</code><code class="o">:</code> <code class="kt">WideString</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<aside class="information blurb">
+    <p>Exceptions can be stored through the <code>AsObject</code> property, but there’s also a special support for <code>Exception</code> data type with its own data access property <code>AsException</code>. It is extensively used in the <a href="chap06.html#highlevel-pipeline"><em>Pipeline</em></a> abstraction.</p>
+
+</aside>
+
+<p>While the setters for those properties are pretty straightforward, getters all have a special logic built in which tries to convert data from any reasonable source type to the requested type. If that cannot be done, an exception is raised.</p>
+
+<p>For example, the getter for the <code>AsString</code> property is called <code>CastToString</code>. Internally it calls <code>TryCastToString</code>, which is a public function of <code>TOmniValue</code>. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code> <code class="nc">TOmniValue</code><code class="o">.</code><code class="nf">CastToString</code><code class="o">:</code> <code class="k">string</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">begin</code>
+<code class="lineno"> 3 </code>  <code class="k">if</code> <code class="k">not</code> <code class="n">TryCastToString</code><code class="p">(</code><code class="bp">Result</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno"> 4 </code>    <code class="k">raise</code> <code class="n">Exception</code><code class="o">.</code><code class="n">Create</code><code class="p">(</code><code class="s">'TOmniValue cannot be converted to string'</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">end</code><code class="o">;</code>
+<code class="lineno"> 6 </code>
+<code class="lineno"> 7 </code><code class="k">function</code> <code class="nc">TOmniValue</code><code class="o">.</code><code class="nf">TryCastToString</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">begin</code>
+<code class="lineno"> 9 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="k">true</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">case</code> <code class="n">ovType</code> <code class="k">of</code>
+<code class="lineno">11 </code>    <code class="n">ovtNull</code><code class="o">:</code>       <code class="n">value</code> <code class="o">:=</code> <code class="s">''</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="n">ovtBoolean</code><code class="o">:</code>    <code class="n">value</code> <code class="o">:=</code> <code class="nb">BoolToStr</code><code class="p">(</code><code class="n">AsBoolean</code><code class="o">,</code> <code class="k">true</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">13 </code>    <code class="n">ovtInteger</code><code class="o">:</code>    <code class="n">value</code> <code class="o">:=</code> <code class="nb">IntToStr</code><code class="p">(</code><code class="n">ovData</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">14 </code>    <code class="n">ovtDouble</code><code class="o">,</code>
+<code class="lineno">15 </code>    <code class="n">ovtDateTime</code><code class="o">,</code>
+<code class="lineno">16 </code>    <code class="n">ovtExtended</code><code class="o">:</code>   <code class="n">value</code> <code class="o">:=</code> <code class="nb">FloatToStr</code><code class="p">(</code><code class="n">AsExtended</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="n">ovtAnsiString</code><code class="o">:</code> <code class="n">value</code> <code class="o">:=</code> <code class="k">string</code><code class="p">((</code><code class="n">ovIntf</code> <code class="k">as</code> <code class="n">IOmniAnsiStringData</code><code class="p">)</code><code class="o">.</code><code class="n">Value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">18 </code>    <code class="n">ovtString</code><code class="o">:</code>     <code class="n">value</code> <code class="o">:=</code> <code class="p">(</code><code class="n">ovIntf</code> <code class="k">as</code> <code class="n">IOmniStringData</code><code class="p">)</code><code class="o">.</code><code class="n">Value</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="n">ovtWideString</code><code class="o">:</code> <code class="n">value</code> <code class="o">:=</code> <code class="p">(</code><code class="n">ovIntf</code> <code class="k">as</code> <code class="n">IOmniWideStringData</code><code class="p">)</code><code class="o">.</code><code class="n">Value</code><code class="o">;</code>
+<code class="lineno">20 </code>    <code class="n">ovtVariant</code><code class="o">:</code>    <code class="n">value</code> <code class="o">:=</code> <code class="k">string</code><code class="p">(</code><code class="n">AsVariant</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">21 </code>    <code class="k">else</code> <code class="bp">Result</code> <code class="o">:=</code> <code class="k">false</code><code class="o">;</code>
+<code class="lineno">22 </code>  <code class="k">end</code><code class="o">;</code>
+<code class="lineno">23 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>When you don’t know the data type stored in a <code>TOmniValue</code> variable and you don’t want to raise an exception if compatible data is not available, you can use the <code>TryCastToXXX</code> family of functions directly.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code>  <code class="nf">TryCastToAnsiString</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">function</code>  <code class="nf">TryCastToBoolean</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">boolean</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">function</code>  <code class="nf">TryCastToCardinal</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">function</code>  <code class="nf">TryCastToDouble</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">Double</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">function</code>  <code class="nf">TryCastToDateTime</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">function</code>  <code class="nf">TryCastToException</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="n">Exception</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">function</code>  <code class="nf">TryCastToExtended</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">Extended</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">function</code>  <code class="nf">TryCastToInt64</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">int64</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">function</code>  <code class="nf">TryCastToInteger</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">function</code>  <code class="nf">TryCastToInterface</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="n">IInterface</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">function</code>  <code class="nf">TryCastToObject</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">TObject</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">12 </code><code class="k">function</code>  <code class="nf">TryCastToPointer</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">pointer</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">function</code>  <code class="nf">TryCastToString</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">function</code>  <code class="nf">TryCastToVariant</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">Variant</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">function</code>  <code class="nf">TryCastToWideString</code><code class="p">(</code><code class="k">var</code> <code class="n">value</code><code class="o">:</code> <code class="kt">WideString</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Alternatively, you can use <code>CastToXXXDef</code> functions which return a default value if current value of the <code>TOmniValue</code> cannot be converted into required data type.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code>  <code class="nf">CastToAnsiStringDef</code><code class="p">(</code><code class="k">const</code> <code class="n">defValue</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="p">)</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">function</code>  <code class="nf">CastToBooleanDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">boolean</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">function</code>  <code class="nf">CastToCardinalDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="kt">cardinal</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">function</code>  <code class="nf">CastToDoubleDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">Double</code><code class="p">)</code><code class="o">:</code> <code class="kt">Double</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">function</code>  <code class="nf">CastToDateTimeDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="p">)</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">function</code>  <code class="nf">CastToExceptionDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="n">Exception</code><code class="p">)</code><code class="o">:</code> <code class="n">Exception</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">function</code>  <code class="nf">CastToExtendedDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">Extended</code><code class="p">)</code><code class="o">:</code> <code class="kt">Extended</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">function</code>  <code class="nf">CastToInt64Def</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">int64</code><code class="p">)</code><code class="o">:</code> <code class="kt">int64</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">function</code>  <code class="nf">CastToIntegerDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">function</code>  <code class="nf">CastToInterfaceDef</code><code class="p">(</code><code class="k">const</code> <code class="n">defValue</code><code class="o">:</code> <code class="n">IInterface</code><code class="p">)</code><code class="o">:</code> <code class="n">IInterface</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">function</code>  <code class="nf">CastToObjectDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">TObject</code><code class="p">)</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">12 </code><code class="k">function</code>  <code class="nf">CastToPointerDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">pointer</code><code class="p">)</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">function</code>  <code class="nf">CastToStringDef</code><code class="p">(</code><code class="k">const</code> <code class="n">defValue</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="k">string</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">function</code>  <code class="nf">CastToVariantDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">Variant</code><code class="p">)</code><code class="o">:</code> <code class="kt">Variant</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">function</code>  <code class="nf">CastToWideStringDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">WideString</code><code class="p">)</code><code class="o">:</code> <code class="kt">WideString</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>They are all implemented in the same manner, similar to the <code>CastToObjectDef</code> below.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code> <code class="nc">TOmniValue</code><code class="o">.</code><code class="nf">CastToObjectDef</code><code class="p">(</code><code class="n">defValue</code><code class="o">:</code> <code class="kt">TObject</code><code class="p">)</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">begin</code>
+<code class="lineno">3 </code>  <code class="k">if</code> <code class="k">not</code> <code class="n">TryCastToObject</code><code class="p">(</code><code class="bp">Result</code><code class="p">)</code> <code class="k">then</code>
+<code class="lineno">4 </code>    <code class="bp">Result</code> <code class="o">:=</code> <code class="n">defValue</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Function <code>LogValue</code> <sup>[3.07.6]</sup> returns a string containing both the type of the stored data and stored value.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code>  <code class="nf">LogValue</code><code class="o">:</code> <code class="k">string</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>This function is useful for data logging and debugging. See the source code for details.</p>
+
+<h4 id="introotl-tomnivalue-typetesting">
+<span class="section-number">2.8.2 </span>Type testing</h4>
+
+<p>For situations where you would like to determine the type of data stored inside the <code>TOmniValue</code>, there is the <code>IsXXX</code> family of functions. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">function</code>  <code class="nf">IsAnsiString</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">function</code>  <code class="nf">IsArray</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">function</code>  <code class="nf">IsBoolean</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">function</code>  <code class="nf">IsEmpty</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">function</code>  <code class="nf">IsException</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">function</code>  <code class="nf">IsFloating</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">function</code>  <code class="nf">IsDateTime</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">function</code>  <code class="nf">IsInteger</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">function</code>  <code class="nf">IsInterface</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">function</code>  <code class="nf">IsInterfacedType</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">function</code>  <code class="nf">IsObject</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">12 </code><code class="k">function</code>  <code class="nf">IsOwnedObject</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">function</code>  <code class="nf">IsPointer</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">function</code>  <code class="nf">IsRecord</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">function</code>  <code class="nf">IsString</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">function</code>  <code class="nf">IsVariant</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">17 </code><code class="k">function</code>  <code class="nf">IsWideString</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Alternatively, you can use the <code>DataType</code> property.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">type</code>
+<code class="lineno">2 </code>  <code class="n">TOmniValueDataType</code> <code class="o">=</code> <code class="p">(</code><code class="n">ovtNull</code><code class="o">,</code> <code class="n">ovtBoolean</code><code class="o">,</code> <code class="n">ovtInteger</code><code class="o">,</code> <code class="n">ovtDouble</code><code class="o">,</code> <code class="n">ovtObject</code><code class="o">,</code>
+<code class="lineno">3 </code>    <code class="n">ovtPointer</code><code class="o">,</code> <code class="n">ovtDateTime</code><code class="o">,</code> <code class="n">ovtException</code><code class="o">,</code> <code class="n">ovtExtended</code><code class="o">,</code> <code class="n">ovtString</code><code class="o">,</code> <code class="n">ovtInterface</code><code class="o">,</code>
+<code class="lineno">4 </code>    <code class="n">ovtVariant</code><code class="o">,</code> <code class="n">ovtWideString</code><code class="o">,</code> <code class="n">ovtArray</code><code class="o">,</code> <code class="n">ovtRecord</code><code class="o">,</code> <code class="n">ovtAnsiString</code><code class="o">,</code> <code class="n">ovtOwnedObject</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">5 </code>
+<code class="lineno">6 </code><code class="k">property</code> <code class="py">DataType</code><code class="o">:</code> <code class="n">TOmniValueDataType</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h4 id="introotl-tomnivalue-clearing">
+<span class="section-number">2.8.3 </span>Clearing the content</h4>
+
+<p>There are two ways to clear a <code>TOmniValue</code> – you can either call its <code>Clear</code>method, or you can assign to it a <code>TOmniValue.Null</code>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">procedure</code> <code class="nf">Clear</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">Null</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">static</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>An example:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">var</code>
+<code class="lineno">2 </code>  <code class="n">ov</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">3 </code>  
+<code class="lineno">4 </code><code class="n">ov</code><code class="o">.</code><code class="n">Clear</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="c1">// or</code>
+<code class="lineno">6 </code><code class="n">ov</code> <code class="o">:=</code> <code class="n">TOmniValue</code><code class="o">.</code><code class="n">Null</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Calling <code>Clear</code> is slightly faster.</p>
+
+<h4 id="leanpub-auto-operators">
+<span class="section-number">2.8.4 </span>Operators</h4>
+
+<p><code>TOmniValue</code> also implements several <code>Implicit</code> operators which help with automatic conversion to and from different data types. Internally, they are implemented as an assignment to/from the <code>AsXXX</code> property.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Equal</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">i</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 2 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Equal</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="k">const</code> <code class="n">s</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno"> 3 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 4 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">boolean</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 5 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">Double</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">Extended</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 7 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 8 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">int64</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno"> 9 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">pointer</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">10 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">11 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">IInterface</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> 
+<code class="lineno">12 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">TObject</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">13 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">Exception</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">AnsiString</code><code class="o">;</code>
+<code class="lineno">15 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">int64</code><code class="o">;</code>
+<code class="lineno">16 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">17 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">Double</code><code class="o">;</code>
+<code class="lineno">18 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="n">Exception</code><code class="o">;</code>
+<code class="lineno">19 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">Extended</code><code class="o">;</code>
+<code class="lineno">20 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="k">string</code><code class="o">;</code>
+<code class="lineno">21 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">22 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">pointer</code><code class="o">;</code>
+<code class="lineno">23 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">WideString</code><code class="o">;</code>
+<code class="lineno">24 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">25 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="n">IInterface</code><code class="o">;</code>
+<code class="lineno">26 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">WideString</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">27 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">Variant</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">28 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">29 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">TDateTime</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Implicit conversion to/from <code>TDateTime</code> is supported only in Delphi XE and newer. </p>
+
+<p>Two <code>Equal</code> operators simplify comparing <code>TOmniValue</code> to an <code>integer</code> and <code>string</code> data.</p>
+
+<h4 id="introotl-tomnivalue-generictypes">
+<span class="section-number">2.8.5 </span>Using with generic types</h4>
+
+<p>Few methods simplify using <code>TOmniValue</code> with class and record data.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">CastFrom</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">static</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">function</code>  <code class="nf">CastTo</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">function</code>  <code class="nf">CastToObject</code><code class="o">&lt;</code><code class="n">T</code><code class="o">:</code> <code class="k">class</code><code class="o">&gt;:</code> <code class="n">T</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">4 </code><code class="k">function</code>  <code class="nf">ToObject</code><code class="o">&lt;</code><code class="n">T</code><code class="o">:</code> <code class="k">class</code><code class="o">&gt;:</code> <code class="n">T</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">Wrap</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">static</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="k">function</code>  <code class="nf">Unwrap</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;:</code> <code class="n">T</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>CastFrom&lt;T&gt;</code> converts any type into a <code>TOmniValue</code>. In Delphi 2009, this function is severely limited as only simple types (integer, object) are supported. Starting with Delphi 2010, <code>TValue</code> type is used to facilitate the conversion and all data types supported by the <code>TOmniValue</code> can be converted.</p>
+
+<p><code>CastTo&lt;T&gt;</code> converts <code>TOmniValue</code> into any other type. In Delphi 2009 same limitations apply as for <code>CastFrom&lt;T&gt;</code>. Since <sup>[3.07.7]</sup> <code>CastTo&lt;T&gt;</code> supports casting into an interface on Delphi XE3 and newer.</p>
+
+<p><code>CastToObject&lt;T&gt;</code> (available in Delphi 2010 and newer) performs a <em>hard cast</em> with no type checking. It is equivalent to using <code>T(omnivalue.AsObject)</code></p>
+
+<p><code>ToObject&lt;T&gt;</code> (available in Delphi 2010 and newer) casts the object to type <code>T</code> with type checking. It is equivalent to using <code>omnivalue.AsObject as T</code>.</p>
+
+<p><code>Wrap&lt;T&gt;</code> <sup>[3.06]</sup> wraps any data type in an instance of <a href="chap09.html#misc-tomnirecordwrapper"><code>TOmniRecordWrapper&lt;T&gt;</code></a> and stores this value in a <code>TOmniValue</code> variable.</p>
+
+<p><code>Unwrap&lt;T&gt;</code> <sup>[3.06]</sup> unwraps a <code>TOmniValue</code> holding a <a href="chap09.html#misc-tomnirecordwrapper"><code>TOmniRecordWrapper&lt;T&gt;</code></a> and returns owned value of type <code>T</code>. It has to be called in this form: <code>omnivalue.Unwrap&lt;T&gt;()</code>. Trailing <code>()</code> is required.</p>
+
+<p><code>Wrap</code> and <code>Unwrap</code> are especially useful as they allow you to store <code>TMethod</code> data (event handlers) in a <code>TOmniValue</code> variable.</p>
+
+<h4 id="introotl-tomnivalue-array">
+<span class="section-number">2.8.6 </span>Array access</h4>
+
+<p>Each <code>TOmniValue</code> can contain an array of other <code>TOmniValue</code>s. Internally, they are stored in a <a href="chap09.html#misc-tomnivaluecontainer"><code>TOmniValueContainer</code></a> object. This object can be accessed directly by reading the <code>AsArray</code> property. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">property</code> <code class="py">AsArray</code><code class="o">:</code> <code class="n">TOmniValueContainer</code> <code class="kp">read</code> <code class="nf">GetAsArray</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><a href="chap05.html#introotl-tomnivalue-typetesting"><code>IsArray</code></a> can be used to test whether a
+<code>TOmniValue</code> contains an array of values.</p>
+
+<p>Arrays can be accessed by an integer indexes (starting with <em>0</em>), or by string indexes (<em>named</em> access). Integer-indexed arrays are created by calling <code>TOmniValue.Create</code> and string-indexed arrays are created by calling <code>TOmniValue.CreateNamed</code>. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">constructor</code> <code class="nf">Create</code><code class="p">(</code><code class="k">const</code> <code class="n">values</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="k">const</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">constructor</code> <code class="nf">CreateNamed</code><code class="p">(</code><code class="k">const</code> <code class="n">values</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="k">const</code><code class="p">)</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>In the latter case, elements of the <code>values</code> parameter must alternate between names (string indexes) and values.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">ov</code> <code class="o">:=</code> <code class="n">TOmniValue</code><code class="o">.</code><code class="n">CreateNamed</code><code class="p">(</code>
+<code class="lineno">2 </code>        <code class="p">[</code><code class="s">'Key1'</code><code class="o">,</code> <code class="s">'Value of ov[</code><code class="se">''</code><code class="s">Key1</code><code class="se">''</code><code class="s">]'</code><code class="o">,</code> 
+<code class="lineno">3 </code>         <code class="s">'Key2'</code><code class="o">,</code> <code class="s">'Value of ov[</code><code class="se">''</code><code class="s">Key2</code><code class="se">''</code><code class="s">]'</code>
+<code class="lineno">4 </code>        <code class="p">])</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>In the example above, both <code>ov[0]</code> and <code>ov['Key1']</code> would return the same string, namely <code>'Value of ov[''Key1'']'</code>.</p>
+
+<p>Array elements can be accessed with the <code>AsArrayItem</code> property, by using an integer index (for integer-indexed arrays), a string index (for string-indexed arrays), or a <code>TOmniValue</code> index. In the last case, the type of data stored inside the <code>TOmniValue</code> index parameter will determine how the array element is accessed. This last form is not available in Delphi 2007, where <code>AsArrayItemOV</code> should be used instead.</p>
+
+<p>All forms of <code>AsArrayItem</code> allow extending an array. If you write data into an index which doesn’t already exist, the array will automatically grow to accomodate the new value.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">property</code> <code class="py">AsArrayItem</code><code class="p">[</code><code class="n">idx</code><code class="o">:</code> <code class="kt">integer</code><code class="p">]</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="kp">default</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">property</code> <code class="py">AsArrayItem</code><code class="p">[</code><code class="k">const</code> <code class="n">name</code><code class="o">:</code> <code class="k">string</code><code class="p">]</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="kp">default</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">property</code> <code class="py">AsArrayItem</code><code class="p">[</code><code class="k">const</code> <code class="n">param</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">]</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="kp">default</code><code class="o">;</code>
+<code class="lineno">4 </code><code class="k">property</code> <code class="py">AsArrayItemOV</code><code class="p">[</code><code class="k">const</code> <code class="n">param</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">]</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>If you want to test whether an array element exists, use the <code>HasArrayItem</code> function.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code>  <code class="nf">HasArrayItem</code><code class="p">(</code><code class="n">idx</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">function</code>  <code class="nf">HasArrayItem</code><code class="p">(</code><code class="k">const</code> <code class="kp">name</code><code class="o">:</code> <code class="k">string</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">function</code>  <code class="nf">HasArrayItem</code><code class="p">(</code><code class="k">const</code> <code class="n">param</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>Starting with Delphi 2010 <code>TOmniValue</code> also implements functions for converting data to and from <code>TArray&lt;T&gt;</code> for any supported type. <code>CastFrom&lt;T&gt;</code> and <code>CastTo&lt;T&gt;</code> functions are used internally to do the conversion.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">FromArray</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">(</code><code class="k">const</code> <code class="n">values</code><code class="o">:</code> <code class="n">TArray</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">static</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">function</code>  <code class="nf">ToArray</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;:</code> <code class="n">TArray</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;;</code>
+</pre></div>
+
+</figure>
+
+<h4 id="introotl-tomnivalue-records">
+<span class="section-number">2.8.7 </span>Handling records</h4>
+
+<p>A record <code>T</code> can be stored inside a <code>TOmniValue</code> by calling the <code>FromRecord&lt;T&gt;</code> function. To extract the data back into a record, use the <code>ToRecord&lt;T&gt;</code> function. </p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">function</code> <code class="nf">FromRecord</code><code class="o">&lt;</code><code class="n">T</code><code class="o">:</code> <code class="k">record</code><code class="o">&gt;</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="n">static</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">function</code>  <code class="nf">ToRecord</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;:</code> <code class="n">T</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>An example:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">var</code>
+<code class="lineno">2 </code>  <code class="n">ts</code><code class="o">:</code> <code class="n">TTimeStamp</code><code class="o">;</code>
+<code class="lineno">3 </code>  <code class="n">ov</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">4 </code>  
+<code class="lineno">5 </code><code class="n">ov</code> <code class="o">:=</code> <code class="n">TOmniValue</code><code class="o">.</code><code class="n">FromRecord</code><code class="o">&lt;</code><code class="n">TTimeStamp</code><code class="o">&gt;</code><code class="p">(</code><code class="n">ts</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="n">ts</code> <code class="o">:=</code> <code class="n">ov</code><code class="o">.</code><code class="n">ToRecord</code><code class="o">&lt;</code><code class="n">TTimeStamp</code><code class="o">&gt;;</code>
+</pre></div>
+
+</figure>
+
+<p><code>TOmniValue</code> jumps through quite some hoops to store a record. It is first converted into a <a href="chap09.html#misc-tomnirecordwrapper"><code>TOmniRecordWrapper</code></a> which is then wrapped inside an <a href="chap09.html#misc-iomniautodestroyobject"><code>IOmniAutoDestroyObject</code></a> interface to provide a reference-counted lifetime management.</p>
+
+<p>Because of that convoluted process, storing records inside <code>TOmniValue</code> is not that fast.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">function</code> <code class="nc">TOmniValue</code><code class="o">.</code><code class="nf">FromRecord</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">T</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">begin</code>
+<code class="lineno">3 </code>  <code class="bp">Result</code><code class="o">.</code><code class="n">SetAsRecord</code><code class="p">(</code>
+<code class="lineno">4 </code>    <code class="n">CreateAutoDestroyObject</code><code class="p">(</code>
+<code class="lineno">5 </code>      <code class="n">TOmniRecordWrapper</code><code class="o">&lt;</code><code class="n">T</code><code class="o">&gt;.</code><code class="n">Create</code><code class="p">(</code><code class="n">value</code><code class="p">)))</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h4 id="leanpub-auto-object-ownership">
+<span class="section-number">2.8.8 </span>Object ownership</h4>
+
+<p><code>TOmniValue</code> can take an ownership of a <code>TObject</code>-type data. To achieve that, you can either assign an object to the <code>AsOwnedObject</code> property or set the <code>OwnsObject</code> property to <code>True</code>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">property</code>  <code class="py">AsOwnedObject</code><code class="o">:</code> <code class="kt">TObject</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">function</code>  <code class="nf">IsOwnedObject</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">property</code> <code class="py">OwnsObject</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>When an object-owning <code>TOmniValue</code> goes out of scope, it automatically destroys the owned object.</p>
+
+<p>You can change the ownership status at any time by setting the <code>OwnsObject</code> property.</p>
+
+<h4 id="leanpub-auto-working-with-tvalue">
+<span class="section-number">2.8.9 </span>Working with TValue</h4>
+
+<p>Starting with Delphi 2010 <code>TOmniValue</code> provides an <code>AsTValue</code> property and corresponding <code>Implicit</code> operator so you can easily convert a <code>TValue</code> data into a <code>TOmniValue</code> and back.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TValue</code><code class="p">)</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">class</code> <code class="k">operator</code> <code class="nf">Implicit</code><code class="p">(</code><code class="k">const</code> <code class="n">a</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">:</code> <code class="n">TValue</code><code class="o">;</code> <code class="k">inline</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">property</code> <code class="py">AsTValue</code><code class="o">:</code> <code class="n">TValue</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<h4 id="leanpub-auto-low-level-methods">
+<span class="section-number">2.8.10 </span>Low-level methods</h4>
+
+<p>For programmers with special requirements (and for internal OmniThreadLibrary use), <code>TOmniValue</code> exposes following public methods.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">procedure</code> <code class="nf">_AddRef</code><code class="o">;</code>
+<code class="lineno">2 </code><code class="k">procedure</code> <code class="nf">_Release</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">procedure</code> <code class="nf">_ReleaseAndClear</code><code class="o">;</code>
+<code class="lineno">4 </code><code class="k">function</code>  <code class="nf">RawData</code><code class="o">:</code> <code class="kt">PInt64</code><code class="o">;</code>
+<code class="lineno">5 </code><code class="k">procedure</code> <code class="nf">RawZero</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p><code>_AddRef</code> increments reference counter of stored data if <code>TOmniValue</code> contains such data. </p>
+
+<p><code>_Release</code> decrements reference counter of stored data if <code>TOmniValue</code> contains such data. </p>
+
+<p><code>_ReleaseAndClear</code> is just a shorthand for calling a <code>_Release</code> followed by a call to <code>RawZero</code>.</p>
+
+<p><code>RawData</code> returns a pointer to the data stored in the <code>TOmniValue</code>.</p>
+
+<p><code>RawZero</code> clears the stored data without decrementing the reference counter.</p>
+
+<h3 id="leanpub-auto-tomnivalueobj">
+<span class="section-number">2.9 </span>TOmniValueObj</h3>
+
+<p>The <em>OtlCommon</em> unit implements a simple object which can wrap a <code>TOmniValue</code> for situations where you would like to store it inside a data structure that only supports object types.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="n">TOmniValueObj</code> <code class="o">=</code> <code class="k">class</code>
+<code class="lineno">2 </code>  <code class="k">constructor</code> <code class="nf">Create</code><code class="p">(</code><code class="k">const</code> <code class="n">value</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">3 </code>  <code class="k">property</code> <code class="py">Value</code><code class="o">:</code> <code class="n">TOmniValue</code> <code class="kp">read</code> <code class="nf">FValue</code><code class="o">;</code>
+<code class="lineno">4 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+
+<h3 id="introotl-fluentinterfaces">
+<span class="section-number">2.10 </span>Fluent interfaces</h3>
+
+<p>OmniThreadLibrary heavily uses <a href="http://en.wikipedia.org/wiki/Fluent_interface">fluent interface</a> approach. Most of the functions in OmniThreadLibrary interfaces are returning <code>Self</code> as the result. Take for example this declaration of the <a href="chap06.html#highlevel-pipeline"><em>Pipeline</em></a> abstraction, slightly edited for brevity.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="n">IOmniPipeline</code> <code class="o">=</code> <code class="k">interface</code>
+<code class="lineno"> 2 </code>  <code class="k">procedure</code> <code class="nf">Cancel</code><code class="o">;</code>
+<code class="lineno"> 3 </code>  <code class="k">function</code>  <code class="nf">From</code><code class="p">(</code><code class="k">const</code> <code class="n">queue</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 4 </code>  <code class="k">function</code>  <code class="nf">HandleExceptions</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 5 </code>  <code class="k">function</code>  <code class="nf">NumTasks</code><code class="p">(</code><code class="n">numTasks</code><code class="o">:</code> <code class="kt">integer</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 6 </code>  <code class="k">function</code>  <code class="nf">OnStop</code><code class="p">(</code><code class="k">const</code> <code class="n">stopCode</code><code class="o">:</code> <code class="n">TProc</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 7 </code>  <code class="k">function</code>  <code class="nf">Run</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 8 </code>  <code class="k">function</code>  <code class="nf">Stage</code><code class="p">(</code>
+<code class="lineno"> 9 </code>    <code class="n">pipelineStage</code><code class="o">:</code> <code class="n">TPipelineSimpleStageDelegate</code><code class="o">;</code> 
+<code class="lineno">10 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">11 </code>  <code class="k">function</code>  <code class="nf">Stage</code><code class="p">(</code>
+<code class="lineno">12 </code>    <code class="n">pipelineStage</code><code class="o">:</code> <code class="n">TPipelineStageDelegate</code><code class="o">;</code> 
+<code class="lineno">13 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">14 </code>  <code class="k">function</code>  <code class="nf">Stage</code><code class="p">(</code>
+<code class="lineno">15 </code>    <code class="n">pipelineStage</code><code class="o">:</code> <code class="n">TPipelineStageDelegateEx</code><code class="o">;</code> 
+<code class="lineno">16 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">17 </code>  <code class="k">function</code>  <code class="nf">Stages</code><code class="p">(</code>
+<code class="lineno">18 </code>    <code class="k">const</code> <code class="n">pipelineStages</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="n">TPipelineSimpleStageDelegate</code><code class="o">;</code>
+<code class="lineno">19 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">20 </code>  <code class="k">function</code>  <code class="nf">Stages</code><code class="p">(</code>
+<code class="lineno">21 </code>    <code class="k">const</code> <code class="n">pipelineStages</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="n">TPipelineStageDelegate</code><code class="o">;</code> 
+<code class="lineno">22 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">23 </code>  <code class="k">function</code>  <code class="nf">Stages</code><code class="p">(</code>
+<code class="lineno">24 </code>    <code class="k">const</code> <code class="n">pipelineStages</code><code class="o">:</code> <code class="k">array</code> <code class="k">of</code> <code class="n">TPipelineStageDelegateEx</code><code class="o">;</code> 
+<code class="lineno">25 </code>    <code class="n">taskConfig</code><code class="o">:</code> <code class="n">IOmniTaskConfig</code> <code class="o">=</code> <code class="k">nil</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code> <code class="n">overload</code><code class="o">;</code>
+<code class="lineno">26 </code>  <code class="k">function</code>  <code class="nf">Throttle</code><code class="p">(</code><code class="n">numEntries</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code> <code class="n">unblockAtCount</code><code class="o">:</code> <code class="kt">integer</code> <code class="o">=</code> <code class="mi">0</code><code class="p">)</code><code class="o">:</code> 
+<code class="lineno">27 </code>    <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno">28 </code>  <code class="k">function</code>  <code class="nf">WaitFor</code><code class="p">(</code><code class="n">timeout_ms</code><code class="o">:</code> <code class="kt">cardinal</code><code class="p">)</code><code class="o">:</code> <code class="kt">boolean</code><code class="o">;</code>
+<code class="lineno">29 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>As you can see, most of the functions return the <code>IOmniPipeline</code> interface. In code, this is implemented by returning <code>Self</code>.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno">1 </code><code class="k">function</code> <code class="nc">TOmniPipeline</code><code class="o">.</code><code class="nf">From</code><code class="p">(</code>
+<code class="lineno">2 </code>  <code class="k">const</code> <code class="n">queue</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno">3 </code><code class="k">begin</code>
+<code class="lineno">4 </code>  <code class="n">opInput</code> <code class="o">:=</code> <code class="n">queue</code><code class="o">;</code>
+<code class="lineno">5 </code>  <code class="bp">Result</code> <code class="o">:=</code> <code class="k">Self</code><code class="o">;</code>
+<code class="lineno">6 </code><code class="k">end</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>This allows calls to such interfaces to be <em>chained</em>. For example, the following code from the <a href="chap06.html#highlevel-pipeline"><em>Pipeline</em></a> section of the book shows how to use <code>Parallel.Pipeline</code> without ever storing the resulting interface in a variable.</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">var</code>
+<code class="lineno"> 2 </code>  <code class="nb">sum</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 3 </code>
+<code class="lineno"> 4 </code><code class="nb">sum</code> <code class="o">:=</code> <code class="n">Parallel</code><code class="o">.</code><code class="n">Pipeline</code>
+<code class="lineno"> 5 </code>  <code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno"> 6 </code>    <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">,</code> <code class="n">output</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code>
+<code class="lineno"> 7 </code>    <code class="k">var</code>
+<code class="lineno"> 8 </code>      <code class="n">i</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 9 </code>    <code class="k">begin</code>
+<code class="lineno">10 </code>      <code class="k">for</code> <code class="n">i</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="mi">1000000</code> <code class="k">do</code>
+<code class="lineno">11 </code>        <code class="n">output</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="n">i</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">12 </code>    <code class="k">end</code><code class="p">)</code>
+<code class="lineno">13 </code>  <code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno">14 </code>    <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="k">var</code> <code class="n">output</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code>
+<code class="lineno">15 </code>    <code class="k">begin</code>
+<code class="lineno">16 </code>      <code class="n">output</code> <code class="o">:=</code> <code class="n">input</code><code class="o">.</code><code class="n">AsInteger</code> <code class="o">*</code> <code class="mi">3</code><code class="o">;</code>
+<code class="lineno">17 </code>    <code class="k">end</code><code class="p">)</code>
+<code class="lineno">18 </code>  <code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno">19 </code>    <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">,</code> <code class="n">output</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code>
+<code class="lineno">20 </code>    <code class="k">var</code>
+<code class="lineno">21 </code>      <code class="nb">sum</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">22 </code>      <code class="n">value</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">23 </code>    <code class="k">begin</code>
+<code class="lineno">24 </code>      <code class="nb">sum</code> <code class="o">:=</code> <code class="mi">0</code><code class="o">;</code>
+<code class="lineno">25 </code>      <code class="k">for</code> <code class="n">value</code> <code class="k">in</code> <code class="n">input</code> <code class="k">do</code>
+<code class="lineno">26 </code>        <code class="nb">Inc</code><code class="p">(</code><code class="nb">sum</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">27 </code>      <code class="n">output</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="nb">sum</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">28 </code>    <code class="k">end</code><code class="p">)</code>
+<code class="lineno">29 </code>  <code class="o">.</code><code class="n">Run</code><code class="o">.</code><code class="n">Output</code><code class="o">.</code><code class="n">Next</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+<p>If you don’t like fluent interface approach, don’t worry. OmniThreadLibrary can be used without it. You can always call a function as if it is a procedure and compiler will just throw away the result. </p>
+
+<p>The example above could be rewritten as such:</p>
+
+<figure class="code" dir="ltr">
+<div class="highlight"><pre><code></code><code class="lineno"> 1 </code><code class="k">var</code>
+<code class="lineno"> 2 </code>  <code class="nb">sum</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno"> 3 </code>  <code class="n">pipe</code><code class="o">:</code> <code class="n">IOmniPipeline</code><code class="o">;</code>
+<code class="lineno"> 4 </code>
+<code class="lineno"> 5 </code><code class="n">pipe</code> <code class="o">:=</code> <code class="n">Parallel</code><code class="o">.</code><code class="n">Pipeline</code><code class="o">;</code>
+<code class="lineno"> 6 </code><code class="n">pipe</code><code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno"> 7 </code>  <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">,</code> <code class="n">output</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code>
+<code class="lineno"> 8 </code>  <code class="k">var</code>
+<code class="lineno"> 9 </code>    <code class="n">i</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">10 </code>  <code class="k">begin</code>
+<code class="lineno">11 </code>    <code class="k">for</code> <code class="n">i</code> <code class="o">:=</code> <code class="mi">1</code> <code class="k">to</code> <code class="mi">1000000</code> <code class="k">do</code>
+<code class="lineno">12 </code>      <code class="n">output</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="n">i</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">13 </code>  <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">14 </code><code class="n">pipe</code><code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno">15 </code>  <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code> <code class="k">var</code> <code class="n">output</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="p">)</code>
+<code class="lineno">16 </code>  <code class="k">begin</code>
+<code class="lineno">17 </code>    <code class="n">output</code> <code class="o">:=</code> <code class="n">input</code><code class="o">.</code><code class="n">AsInteger</code> <code class="o">*</code> <code class="mi">3</code><code class="o">;</code>
+<code class="lineno">18 </code>  <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">19 </code><code class="n">pipe</code><code class="o">.</code><code class="n">Stage</code><code class="p">(</code>
+<code class="lineno">20 </code>  <code class="k">procedure</code> <code class="p">(</code><code class="k">const</code> <code class="n">input</code><code class="o">,</code> <code class="n">output</code><code class="o">:</code> <code class="n">IOmniBlockingCollection</code><code class="p">)</code>
+<code class="lineno">21 </code>  <code class="k">var</code>
+<code class="lineno">22 </code>    <code class="nb">sum</code><code class="o">:</code> <code class="kt">integer</code><code class="o">;</code>
+<code class="lineno">23 </code>    <code class="n">value</code><code class="o">:</code> <code class="n">TOmniValue</code><code class="o">;</code>
+<code class="lineno">24 </code>  <code class="k">begin</code>
+<code class="lineno">25 </code>    <code class="nb">sum</code> <code class="o">:=</code> <code class="mi">0</code><code class="o">;</code>
+<code class="lineno">26 </code>    <code class="k">for</code> <code class="n">value</code> <code class="k">in</code> <code class="n">input</code> <code class="k">do</code>
+<code class="lineno">27 </code>      <code class="nb">Inc</code><code class="p">(</code><code class="nb">sum</code><code class="o">,</code> <code class="n">value</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">28 </code>    <code class="n">output</code><code class="o">.</code><code class="n">Add</code><code class="p">(</code><code class="nb">sum</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">29 </code>  <code class="k">end</code><code class="p">)</code><code class="o">;</code>
+<code class="lineno">30 </code><code class="n">pipe</code><code class="o">.</code><code class="n">Run</code><code class="o">;</code>
+<code class="lineno">31 </code><code class="nb">sum</code> <code class="o">:=</code> <code class="n">pipe</code><code class="o">.</code><code class="n">Output</code><code class="o">.</code><code class="n">Next</code><code class="o">;</code>
+</pre></div>
+
+</figure>
+
+
+
+</div>
+</body>
+
+<!-- Mirrored from www.omnithreadlibrary.com/book/chap05.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 19 Oct 2025 22:28:33 GMT -->
+</html>
